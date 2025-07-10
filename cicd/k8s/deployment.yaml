@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: feelory-backend-deploy
+  namespace: feelory
+  labels:
+    app: feelory-backend-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      pod: feelory-backend-deploy-pod
+  template:
+    metadata:
+      labels:
+        pod: feelory-backend-deploy-pod
+    spec:
+      imagePullSecrets:
+        - name: docker
+      containers:
+        - name: feelory-backend
+          image: tryoo0607/feelory-backend:latest
+          ports:
+            - containerPort: 8080
+#          envFrom:
+#            - secretRef:
+#                name: feelory-backend-secret
