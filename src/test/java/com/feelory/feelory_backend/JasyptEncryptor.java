@@ -18,7 +18,6 @@ public class JasyptEncryptor {
         String[] secretsToEncrypt = {
                 "myPasswordASDF",
                 "secretNumberInsert",
-                "Hello world!"
         };
 
         // 3. Encryptor 객체 생성 및 세팅
