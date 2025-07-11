@@ -5,7 +5,7 @@ metadata:
   namespace: feelory
 spec:
   selector:
-    pod: feelory-backend-deploy-pod
+    app: feelory-backend-deploy
   ports:
     - name: http
       protocol: TCP

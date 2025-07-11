@@ -9,11 +9,11 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      pod: feelory-backend-deploy-pod
+      app: feelory-backend-deploy
   template:
     metadata:
       labels:
-        pod: feelory-backend-deploy-pod
+        app: feelory-backend-deploy
     spec:
       imagePullSecrets:
         - name: docker
