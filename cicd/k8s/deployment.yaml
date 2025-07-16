@@ -22,6 +22,9 @@ spec:
           image: tryoo0607/feelory-backend:latest
           ports:
             - containerPort: 8080
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: prod
           envFrom:
             - secretRef:
                 name: feelory-backend-secret
