@@ -1,5 +1,6 @@
 package com.feelory.feelory_backend.words.entity;
 
+import com.feelory.feelory_backend.global.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -11,7 +12,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Entity
 @Table(name = "word_categories")
-public class WordCategories {
+public class WordCategories extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,12 +23,6 @@ public class WordCategories {
 
     @Column(name = "description")
     private String description;
-
-    @Column(name = "created_at", nullable = false)
-    private LocalDateTime createdAt;
-
-    @Column(name = "updated_at", nullable = false)
-    private LocalDateTime updatedAt;
 
     @Column(name = "is_active", nullable = false)
     private boolean isActive;
