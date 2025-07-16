@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class CategoriesController {
 
-    CategoriesService categoriesService;
+    private final CategoriesService categoriesService;
 
     @GetMapping("")
     public CategoriesResponse getCategories(CategoriesRequest request) {
