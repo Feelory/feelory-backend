@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CategoriesService {
 
-    CategoriesRepository categoriesRepository;
+    private final CategoriesRepository categoriesRepository;
 
     public CategoriesResponse getCategories(CategoriesRequest request) {
 
