@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Builder(toBuilder = true)
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Entity
 @Table(name = "word_categories")
