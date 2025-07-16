@@ -4,19 +4,17 @@ import com.feelory.feelory_backend.words.entity.WordCategories;
 import com.feelory.feelory_backend.words.model.CategoriesRequest;
 import com.feelory.feelory_backend.words.model.CategoriesResponse;
 import com.feelory.feelory_backend.words.repository.CategoriesRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class CategoriesService {
 
     CategoriesRepository categoriesRepository;
-
-    public CategoriesService(CategoriesRepository categoriesRepository) {
-        this.categoriesRepository = categoriesRepository;
-    }
 
     public CategoriesResponse getCategories(CategoriesRequest request) {
 
