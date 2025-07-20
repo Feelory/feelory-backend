@@ -1,5 +1,6 @@
 package com.feelory.feelory_backend.sample.service;
 
+import com.feelory.feelory_backend.global.exception.exceptions.users.UsersNotFoundException;
 import com.feelory.feelory_backend.sample.entity.SampleTable;
 import com.feelory.feelory_backend.sample.repository.SampleTableRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,5 +23,14 @@ public class SampleService {
     public void insertSampleText(){
         SampleTable A = SampleTable.of("H2 DB 입출력 테스트","김강산");
         sampleTableRepository.save(A);
+    }
+
+    public void throwBaseException() {
+        throw new UsersNotFoundException();
+    }
+
+    public void throwUnknownException() {
+        String text = null;
+        text.length(); // NPE 발생
     }
 }
