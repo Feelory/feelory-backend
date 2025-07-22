@@ -1,7 +1,6 @@
 package com.feelory.feelory_backend.words.service;
 
 import com.feelory.feelory_backend.global.exception.CustomException;
-import com.feelory.feelory_backend.global.exception.exceptions.BaseException;
 import com.feelory.feelory_backend.global.exception.exceptions.ErrorCode;
 import com.feelory.feelory_backend.words.entity.WordCategories;
 import com.feelory.feelory_backend.words.model.*;
@@ -28,11 +27,7 @@ public class CategoriesService {
 
     public CategoryCreateResponse registerCategory(CategoryCreateRequest request) {
 
-        boolean isExist = categoriesRepository.existsByName(request.getName());
-
-        if(isExist) {
-            throw new CustomException(ErrorCode.EXIST_CATEGORY_NAME);
-        }
+        checkDuplicateName(request.getName());
 
         WordCategories entity = categoriesRepository.save(request.toEntity());
 
@@ -41,5 +36,43 @@ public class CategoriesService {
         return CategoryCreateResponse.builder()
                 .category(category)
                 .build();
+    }
+
+
+    public CategoryUpdateResponse modifyCategory(CategoryUpdateRequest request) {
+
+        WordCategories entity = categoriesRepository.findByIdAndActive(request.getId(), true)
+                .orElseThrow(() -> new CustomException(ErrorCode.CATEGORY_NOT_FOUND));
+
+
+        WordCategories.WordCategoriesBuilder builder = entity.toBuilder();
+
+        if (request.getName() != null && !request.getName().isBlank()) {
+            checkDuplicateName(request.getName());
+            builder.name(request.getName());
+        }
+
+        if (request.getDescription() != null && !request.getDescription().isBlank()) {
+            builder.description(request.getDescription());
+        }
+
+
+        WordCategories updatedCategory = builder.build();
+        categoriesRepository.save(updatedCategory);
+
+
+        Category category = Category.fromEntity(updatedCategory);
+
+        return CategoryUpdateResponse.builder()
+                .category(category)
+                .build();
+    }
+
+    private void checkDuplicateName(String name) {
+        boolean isExist = categoriesRepository.existsByName(name);
+
+        if(isExist) {
+            throw new CustomException(ErrorCode.EXIST_CATEGORY_NAME);
+        }
     }
 }
