@@ -2,12 +2,14 @@ package com.feelory.feelory_backend.global.api;
 
 import com.feelory.feelory_backend.global.exception.exceptions.ErrorCode;
 import com.feelory.feelory_backend.global.exception.exceptions.ErrorResponse;
+import com.feelory.feelory_backend.global.exception.exceptions.ValidationDetail;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -30,7 +32,9 @@ public class ApiResponse<T> implements Serializable {
         this.data = data;
     }
 
-    // Success
+    /*
+        Success
+    */
     public static <T> ApiResponse<T> success() {
         SuccessCode successCode = SuccessCode.DEFAULT_SUCCESS;
         return new ApiResponse<>(successCode, null);
@@ -49,18 +53,23 @@ public class ApiResponse<T> implements Serializable {
         return new ApiResponse<>(successCode,  data);
     }
 
-    // Error
+
+    /*
+        Error
+    */
     public static <T> ApiResponse<T> error() {
         ErrorResponse errorResponse = new ErrorResponse(ErrorCode.INTERNAL_SERVER_ERROR);
-        return new ApiResponse<>(errorResponse, null);
-    }
-
-    public static <T> ApiResponse<T> error(ErrorResponse errorResponse) {
         return new ApiResponse<>(errorResponse, null);
     }
 
     public static <T> ApiResponse<T> error(ErrorCode errorCode) {
         ErrorResponse errorResponse = new ErrorResponse(errorCode);
         return new ApiResponse<>(errorResponse, null);
+    }
+
+    // Validation 체크 시 유효성 검사 메세지 전달하기 위해 사용
+    public static <T> ApiResponse<T> error(ErrorCode errorCode, T errors) {
+        ErrorResponse errorResponse = new ErrorResponse(errorCode);
+        return new ApiResponse<>(errorResponse, errors);
     }
 }
