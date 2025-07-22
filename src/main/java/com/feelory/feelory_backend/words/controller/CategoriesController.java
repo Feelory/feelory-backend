@@ -42,4 +42,14 @@ public class CategoriesController {
 
         return ApiResponse.success(response);
     }
+
+    /*
+        TODO. [TR-YOO] Admin 검증 로직 추가 필요
+    */
+    @DeleteMapping("")
+    public ApiResponse<CategoryDeleteResponse> deleteCategory(CategoryDeleteRequest request) {
+        CategoryDeleteResponse response = categoriesService.removeCategory(request);
+
+        return ApiResponse.success(response);
+    }
 }

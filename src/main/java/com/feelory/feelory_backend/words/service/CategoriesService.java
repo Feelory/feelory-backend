@@ -68,6 +68,20 @@ public class CategoriesService {
                 .build();
     }
 
+    public CategoryDeleteResponse removeCategory(CategoryDeleteRequest request) {
+
+        WordCategories entity = categoriesRepository.findByIdAndActive(request.getId(), true)
+                .orElseThrow(() -> new CustomException(ErrorCode.CATEGORY_NOT_FOUND));
+
+        categoriesRepository.delete(entity);
+
+        Category category = Category.fromEntity(entity);
+
+        return CategoryDeleteResponse.builder()
+                .category(category)
+                .build();
+    }
+
     private void checkDuplicateName(String name) {
         boolean isExist = categoriesRepository.existsByName(name);
 
