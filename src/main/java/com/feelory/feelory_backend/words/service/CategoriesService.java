@@ -1,7 +1,7 @@
 package com.feelory.feelory_backend.words.service;
 
-import com.feelory.feelory_backend.global.exception.CustomException;
-import com.feelory.feelory_backend.global.exception.exceptions.ErrorCode;
+import com.feelory.feelory_backend.global.exception.exceptions.words.CategoryNotFoundException;
+import com.feelory.feelory_backend.global.exception.exceptions.words.DuplicateCategoryNameException;
 import com.feelory.feelory_backend.words.entity.WordCategories;
 import com.feelory.feelory_backend.words.model.*;
 import com.feelory.feelory_backend.words.repository.CategoriesRepository;
@@ -42,7 +42,7 @@ public class CategoriesService {
     public CategoryUpdateResponse modifyCategory(CategoryUpdateRequest request) {
 
         WordCategories entity = categoriesRepository.findByIdAndIsActive(request.getId(), true)
-                .orElseThrow(() -> new CustomException(ErrorCode.CATEGORY_NOT_FOUND));
+                .orElseThrow(CategoryNotFoundException::new);
 
 
         WordCategories.WordCategoriesBuilder builder = entity.toBuilder();
@@ -71,7 +71,7 @@ public class CategoriesService {
     public CategoryDeleteResponse removeCategory(CategoryDeleteRequest request) {
 
         WordCategories entity = categoriesRepository.findByIdAndIsActive(request.getId(), true)
-                .orElseThrow(() -> new CustomException(ErrorCode.CATEGORY_NOT_FOUND));
+                .orElseThrow(CategoryNotFoundException::new);
 
         categoriesRepository.delete(entity);
 
@@ -86,7 +86,7 @@ public class CategoriesService {
         boolean isExist = categoriesRepository.existsByName(name);
 
         if(isExist) {
-            throw new CustomException(ErrorCode.EXIST_CATEGORY_NAME);
+            throw new DuplicateCategoryNameException();
         }
     }
 }
