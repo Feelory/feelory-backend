@@ -1,7 +1,7 @@
 package com.feelory.feelory_backend.words.model;
 
 import com.feelory.feelory_backend.words.entity.WordCategories;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CategoryCreateRequest {
-    @NotNull
+    @NotBlank(message = "카테고리 이름은 필수입니다.")
     private String name;
     private String description;
 
@@ -20,6 +20,7 @@ public class CategoryCreateRequest {
         return WordCategories.builder()
                 .name(this.name)
                 .description(this.description)
+                .isActive(true)
                 .build();
     }
 }

@@ -1,16 +1,11 @@
 package com.feelory.feelory_backend.words.model;
 
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
+@Setter
 public class CategoryDeleteRequest {
-    @NotNull
+    @NotNull(message = "id 값은 필수입니다")
     private Long id;
 }

@@ -27,6 +27,8 @@ public class GlobalExceptionHandler {
         ErrorCode errorCode = ErrorCode.NOT_FOUND_END_POINT;
         ApiResponse<ErrorResponse> apiResponse = ApiResponse.error(errorCode);
 
+
+        log.error("GlobalExceptionHandler catch NoHandlerFoundException : {}", e.getMessage());
         return ResponseEntity
                 .status(errorCode.getStatus())
                 .body(apiResponse);
@@ -38,6 +40,7 @@ public class GlobalExceptionHandler {
         ErrorCode errorCode = exception.getErrorCode();
         ApiResponse<ErrorResponse> apiResponse = ApiResponse.error(errorCode);
 
+        log.error("handleCustomException() in GlobalExceptionHandler throw BaseException : {}", exception.getMessage());
         return ResponseEntity
                 .status(errorCode.getStatus())
                 .body(apiResponse);
@@ -51,6 +54,7 @@ public class GlobalExceptionHandler {
         ErrorCode errorCode = ErrorCode.INTERNAL_SERVER_ERROR;
         ApiResponse<ErrorResponse> apiResponse = ApiResponse.error(errorCode);
 
+        log.error("handleException() in GlobalExceptionHandler throw Exception : {}", exception.getMessage());
         return ResponseEntity
                 .status(errorCode.getStatus())
                 .body(apiResponse);

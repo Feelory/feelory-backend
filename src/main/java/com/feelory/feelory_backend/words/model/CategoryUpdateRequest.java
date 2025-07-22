@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CategoryUpdateRequest {
-    @NotNull
+    @NotNull(message = "id 값은 필수입니다")
     private Long id;
     private String name;
     private String description;

@@ -4,6 +4,7 @@ import com.feelory.feelory_backend.global.api.ApiResponse;
 import com.feelory.feelory_backend.global.api.SuccessCode;
 import com.feelory.feelory_backend.words.model.*;
 import com.feelory.feelory_backend.words.service.CategoriesService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,7 +29,7 @@ public class CategoriesController {
         TODO. [TR-YOO] Admin 검증 로직 추가 필요
     */
     @PostMapping("")
-    public ApiResponse<CategoryCreateResponse> postCategory(CategoryCreateRequest request) {
+    public ApiResponse<CategoryCreateResponse> postCategory(@Valid @RequestBody CategoryCreateRequest request) {
         CategoryCreateResponse response = categoriesService.registerCategory(request);
 
         return ApiResponse.success(response, SuccessCode.REGISTER_CATEGORY_SUCCESS);
@@ -38,7 +39,7 @@ public class CategoriesController {
         TODO. [TR-YOO] Admin 검증 로직 추가 필요
     */
     @PatchMapping("")
-    public ApiResponse<CategoryUpdateResponse> patchCategory(CategoryUpdateRequest request) {
+    public ApiResponse<CategoryUpdateResponse> patchCategory(@Valid @RequestBody CategoryUpdateRequest request) {
         CategoryUpdateResponse response = categoriesService.modifyCategory(request);
 
         return ApiResponse.success(response, SuccessCode.UPDATE_CATEGORY_SUCCESS);
@@ -48,7 +49,7 @@ public class CategoriesController {
         TODO. [TR-YOO] Admin 검증 로직 추가 필요
     */
     @DeleteMapping("")
-    public ApiResponse<CategoryDeleteResponse> deleteCategory(CategoryDeleteRequest request) {
+    public ApiResponse<CategoryDeleteResponse> deleteCategory(@Valid CategoryDeleteRequest request) {
         CategoryDeleteResponse response = categoriesService.removeCategory(request);
 
         return ApiResponse.success(response, SuccessCode.DELETE_CATEGORY_SUCCESS);
