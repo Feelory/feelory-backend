@@ -9,5 +9,5 @@ public interface CategoriesRepository extends JpaRepository<WordCategories, Long
 
     Boolean existsByName(String name);
 
-    Optional<WordCategories> findByIdAndActive(Long id, Boolean isActive);
+    Optional<WordCategories> findByIdAndIsActive(Long id, Boolean isActive);
 }

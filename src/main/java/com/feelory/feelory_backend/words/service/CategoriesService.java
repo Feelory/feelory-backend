@@ -41,7 +41,7 @@ public class CategoriesService {
 
     public CategoryUpdateResponse modifyCategory(CategoryUpdateRequest request) {
 
-        WordCategories entity = categoriesRepository.findByIdAndActive(request.getId(), true)
+        WordCategories entity = categoriesRepository.findByIdAndIsActive(request.getId(), true)
                 .orElseThrow(() -> new CustomException(ErrorCode.CATEGORY_NOT_FOUND));
 
 
@@ -70,7 +70,7 @@ public class CategoriesService {
 
     public CategoryDeleteResponse removeCategory(CategoryDeleteRequest request) {
 
-        WordCategories entity = categoriesRepository.findByIdAndActive(request.getId(), true)
+        WordCategories entity = categoriesRepository.findByIdAndIsActive(request.getId(), true)
                 .orElseThrow(() -> new CustomException(ErrorCode.CATEGORY_NOT_FOUND));
 
         categoriesRepository.delete(entity);
