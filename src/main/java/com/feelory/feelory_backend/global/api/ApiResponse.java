@@ -18,7 +18,7 @@ public class ApiResponse<T> implements Serializable {
 
     @Builder
     public ApiResponse(SuccessCode successCode, T data) {
-        this.status = HttpStatus.OK;
+        this.status = successCode.getStatus();
         this.message = successCode.getMessage();
         this.data = data;
     }

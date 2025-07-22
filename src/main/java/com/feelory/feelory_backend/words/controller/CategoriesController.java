@@ -1,6 +1,7 @@
 package com.feelory.feelory_backend.words.controller;
 
 import com.feelory.feelory_backend.global.api.ApiResponse;
+import com.feelory.feelory_backend.global.api.SuccessCode;
 import com.feelory.feelory_backend.words.model.*;
 import com.feelory.feelory_backend.words.service.CategoriesService;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +21,7 @@ public class CategoriesController {
     public ApiResponse<CategoryListResponse> getCategories(CategoryListRequest request) {
         CategoryListResponse response = categoriesService.getCategories(request);
 
-        return ApiResponse.success(response);
+        return ApiResponse.success(response, SuccessCode.GET_CATEGORY_LIST_SUCCESS);
     }
 
     /*
@@ -30,7 +31,7 @@ public class CategoriesController {
     public ApiResponse<CategoryCreateResponse> postCategory(CategoryCreateRequest request) {
         CategoryCreateResponse response = categoriesService.registerCategory(request);
 
-        return ApiResponse.success(response);
+        return ApiResponse.success(response, SuccessCode.REGISTER_CATEGORY_SUCCESS);
     }
 
     /*
@@ -40,7 +41,7 @@ public class CategoriesController {
     public ApiResponse<CategoryUpdateResponse> patchCategory(CategoryUpdateRequest request) {
         CategoryUpdateResponse response = categoriesService.modifyCategory(request);
 
-        return ApiResponse.success(response);
+        return ApiResponse.success(response, SuccessCode.UPDATE_CATEGORY_SUCCESS);
     }
 
     /*
@@ -50,6 +51,6 @@ public class CategoriesController {
     public ApiResponse<CategoryDeleteResponse> deleteCategory(CategoryDeleteRequest request) {
         CategoryDeleteResponse response = categoriesService.removeCategory(request);
 
-        return ApiResponse.success(response);
+        return ApiResponse.success(response, SuccessCode.DELETE_CATEGORY_SUCCESS);
     }
 }
