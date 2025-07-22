@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CategoriesRequest {
+public class CategoryListRequest {
     private int page = 0 ;
     private int size = 10;
     private boolean isActive = true;

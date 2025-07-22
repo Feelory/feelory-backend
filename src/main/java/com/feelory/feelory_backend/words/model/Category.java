@@ -12,19 +12,23 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Categories {
+public class Category {
     private Long id;
     private String name;
+    private String description;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private Boolean isActive;
 
-    public static Categories fromEntity(WordCategories wordCategories){
+    public static Category fromEntity(WordCategories wordCategories){
 
-        return Categories.builder()
+        return Category.builder()
                 .id(wordCategories.getId())
                 .name(wordCategories.getName())
+                .description(wordCategories.getDescription())
                 .createdAt(wordCategories.getCreatedAt())
                 .updatedAt(wordCategories.getUpdatedAt())
+                .isActive(wordCategories.isActive())
                 .build();
     }
 }

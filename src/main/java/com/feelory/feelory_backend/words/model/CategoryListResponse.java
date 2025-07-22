@@ -13,20 +13,20 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CategoriesResponse {
+public class CategoryListResponse {
 
     private Long total;
     private int page;
     private int size;
     private boolean hasNext;
-    private List<Categories> categories;
+    private List<Category> categories;
 
-    public static CategoriesResponse fromPage(Page<WordCategories> page) {
-        List<Categories> categoryList = page.getContent().stream()
-                .map(Categories::fromEntity)
+    public static CategoryListResponse fromPage(Page<WordCategories> page) {
+        List<Category> categoryList = page.getContent().stream()
+                .map(Category::fromEntity)
                 .toList();
 
-        return CategoriesResponse.builder()
+        return CategoryListResponse.builder()
                 .total(page.getTotalElements())
                 .page(page.getNumber())
                 .size(page.getSize())
