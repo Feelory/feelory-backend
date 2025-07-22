@@ -11,12 +11,13 @@ public enum SuccessCode {
     // USERS(사용자)
 
     //  WORDS(단어)
-
-    // WRITINGS(글)
     GET_CATEGORY_LIST_SUCCESS("카테고리 목록 조회 완료"),
     REGISTER_CATEGORY_SUCCESS("카테고리 추가 완료"),
     UPDATE_CATEGORY_SUCCESS("카테고리 수정 완료"),
     DELETE_CATEGORY_SUCCESS("카테고리 삭제 완료"),
+
+    // WRITINGS(글)
+
 
     // LIKES, BOOKMARKS (좋아요, 북마크)
 
