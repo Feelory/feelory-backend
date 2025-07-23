@@ -69,9 +69,12 @@ public class WordsService {
         }
 
         Words updatedWord = builder.build();
-        Words updatedEntity = wordsRepository.save(updatedWord);
+        Words saved = wordsRepository.save(updatedWord);
 
-        Word word = Word.fromEntity(updatedEntity);
+        Words loaded = wordsRepository.findByIdAndIsActive(saved.getId(), true)
+                .orElseThrow(WordNotFoundException::new);
+
+        Word word = Word.fromEntity(loaded);
 
         return WordUpdateResponse.builder()
                 .word(word)

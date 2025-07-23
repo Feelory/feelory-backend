@@ -9,5 +9,5 @@ public interface WordsRepository extends JpaRepository<Words, Long>, WordsReposi
 
     Boolean existsByName(String name);
 
-    Optional<Words> findByIdAndIsActive(Long id, Boolean isActive);
+
 }
