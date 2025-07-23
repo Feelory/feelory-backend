@@ -1,8 +1,9 @@
 package com.feelory.feelory_backend.words.service;
 
+import com.feelory.feelory_backend.global.exception.exceptions.words.CategoryNotFoundException;
+import com.feelory.feelory_backend.global.exception.exceptions.words.DuplicateCategoryNameException;
 import com.feelory.feelory_backend.words.entity.WordCategories;
-import com.feelory.feelory_backend.words.model.CategoriesRequest;
-import com.feelory.feelory_backend.words.model.CategoriesResponse;
+import com.feelory.feelory_backend.words.model.*;
 import com.feelory.feelory_backend.words.repository.CategoriesRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -16,11 +17,76 @@ public class CategoriesService {
 
     private final CategoriesRepository categoriesRepository;
 
-    public CategoriesResponse getCategories(CategoriesRequest request) {
+    public CategoryListResponse getCategories(CategoryListRequest request) {
 
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
         Page<WordCategories> wordCategories = categoriesRepository.searchCategoriesByIsActive(request.isActive(), pageable);
 
-        return CategoriesResponse.fromPage(wordCategories);
+        return CategoryListResponse.fromPage(wordCategories);
+    }
+
+    public CategoryCreateResponse registerCategory(CategoryCreateRequest request) {
+
+        checkDuplicateName(request.getName());
+
+        WordCategories entity = categoriesRepository.save(request.toEntity());
+
+        Category category = Category.fromEntity(entity);
+
+        return CategoryCreateResponse.builder()
+                .category(category)
+                .build();
+    }
+
+
+    public CategoryUpdateResponse modifyCategory(CategoryUpdateRequest request) {
+
+        WordCategories entity = categoriesRepository.findByIdAndIsActive(request.getId(), true)
+                .orElseThrow(CategoryNotFoundException::new);
+
+
+        WordCategories.WordCategoriesBuilder builder = entity.toBuilder();
+
+        if (request.getName() != null && !request.getName().isBlank()) {
+            checkDuplicateName(request.getName());
+            builder.name(request.getName());
+        }
+
+        if (request.getDescription() != null && !request.getDescription().isBlank()) {
+            builder.description(request.getDescription());
+        }
+
+
+        WordCategories updatedCategory = builder.build();
+        categoriesRepository.save(updatedCategory);
+
+
+        Category category = Category.fromEntity(updatedCategory);
+
+        return CategoryUpdateResponse.builder()
+                .category(category)
+                .build();
+    }
+
+    public CategoryDeleteResponse removeCategory(CategoryDeleteRequest request) {
+
+        WordCategories entity = categoriesRepository.findByIdAndIsActive(request.getId(), true)
+                .orElseThrow(CategoryNotFoundException::new);
+
+        categoriesRepository.delete(entity);
+
+        Category category = Category.fromEntity(entity);
+
+        return CategoryDeleteResponse.builder()
+                .category(category)
+                .build();
+    }
+
+    private void checkDuplicateName(String name) {
+        boolean isExist = categoriesRepository.existsByName(name);
+
+        if(isExist) {
+            throw new DuplicateCategoryNameException();
+        }
     }
 }

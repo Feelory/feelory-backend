@@ -13,6 +13,8 @@ public enum ErrorCode {
 
     // E2XX : WORDS(단어)
     WORDS_NOT_FOUND(HttpStatus.NOT_FOUND, "E200", "단어를 찾을 수 없습니다."),
+    DUPLICATE_CATEGORY_NAME(HttpStatus.CONFLICT, "E201", "중복된 카테고리 이름입니다."),
+    CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND, "E202", "활성화 된 카테고리를 찾지 못했습니다"),
 
     // E3XX : WRITINGS(글)
 
@@ -21,6 +23,8 @@ public enum ErrorCode {
     // E5XX : FEEDBACKS(피드백)
 
     // E9XX : 기타
+    INVALID_INPUT_VALUE(HttpStatus.BAD_REQUEST,"E997", "입력값이 유효하지 않습니다."),
+    NOT_FOUND_END_POINT(HttpStatus.INTERNAL_SERVER_ERROR, "E998", "요청한 API가 존재하지 않습니다"),
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "E999", "서버 내부 오류가 발생했습니다.");
 
 
