@@ -1,6 +1,7 @@
 package com.feelory.feelory_backend.words.service;
 
 import com.feelory.feelory_backend.global.exception.exceptions.words.CategoryNotFoundException;
+import com.feelory.feelory_backend.global.exception.exceptions.words.DuplicateWordNameException;
 import com.feelory.feelory_backend.words.entity.WordCategories;
 import com.feelory.feelory_backend.words.entity.Words;
 import com.feelory.feelory_backend.words.model.*;
@@ -31,6 +32,8 @@ public class WordsService {
 
     public WordCreateResponse registerWord(WordCreateRequest request) {
 
+        checkDuplicateName(request.getName());
+
         WordCategories category = categoriesRepository.findByIdAndIsActive(request.getCategoryId(), true)
                 .orElseThrow(CategoryNotFoundException::new);
 
@@ -42,5 +45,13 @@ public class WordsService {
         return WordCreateResponse.builder()
                 .word(word)
                 .build();
+    }
+
+    private void checkDuplicateName(String name) {
+        boolean isExist = wordsRepository.existsByName(name);
+
+        if(isExist) {
+            throw new DuplicateWordNameException();
+        }
     }
 }
