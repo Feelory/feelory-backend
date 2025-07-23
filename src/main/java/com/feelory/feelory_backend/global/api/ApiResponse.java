@@ -15,12 +15,14 @@ import java.util.List;
 @NoArgsConstructor
 public class ApiResponse<T> implements Serializable {
     private HttpStatus status;
+    private String code;
     private String message;
     private T data;
 
     @Builder
     public ApiResponse(SuccessCode successCode, T data) {
         this.status = successCode.getStatus();
+        this.code = successCode.getCode();
         this.message = successCode.getMessage();
         this.data = data;
     }
@@ -28,6 +30,7 @@ public class ApiResponse<T> implements Serializable {
     @Builder
     public ApiResponse(ErrorResponse errorResponse, T data) {
         this.status = errorResponse.getStatus();
+        this.code = errorResponse.getCode();
         this.message = errorResponse.getMessage();
         this.data = data;
     }
