@@ -2,6 +2,7 @@ package com.feelory.feelory_backend.words.service;
 
 import com.feelory.feelory_backend.global.exception.exceptions.words.CategoryNotFoundException;
 import com.feelory.feelory_backend.global.exception.exceptions.words.DuplicateWordNameException;
+import com.feelory.feelory_backend.global.exception.exceptions.words.WordNotFoundException;
 import com.feelory.feelory_backend.words.entity.WordCategories;
 import com.feelory.feelory_backend.words.entity.Words;
 import com.feelory.feelory_backend.words.model.*;
@@ -34,8 +35,7 @@ public class WordsService {
 
         checkDuplicateName(request.getName());
 
-        WordCategories category = categoriesRepository.findByIdAndIsActive(request.getCategoryId(), true)
-                .orElseThrow(CategoryNotFoundException::new);
+        WordCategories category = getCategory(request.getCategoryId());
 
         Words entity = request.toEntity(category);
         Words createdWord = wordsRepository.save(entity);
@@ -45,6 +45,43 @@ public class WordsService {
         return WordCreateResponse.builder()
                 .word(word)
                 .build();
+    }
+
+    public WordUpdateResponse modifyWord(WordUpdateRequest request) {
+
+        Words entity = wordsRepository.findByIdAndIsActive(request.getId(), true)
+                .orElseThrow(WordNotFoundException::new);
+
+        Words.WordsBuilder builder = entity.toBuilder();
+
+        if (request.getName() != null && !request.getName().isBlank()) {
+            checkDuplicateName(request.getName());
+            builder.name(request.getName());
+        }
+
+        if (request.getDescription() != null && !request.getDescription().isBlank()) {
+            builder.description(request.getDescription());
+        }
+
+        if (request.getCategoryId() != null) {
+            WordCategories category = getCategory(request.getCategoryId());
+            builder.category(category);
+        }
+
+        Words updatedWord = builder.build();
+        Words updatedEntity = wordsRepository.save(updatedWord);
+
+        Word word = Word.fromEntity(updatedEntity);
+
+        return WordUpdateResponse.builder()
+                .word(word)
+                .build();
+    }
+
+    private WordCategories getCategory(Long categoryId) {
+
+        return categoriesRepository.findByIdAndIsActive(categoryId, true)
+                .orElseThrow(CategoryNotFoundException::new);
     }
 
     private void checkDuplicateName(String name) {
