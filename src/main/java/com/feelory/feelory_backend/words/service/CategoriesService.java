@@ -74,9 +74,13 @@ public class CategoriesService {
         WordCategories entity = categoriesRepository.findByIdAndIsActive(request.getId(), true)
                 .orElseThrow(CategoryNotFoundException::new);
 
-        categoriesRepository.delete(entity);
+        WordCategories updatedEntity = entity.toBuilder()
+                .isActive(false)
+                .build();
 
-        Category category = Category.fromEntity(entity);
+        categoriesRepository.save(updatedEntity);
+
+        Category category = Category.fromEntity(updatedEntity);
 
         return CategoryDeleteResponse.builder()
                 .category(category)
