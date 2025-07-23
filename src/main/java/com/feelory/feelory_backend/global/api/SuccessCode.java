@@ -15,6 +15,7 @@ public enum SuccessCode {
     REGISTER_CATEGORY_SUCCESS("카테고리 추가 완료"),
     UPDATE_CATEGORY_SUCCESS("카테고리 수정 완료"),
     DELETE_CATEGORY_SUCCESS("카테고리 삭제 완료"),
+    GET_WORD_LIST_SUCCESS("단어 목록 조회 완료"),
 
     // WRITINGS(글)
 
