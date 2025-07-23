@@ -40,7 +40,7 @@ public class WordsController {
         TODO. [TR-YOO] Admin 검증 로직 추가 필요
     */
     @PatchMapping("")
-    public ApiResponse<WordUpdateResponse> patchWord(WordUpdateRequest request) {
+    public ApiResponse<WordUpdateResponse> patchWord(@Valid @RequestBody WordUpdateRequest request) {
         WordUpdateResponse response = wordsService.modifyWord(request);
 
         return ApiResponse.success(response, SuccessCode.UPDATE_WORD_SUCCESS);
