@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +20,7 @@ public class WordsService {
     private final WordsRepository wordsRepository;
     private final CategoriesRepository categoriesRepository;
 
+    @Transactional(readOnly = true)
     public WordListResponse getWords(WordListRequest request) {
 
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize());

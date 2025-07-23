@@ -1,5 +1,6 @@
 package com.feelory.feelory_backend.words.repository;
 
+import com.feelory.feelory_backend.words.entity.QWordCategories;
 import com.feelory.feelory_backend.words.entity.QWords;
 import com.feelory.feelory_backend.words.entity.Words;
 import com.querydsl.core.BooleanBuilder;
@@ -33,6 +34,7 @@ public class WordsRepositoryImpl implements WordsRepositoryCustom {
 
         List<Words> content = jpaQueryFactory
                 .selectFrom(qWords)
+                .join(qWords.category, QWordCategories.wordCategories).fetchJoin()
                 .where(builder)
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
