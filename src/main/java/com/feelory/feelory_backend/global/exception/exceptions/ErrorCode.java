@@ -9,10 +9,10 @@ public enum ErrorCode {
     // E0XX : AUTH(인증/토큰)
 
     // E1XX : USERS(사용자)
-    USERS_NOT_FOUND(HttpStatus.NOT_FOUND, "E100", "해당 유저를 찾을 수 없습니다."),
+    USER_NOT_FOUND(HttpStatus.NOT_FOUND, "E100", "해당 유저를 찾을 수 없습니다."),
 
     // E2XX : WORDS(단어)
-    WORDS_NOT_FOUND(HttpStatus.NOT_FOUND, "E200", "단어를 찾을 수 없습니다."),
+    WORD_NOT_FOUND(HttpStatus.NOT_FOUND, "E200", "단어를 찾을 수 없습니다."),
     DUPLICATE_CATEGORY_NAME(HttpStatus.CONFLICT, "E201", "중복된 카테고리 이름입니다."),
     CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND, "E202", "활성화 된 카테고리를 찾지 못했습니다"),
 

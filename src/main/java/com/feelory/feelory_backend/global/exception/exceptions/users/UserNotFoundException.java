@@ -3,9 +3,9 @@ package com.feelory.feelory_backend.global.exception.exceptions.users;
 import com.feelory.feelory_backend.global.exception.exceptions.ErrorCode;
 import com.feelory.feelory_backend.global.exception.exceptions.BaseException;
 
-public class UsersNotFoundException extends BaseException {
+public class UserNotFoundException extends BaseException {
 
-    public UsersNotFoundException() {
-        super(ErrorCode.USERS_NOT_FOUND);
+    public UserNotFoundException() {
+        super(ErrorCode.USER_NOT_FOUND);
     }
 }
