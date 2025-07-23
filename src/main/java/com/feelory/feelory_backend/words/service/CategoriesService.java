@@ -29,9 +29,10 @@ public class CategoriesService {
 
         checkDuplicateName(request.getName());
 
-        WordCategories entity = categoriesRepository.save(request.toEntity());
+        WordCategories entity = request.toEntity();
+        WordCategories createdCategory = categoriesRepository.save(entity);
 
-        Category category = Category.fromEntity(entity);
+        Category category = Category.fromEntity(createdCategory);
 
         return CategoryCreateResponse.builder()
                 .category(category)
