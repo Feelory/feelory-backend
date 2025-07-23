@@ -59,10 +59,10 @@ public class CategoriesService {
 
 
         WordCategories updatedCategory = builder.build();
-        categoriesRepository.save(updatedCategory);
+        WordCategories updatedEntity = categoriesRepository.save(updatedCategory);
 
 
-        Category category = Category.fromEntity(updatedCategory);
+        Category category = Category.fromEntity(updatedEntity);
 
         return CategoryUpdateResponse.builder()
                 .category(category)
