@@ -46,4 +46,13 @@ public class WordsController {
         return ApiResponse.success(response, SuccessCode.UPDATE_WORD_SUCCESS);
     }
 
+    /*
+        TODO. [TR-YOO] Admin 검증 로직 추가 필요
+    */
+    @DeleteMapping("")
+    public ApiResponse<WordDeleteResponse> deleteWord(@Valid WordDeleteRequest request) {
+        WordDeleteResponse response = wordsService.removeWord(request);
+
+        return ApiResponse.success(response, SuccessCode.DELETE_WORD_SUCCESS);
+    }
 }

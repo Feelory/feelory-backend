@@ -78,6 +78,23 @@ public class WordsService {
                 .build();
     }
 
+    public WordDeleteResponse removeWord(WordDeleteRequest request) {
+        Words entity = wordsRepository.findByIdAndIsActive(request.getId(), true)
+                .orElseThrow(WordNotFoundException::new);
+
+        Words updatedEntity = entity.toBuilder()
+                .isActive(false)
+                .build();
+
+        wordsRepository.save(updatedEntity);
+
+        Word word = Word.fromEntity(updatedEntity);
+
+        return WordDeleteResponse.builder()
+                .word(word)
+                .build();
+    }
+
     private WordCategories getCategory(Long categoryId) {
 
         return categoriesRepository.findByIdAndIsActive(categoryId, true)
