@@ -57,10 +57,6 @@ public class ApiResponse<T> implements Serializable {
     /*
         Error
     */
-    public static <T> ApiResponse<T> error() {
-        ErrorResponse errorResponse = new ErrorResponse(ErrorCode.INTERNAL_SERVER_ERROR);
-        return new ApiResponse<>(errorResponse, null);
-    }
 
     public static <T> ApiResponse<T> error(ErrorCode errorCode) {
         ErrorResponse errorResponse = new ErrorResponse(errorCode);
