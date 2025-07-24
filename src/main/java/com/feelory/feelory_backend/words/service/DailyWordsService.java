@@ -65,6 +65,18 @@ public class DailyWordsService {
         return getDailyWordDetailResponse(now);
     }
 
+    public DailyWordUpdateResponse modifyDailyWord(DailyWordUpdateRequest request) {
+
+        DailyWords dailyWords = dailyWordsRepository.findByTopicDateAndIsActive(request.getTopicDate(), true)
+                .orElseThrow(DailyWordNotFoundException::new);
+
+        DailyWordDto updated = updateDailyWord(request.getWordId(), dailyWords);
+
+        return DailyWordUpdateResponse.builder()
+                .dailyWord(updated)
+                .build();
+    }
+
     private DailyWordDto createDailyWord(DailyWordCreateRequest request) {
         Words word = wordsRepository.findById(request.getWordId())
                 .orElseThrow(DailyWordNotFoundException::new);
