@@ -53,7 +53,13 @@ public class DailyWordsController {
     public ApiResponse<DailyWordCreateResponse> postDailyWord(@Valid @RequestBody DailyWordCreateRequest request) {
         DailyWordCreateResponse response = dailyWordsService.registerAndUpdateDailyWord(request);
 
-        return ApiResponse.success(response, SuccessCode.REGISTER_DAILY_WORD_SUCCESS);
+        boolean isAlreadyAssigned = response.getIsAlreadyAssigned();
+
+        SuccessCode code = isAlreadyAssigned
+                ? SuccessCode.ALREADY_ASSIGNED_DAILY_WORD
+                : SuccessCode.REGISTER_DAILY_WORD_SUCCESS;
+
+        return ApiResponse.success(response, code);
     }
 
     @PatchMapping("")
