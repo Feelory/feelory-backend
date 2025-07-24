@@ -5,6 +5,6 @@ import com.feelory.feelory_backend.global.exception.exceptions.ErrorCode;
 
 public class InvalidTopicDateException extends BaseException {
     public InvalidTopicDateException() {
-        super(ErrorCode.DUPLICATE_WORD_NAME);
+        super(ErrorCode.INVALID_TOPIC_DATE);
     }
 }
