@@ -32,7 +32,7 @@ public class CategoriesService {
         WordCategories entity = request.toEntity();
         WordCategories createdCategory = categoriesRepository.save(entity);
 
-        Category category = Category.fromEntity(createdCategory);
+        CategoryDto category = CategoryDto.fromEntity(createdCategory);
 
         return CategoryCreateResponse.builder()
                 .category(category)
@@ -62,7 +62,7 @@ public class CategoriesService {
         WordCategories updatedEntity = categoriesRepository.save(updatedCategory);
 
 
-        Category category = Category.fromEntity(updatedEntity);
+        CategoryDto category = CategoryDto.fromEntity(updatedEntity);
 
         return CategoryUpdateResponse.builder()
                 .category(category)
@@ -80,7 +80,7 @@ public class CategoriesService {
 
         categoriesRepository.save(updatedEntity);
 
-        Category category = Category.fromEntity(updatedEntity);
+        CategoryDto category = CategoryDto.fromEntity(updatedEntity);
 
         return CategoryDeleteResponse.builder()
                 .category(category)

@@ -19,11 +19,11 @@ public class CategoryListResponse {
     private int page;
     private int size;
     private boolean hasNext;
-    private List<Category> categories;
+    private List<CategoryDto> categories;
 
     public static CategoryListResponse fromPage(Page<WordCategories> page) {
-        List<Category> categoryList = page.getContent().stream()
-                .map(Category::fromEntity)
+        List<CategoryDto> categoryList = page.getContent().stream()
+                .map(CategoryDto::fromEntity)
                 .toList();
 
         return CategoryListResponse.builder()

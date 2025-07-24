@@ -1,7 +1,6 @@
 package com.feelory.feelory_backend.words.entity;
 
 import com.feelory.feelory_backend.global.BaseEntity;
-import com.feelory.feelory_backend.words.model.Category;
 import jakarta.persistence.*;
 import lombok.*;
 
