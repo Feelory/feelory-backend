@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class DailyWordUpdateRequest {
     @NotNull(message = "수정할 오늘의 단어 ID는 필수입니다.")
+    private Long id;
     private Long wordId;
     private LocalDateTime topicDate;
     private String description;

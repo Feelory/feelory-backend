@@ -8,9 +8,8 @@ import com.feelory.feelory_backend.words.entity.Words;
 import com.feelory.feelory_backend.words.model.*;
 import com.feelory.feelory_backend.words.repository.DailyWordsRepository;
 import com.feelory.feelory_backend.words.repository.WordsRepository;
-import jakarta.validation.ConstraintViolationException;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,8 +41,15 @@ public class DailyWordsService {
             isAlreadyAssigned = true;
         } else if(duplicatedDailyWord!= null) {
 
+            DailyWordUpdateRequest updateRequest = DailyWordUpdateRequest.builder()
+                    .id(duplicatedDailyWord.getId())
+                    .wordId(request.getWordId())
+                    .topicDate(request.getTopicDate())
+                    .description(request.getDescription())
+                    .build();
+
             isAlreadyAssigned = true;
-            dailyWord = updateDailyWord(request.getWordId(), duplicatedDailyWord);
+            dailyWord = updateDailyWord(updateRequest, duplicatedDailyWord);
         } else {
 
             dailyWord = createDailyWord(request);
@@ -74,10 +80,10 @@ public class DailyWordsService {
         validateDateTime(request.getTopicDate());
         checkDuplicateWordId(request.getWordId());
 
-        DailyWords dailyWords = dailyWordsRepository.findById(request.getWordId())
+        DailyWords dailyWords = dailyWordsRepository.findById(request.getId())
                 .orElseThrow(DailyWordNotFoundException::new);
 
-        DailyWordDto updated = updateDailyWord(request.getWordId(), dailyWords);
+        DailyWordDto updated = updateDailyWord(request, dailyWords);
 
         return DailyWordUpdateResponse.builder()
                 .dailyWord(updated)
@@ -134,15 +140,20 @@ public class DailyWordsService {
         return DailyWordDto.fromEntity(loaded);
     }
 
-    private DailyWordDto updateDailyWord(Long wordId, DailyWords dailyWord) {
-        Words word = wordsRepository.findById(wordId)
-                .orElseThrow(DailyWordNotFoundException::new);
+    private DailyWordDto updateDailyWord(DailyWordUpdateRequest request, DailyWords existing) {
+        Words word = null;
+        if (request.getWordId() != null) {
+            word = wordsRepository.findById(request.getWordId())
+                    .orElseThrow(DailyWordNotFoundException::new);
+        }
 
-        DailyWords updatedEntity = dailyWord.toBuilder()
-                .word(word)
-                .build();
+        DailyWords.DailyWordsBuilder builder = existing.toBuilder();
 
-        DailyWords updated = dailyWordsRepository.save(updatedEntity);
+        if (word != null) builder.word(word);
+        if (request.getTopicDate() != null) builder.topicDate(request.getTopicDate());
+        if (request.getDescription() != null) builder.description(request.getDescription());
+
+        DailyWords updated = dailyWordsRepository.save(builder.build());
         dailyWordsRepository.flush();
 
         DailyWords loaded = dailyWordsRepository.findByIdAndIsActive(updated.getId(), true)
