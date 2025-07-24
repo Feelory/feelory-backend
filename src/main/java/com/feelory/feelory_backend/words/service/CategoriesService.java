@@ -29,9 +29,10 @@ public class CategoriesService {
 
         checkDuplicateName(request.getName());
 
-        WordCategories entity = categoriesRepository.save(request.toEntity());
+        WordCategories entity = request.toEntity();
+        WordCategories createdCategory = categoriesRepository.save(entity);
 
-        Category category = Category.fromEntity(entity);
+        Category category = Category.fromEntity(createdCategory);
 
         return CategoryCreateResponse.builder()
                 .category(category)
@@ -58,10 +59,10 @@ public class CategoriesService {
 
 
         WordCategories updatedCategory = builder.build();
-        categoriesRepository.save(updatedCategory);
+        WordCategories updatedEntity = categoriesRepository.save(updatedCategory);
 
 
-        Category category = Category.fromEntity(updatedCategory);
+        Category category = Category.fromEntity(updatedEntity);
 
         return CategoryUpdateResponse.builder()
                 .category(category)
@@ -73,9 +74,13 @@ public class CategoriesService {
         WordCategories entity = categoriesRepository.findByIdAndIsActive(request.getId(), true)
                 .orElseThrow(CategoryNotFoundException::new);
 
-        categoriesRepository.delete(entity);
+        WordCategories updatedEntity = entity.toBuilder()
+                .isActive(false)
+                .build();
 
-        Category category = Category.fromEntity(entity);
+        categoriesRepository.save(updatedEntity);
+
+        Category category = Category.fromEntity(updatedEntity);
 
         return CategoryDeleteResponse.builder()
                 .category(category)

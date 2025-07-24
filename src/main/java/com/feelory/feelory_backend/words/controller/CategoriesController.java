@@ -4,22 +4,28 @@ import com.feelory.feelory_backend.global.api.ApiResponse;
 import com.feelory.feelory_backend.global.api.SuccessCode;
 import com.feelory.feelory_backend.words.model.*;
 import com.feelory.feelory_backend.words.service.CategoriesService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.web.bind.annotation.*;
 
-/*
-    TODO. [TR-YOO] Swagger 적용하기
-*/
+
 @RestController
 @RequestMapping("/api/word-categories")
 @RequiredArgsConstructor
+@Tag(name = "단어 카테고리 (Word Categories)", description = "단어 카테고리 API 목록")
 public class CategoriesController {
 
     private final CategoriesService categoriesService;
 
+    @Operation(
+            summary = "모든 카테고리 목록",
+            description = "조건에 따른 모든 단어 카테고리 목록 조회 API"
+    )
     @GetMapping("")
-    public ApiResponse<CategoryListResponse> getCategories(CategoryListRequest request) {
+    public ApiResponse<CategoryListResponse> getCategories(@ParameterObject CategoryListRequest request) {
         CategoryListResponse response = categoriesService.getCategories(request);
 
         return ApiResponse.success(response, SuccessCode.GET_CATEGORY_LIST_SUCCESS);
@@ -28,6 +34,10 @@ public class CategoriesController {
     /*
         TODO. [TR-YOO] Admin 검증 로직 추가 필요
     */
+    @Operation(
+            summary = "카테고리 추가",
+            description = "단어 카테고리 추가 API"
+    )
     @PostMapping("")
     public ApiResponse<CategoryCreateResponse> postCategory(@Valid @RequestBody CategoryCreateRequest request) {
         CategoryCreateResponse response = categoriesService.registerCategory(request);
@@ -38,6 +48,10 @@ public class CategoriesController {
     /*
         TODO. [TR-YOO] Admin 검증 로직 추가 필요
     */
+    @Operation(
+            summary = "카테고리 수정",
+            description = "단어 카테고리 수정 API"
+    )
     @PatchMapping("")
     public ApiResponse<CategoryUpdateResponse> patchCategory(@Valid @RequestBody CategoryUpdateRequest request) {
         CategoryUpdateResponse response = categoriesService.modifyCategory(request);
@@ -48,6 +62,10 @@ public class CategoriesController {
     /*
         TODO. [TR-YOO] Admin 검증 로직 추가 필요
     */
+    @Operation(
+            summary = "카테고리 제거",
+            description = "단어 카테고리 제거(비활성화) API"
+    )
     @DeleteMapping("")
     public ApiResponse<CategoryDeleteResponse> deleteCategory(@Valid CategoryDeleteRequest request) {
         CategoryDeleteResponse response = categoriesService.removeCategory(request);

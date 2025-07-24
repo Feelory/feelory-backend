@@ -38,10 +38,10 @@ public class CategoriesRepositoryImpl implements CategoriesRepositoryCustom {
 
         long total = Optional.ofNullable(
                 jpaQueryFactory
-                .select(qWordCategories.count())
-                .from(qWordCategories)
-                .where(builder)
-                .fetchOne()
+                    .select(qWordCategories.count())
+                    .from(qWordCategories)
+                    .where(builder)
+                    .fetchOne()
             ).orElse(0L);
 
         return new PageImpl<>(content, pageable, total);
