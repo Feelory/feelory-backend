@@ -5,15 +5,14 @@ import com.feelory.feelory_backend.global.exception.exceptions.words.InvalidTopi
 import com.feelory.feelory_backend.global.exception.exceptions.words.WordNotFoundException;
 import com.feelory.feelory_backend.words.entity.DailyWords;
 import com.feelory.feelory_backend.words.entity.Words;
-import com.feelory.feelory_backend.words.model.DailyWordCreateRequest;
-import com.feelory.feelory_backend.words.model.DailyWordCreateResponse;
-import com.feelory.feelory_backend.words.model.DailyWordDto;
+import com.feelory.feelory_backend.words.model.*;
 import com.feelory.feelory_backend.words.repository.DailyWordsRepository;
 import com.feelory.feelory_backend.words.repository.WordsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -29,7 +28,8 @@ public class DailyWordsService {
         if (isBeforeDate) throw new InvalidTopicDateException();
 
 
-        DailyWords duplicatedDailyWord = dailyWordsRepository.findByTopicDateAndIsActive(request.getTopicDate(), true);
+        DailyWords duplicatedDailyWord = dailyWordsRepository.findByTopicDateAndIsActive(request.getTopicDate(), true)
+                .orElse(null);
 
         boolean isAlreadyAssigned = false;
         DailyWordDto dailyWord = null;
@@ -51,6 +51,18 @@ public class DailyWordsService {
                 .isAlreadyAssigned(isAlreadyAssigned)
                 .dailyWord(dailyWord)
                 .build();
+    }
+
+    public DailyWordDetailResponse getDailyWord(LocalDateTime topicDate) {
+
+        return getDailyWordDetailResponse(topicDate);
+    }
+
+    public DailyWordDetailResponse getDailyWordToday() {
+
+        LocalDateTime now = LocalDateTime.now();
+
+        return getDailyWordDetailResponse(now);
     }
 
     private DailyWordDto createDailyWord(DailyWordCreateRequest request) {
@@ -79,5 +91,17 @@ public class DailyWordsService {
                 .orElseThrow(DailyWordNotFoundException::new);
 
         return DailyWordDto.fromEntity(loaded);
+    }
+
+    private DailyWordDetailResponse getDailyWordDetailResponse(LocalDateTime dateTime) {
+
+        DailyWords entity = dailyWordsRepository.findByTopicDateAndIsActive(dateTime, true)
+                .orElseThrow(DailyWordNotFoundException::new);
+
+        DailyWordDto dailyWord = DailyWordDto.fromEntity(entity);
+
+        return DailyWordDetailResponse.builder()
+                .dailyWord(dailyWord)
+                .build();
     }
 }

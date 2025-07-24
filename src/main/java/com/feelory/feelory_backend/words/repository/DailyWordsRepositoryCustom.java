@@ -7,5 +7,5 @@ import java.util.Optional;
 
 public interface DailyWordsRepositoryCustom {
 
-    DailyWords findByTopicDateAndIsActive(LocalDateTime topicDate, Boolean isActive);
+    Optional<DailyWords> findByTopicDateAndIsActive(LocalDateTime topicDate, Boolean isActive);
 }
