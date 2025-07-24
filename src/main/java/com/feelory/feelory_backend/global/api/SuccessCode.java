@@ -19,6 +19,7 @@ public enum SuccessCode {
     REGISTER_WORD_SUCCESS("단어 추가 완료"),
     UPDATE_WORD_SUCCESS("단어 수정 완료"),
     DELETE_WORD_SUCCESS("단어 삭제 완료"),
+    REGISTER_DAILY_WORD_SUCCESS("오늘의 단어 추가 완료"),
 
     // WRITINGS(글)
 

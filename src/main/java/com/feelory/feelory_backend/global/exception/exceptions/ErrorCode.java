@@ -16,6 +16,8 @@ public enum ErrorCode {
     DUPLICATE_CATEGORY_NAME(HttpStatus.CONFLICT, "E201", "중복된 카테고리 이름입니다."),
     CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND, "E202", "활성화 된 카테고리를 찾지 못했습니다"),
     DUPLICATE_WORD_NAME(HttpStatus.CONFLICT, "E203", "중복된 단어 이름입니다."),
+    DAILY_WORD_NOT_FOUND(HttpStatus.NOT_FOUND, "E204", "오늘의 단어를 찾을 수 없습니다."),
+    INVALID_TOPIC_DATE(HttpStatus.NOT_FOUND, "E205", "현재 날짜 이전의 날짜를 지정할 수 없습니다"),
 
     // E3XX : WRITINGS(글)
 
