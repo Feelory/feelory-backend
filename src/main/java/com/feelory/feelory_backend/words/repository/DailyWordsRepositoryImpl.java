@@ -16,12 +16,16 @@ public class DailyWordsRepositoryImpl implements DailyWordsRepositoryCustom {
     public Optional<DailyWords> findByTopicDateAndIsActive(LocalDateTime topicDate, Boolean isActive) {
 
         QDailyWords qDailyWords =  QDailyWords.dailyWords;
+        QWords qWords = QWords.words;
+        QWordCategories qWordCategories = QWordCategories.wordCategories;
 
         LocalDateTime start = topicDate.toLocalDate().atStartOfDay();
         LocalDateTime end = topicDate.toLocalDate().atTime(23, 59, 59);
 
         DailyWords dailyWords = jpaQueryFactory
                         .selectFrom(qDailyWords)
+                        .leftJoin(qDailyWords.word, qWords).fetchJoin()
+                        .leftJoin(qWords.category, qWordCategories).fetchJoin()
                         .where(
                                 qDailyWords.topicDate.between(start, end),
                                 qDailyWords.isActive.eq(isActive)
