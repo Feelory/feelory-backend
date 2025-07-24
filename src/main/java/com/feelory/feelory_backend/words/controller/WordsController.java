@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -24,7 +25,7 @@ public class WordsController {
             description = "조건에 따른 모든 단어 목록 조회 API"
     )
     @GetMapping("")
-    public ApiResponse<WordListResponse> getWords(WordListRequest request) {
+    public ApiResponse<WordListResponse> getWords(@ParameterObject WordListRequest request) {
         WordListResponse response = wordsService.getWords(request);
 
         return ApiResponse.success(response, SuccessCode.GET_WORD_LIST_SUCCESS);

@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -24,7 +25,7 @@ public class CategoriesController {
             description = "조건에 따른 모든 단어 카테고리 목록 조회 API"
     )
     @GetMapping("")
-    public ApiResponse<CategoryListResponse> getCategories(CategoryListRequest request) {
+    public ApiResponse<CategoryListResponse> getCategories(@ParameterObject CategoryListRequest request) {
         CategoryListResponse response = categoriesService.getCategories(request);
 
         return ApiResponse.success(response, SuccessCode.GET_CATEGORY_LIST_SUCCESS);
