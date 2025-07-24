@@ -23,6 +23,7 @@ public enum SuccessCode {
     GET_DAILY_WORD_SUCCESS("해당 날짜의 오늘의 단어 조회 완료"),
     GET_TODAY_DAILY_WORD_SUCCESS("오늘의 단어 조회 완료"),
     UPDATE_DAILY_WORD_SUCCESS("오늘의 단어 수정 완료"),
+    DELETE_DAILY_WORD_SUCCESS("오늘의 단어 삭제 완료"),
 
     // WRITINGS(글)
 

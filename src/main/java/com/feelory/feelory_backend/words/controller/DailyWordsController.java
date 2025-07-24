@@ -63,4 +63,12 @@ public class DailyWordsController {
 
         return ApiResponse.success(response, SuccessCode.UPDATE_DAILY_WORD_SUCCESS);
     }
+
+    @DeleteMapping("")
+    public ApiResponse<DailyWordDeleteResponse> deleteDailyWord(@Valid DailyWordDeleteRequest request) {
+
+        DailyWordDeleteResponse response = dailyWordsService.removeDailyWord(request);
+
+        return ApiResponse.success(response, SuccessCode.DELETE_DAILY_WORD_SUCCESS);
+    }
 }

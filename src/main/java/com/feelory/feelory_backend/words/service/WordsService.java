@@ -85,13 +85,13 @@ public class WordsService {
         Words entity = wordsRepository.findByIdAndIsActive(request.getId(), true)
                 .orElseThrow(WordNotFoundException::new);
 
-        Words updatedEntity = entity.toBuilder()
+        Words updated = entity.toBuilder()
                 .isActive(false)
                 .build();
 
-        wordsRepository.save(updatedEntity);
+        wordsRepository.save(updated);
 
-        WordDto word = WordDto.fromEntity(updatedEntity);
+        WordDto word = WordDto.fromEntity(updated);
 
         return WordDeleteResponse.builder()
                 .word(word)

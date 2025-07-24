@@ -2,7 +2,6 @@ package com.feelory.feelory_backend.words.service;
 
 import com.feelory.feelory_backend.global.exception.exceptions.words.DailyWordNotFoundException;
 import com.feelory.feelory_backend.global.exception.exceptions.words.InvalidTopicDateException;
-import com.feelory.feelory_backend.global.exception.exceptions.words.WordNotFoundException;
 import com.feelory.feelory_backend.words.entity.DailyWords;
 import com.feelory.feelory_backend.words.entity.Words;
 import com.feelory.feelory_backend.words.model.*;
@@ -67,13 +66,31 @@ public class DailyWordsService {
 
     public DailyWordUpdateResponse modifyDailyWord(DailyWordUpdateRequest request) {
 
-        DailyWords dailyWords = dailyWordsRepository.findByTopicDateAndIsActive(request.getTopicDate(), true)
+        DailyWords dailyWords = dailyWordsRepository.findById(request.getWordId())
                 .orElseThrow(DailyWordNotFoundException::new);
 
         DailyWordDto updated = updateDailyWord(request.getWordId(), dailyWords);
 
         return DailyWordUpdateResponse.builder()
                 .dailyWord(updated)
+                .build();
+    }
+
+    public DailyWordDeleteResponse removeDailyWord(DailyWordDeleteRequest request) {
+
+        DailyWords entity = dailyWordsRepository.findById(request.getId())
+                .orElseThrow(DailyWordNotFoundException::new);
+
+        DailyWords updated = entity.toBuilder()
+                .isActive(false)
+                .build();
+
+        dailyWordsRepository.save(updated);
+
+        DailyWordDto dailyWord = DailyWordDto.fromEntity(updated);
+
+        return DailyWordDeleteResponse.builder()
+                .dailyWord(dailyWord)
                 .build();
     }
 
