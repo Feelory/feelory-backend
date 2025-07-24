@@ -13,4 +13,6 @@ public interface DailyWordsRepository extends JpaRepository<DailyWords, Long>, D
             "word.category"
     })
     Optional<DailyWords> findByIdAndIsActive(Long id, Boolean isActive);
+
+    boolean existsByWordId(Long wordId);
 }

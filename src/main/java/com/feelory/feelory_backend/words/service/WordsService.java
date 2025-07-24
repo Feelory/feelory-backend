@@ -22,7 +22,6 @@ public class WordsService {
     private final WordsRepository wordsRepository;
     private final CategoriesRepository categoriesRepository;
 
-    @Transactional(readOnly = true)
     public WordListResponse getWords(WordListRequest request) {
 
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
@@ -31,6 +30,7 @@ public class WordsService {
         return WordListResponse.fromPage(words);
     }
 
+    @Transactional
     public WordCreateResponse registerWord(WordCreateRequest request) {
 
         checkDuplicateName(request.getName());
@@ -39,6 +39,7 @@ public class WordsService {
 
         Words entity = request.toEntity(category);
         Words createdWord = wordsRepository.save(entity);
+        wordsRepository.flush();
 
         WordDto word = WordDto.fromEntity(createdWord);
 
@@ -47,6 +48,7 @@ public class WordsService {
                 .build();
     }
 
+    @Transactional
     public WordUpdateResponse modifyWord(WordUpdateRequest request) {
 
         Words entity = wordsRepository.findByIdAndIsActive(request.getId(), true)
@@ -70,6 +72,7 @@ public class WordsService {
 
         Words updatedWord = builder.build();
         Words saved = wordsRepository.save(updatedWord);
+        wordsRepository.flush();
 
         Words loaded = wordsRepository.findByIdAndIsActive(saved.getId(), true)
                 .orElseThrow(WordNotFoundException::new);
@@ -81,6 +84,7 @@ public class WordsService {
                 .build();
     }
 
+    @Transactional
     public WordDeleteResponse removeWord(WordDeleteRequest request) {
         Words entity = wordsRepository.findByIdAndIsActive(request.getId(), true)
                 .orElseThrow(WordNotFoundException::new);
@@ -90,6 +94,7 @@ public class WordsService {
                 .build();
 
         wordsRepository.save(updated);
+        wordsRepository.flush();
 
         WordDto word = WordDto.fromEntity(updated);
 

@@ -2,13 +2,17 @@ package com.feelory.feelory_backend.words.service;
 
 import com.feelory.feelory_backend.global.exception.exceptions.words.DailyWordNotFoundException;
 import com.feelory.feelory_backend.global.exception.exceptions.words.InvalidTopicDateException;
+import com.feelory.feelory_backend.global.exception.exceptions.words.WordAlreadyUsedException;
 import com.feelory.feelory_backend.words.entity.DailyWords;
 import com.feelory.feelory_backend.words.entity.Words;
 import com.feelory.feelory_backend.words.model.*;
 import com.feelory.feelory_backend.words.repository.DailyWordsRepository;
 import com.feelory.feelory_backend.words.repository.WordsRepository;
+import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -21,11 +25,11 @@ public class DailyWordsService {
     private final WordsRepository wordsRepository;
 
 
+    @Transactional
     public DailyWordCreateResponse registerAndUpdateDailyWord(DailyWordCreateRequest request) {
 
-        boolean isBeforeDate = request.getTopicDate().toLocalDate().isBefore(LocalDate.now());
-        if (isBeforeDate) throw new InvalidTopicDateException();
-
+        validateDateTime(request.getTopicDate());
+        checkDuplicateWordId(request.getWordId());
 
         DailyWords duplicatedDailyWord = dailyWordsRepository.findByTopicDateAndIsActive(request.getTopicDate(), true)
                 .orElse(null);
@@ -64,7 +68,11 @@ public class DailyWordsService {
         return getDailyWordDetailResponse(now);
     }
 
+    @Transactional
     public DailyWordUpdateResponse modifyDailyWord(DailyWordUpdateRequest request) {
+
+        validateDateTime(request.getTopicDate());
+        checkDuplicateWordId(request.getWordId());
 
         DailyWords dailyWords = dailyWordsRepository.findById(request.getWordId())
                 .orElseThrow(DailyWordNotFoundException::new);
@@ -76,6 +84,7 @@ public class DailyWordsService {
                 .build();
     }
 
+    @Transactional
     public DailyWordDeleteResponse removeDailyWord(DailyWordDeleteRequest request) {
 
         DailyWords entity = dailyWordsRepository.findById(request.getId())
@@ -86,6 +95,7 @@ public class DailyWordsService {
                 .build();
 
         dailyWordsRepository.save(updated);
+        dailyWordsRepository.flush();
 
         DailyWordDto dailyWord = DailyWordDto.fromEntity(updated);
 
@@ -94,12 +104,30 @@ public class DailyWordsService {
                 .build();
     }
 
+    private void validateDateTime(LocalDateTime topicDate) {
+        boolean isBeforeDate = topicDate.toLocalDate().isBefore(LocalDate.now());
+        if (isBeforeDate) throw new InvalidTopicDateException();
+    }
+
+    private void checkDuplicateWordId(Long wordId) {
+
+        boolean isExist = dailyWordsRepository.existsByWordId(wordId);
+
+        if(isExist){
+            throw new WordAlreadyUsedException();
+        }
+    }
+
     private DailyWordDto createDailyWord(DailyWordCreateRequest request) {
         Words word = wordsRepository.findById(request.getWordId())
                 .orElseThrow(DailyWordNotFoundException::new);
         DailyWords newDailyWord = request.toEntity(word);
 
-        DailyWords saved = dailyWordsRepository.save(newDailyWord);
+        DailyWords saved;
+
+        saved = dailyWordsRepository.save(newDailyWord);
+        dailyWordsRepository.flush();
+
         DailyWords loaded = dailyWordsRepository.findByIdAndIsActive(saved.getId(), true)
                 .orElseThrow(DailyWordNotFoundException::new);
 
@@ -115,6 +143,7 @@ public class DailyWordsService {
                 .build();
 
         DailyWords updated = dailyWordsRepository.save(updatedEntity);
+        dailyWordsRepository.flush();
 
         DailyWords loaded = dailyWordsRepository.findByIdAndIsActive(updated.getId(), true)
                 .orElseThrow(DailyWordNotFoundException::new);

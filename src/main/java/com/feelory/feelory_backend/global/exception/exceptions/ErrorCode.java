@@ -18,7 +18,8 @@ public enum ErrorCode {
     DUPLICATE_WORD_NAME(HttpStatus.CONFLICT, "E203", "중복된 단어 이름입니다."),
     DAILY_WORD_NOT_FOUND(HttpStatus.NOT_FOUND, "E204", "오늘의 단어를 찾을 수 없습니다."),
     INVALID_TOPIC_DATE(HttpStatus.BAD_REQUEST, "E205", "현재 날짜 이전의 날짜를 지정할 수 없습니다."),
-    INVALID_DATE_FORMAT(HttpStatus.BAD_REQUEST, "E205", "잘못된 날짜 형식입니다."),
+    INVALID_DATE_FORMAT(HttpStatus.BAD_REQUEST, "E206", "잘못된 날짜 형식입니다."),
+    WORD_ALREADY_USED(HttpStatus.BAD_REQUEST, "E207", "이미 등록된 단어입니다."),
 
     // E3XX : WRITINGS(글)
 

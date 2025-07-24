@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -25,12 +26,15 @@ public class CategoriesService {
         return CategoryListResponse.fromPage(wordCategories);
     }
 
+    @Transactional
     public CategoryCreateResponse registerCategory(CategoryCreateRequest request) {
 
         checkDuplicateName(request.getName());
 
         WordCategories entity = request.toEntity();
         WordCategories createdCategory = categoriesRepository.save(entity);
+        categoriesRepository.flush();
+
 
         CategoryDto category = CategoryDto.fromEntity(createdCategory);
 
@@ -39,7 +43,7 @@ public class CategoriesService {
                 .build();
     }
 
-
+    @Transactional
     public CategoryUpdateResponse modifyCategory(CategoryUpdateRequest request) {
 
         WordCategories entity = categoriesRepository.findByIdAndIsActive(request.getId(), true)
@@ -60,6 +64,7 @@ public class CategoriesService {
 
         WordCategories updatedCategory = builder.build();
         WordCategories updatedEntity = categoriesRepository.save(updatedCategory);
+        categoriesRepository.flush();
 
 
         CategoryDto category = CategoryDto.fromEntity(updatedEntity);
@@ -69,6 +74,7 @@ public class CategoriesService {
                 .build();
     }
 
+    @Transactional
     public CategoryDeleteResponse removeCategory(CategoryDeleteRequest request) {
 
         WordCategories entity = categoriesRepository.findByIdAndIsActive(request.getId(), true)
@@ -79,6 +85,7 @@ public class CategoriesService {
                 .build();
 
         categoriesRepository.save(updatedEntity);
+        categoriesRepository.flush();
 
         CategoryDto category = CategoryDto.fromEntity(updatedEntity);
 
