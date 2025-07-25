@@ -1,4 +1,4 @@
-package com.feelory.feelory_backend.global.security.auth;
+package com.feelory.feelory_backend.global.security.auth.properties;
 
 import lombok.Getter;
 import lombok.Setter;

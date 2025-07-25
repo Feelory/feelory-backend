@@ -1,5 +1,9 @@
-package com.feelory.feelory_backend.global.security.auth;
+package com.feelory.feelory_backend.global.security.auth.service;
 
+import com.feelory.feelory_backend.global.security.auth.dto.response.KakaoAccessTokenResponse;
+import com.feelory.feelory_backend.global.security.auth.dto.response.KakaoLoginResponse;
+import com.feelory.feelory_backend.global.security.auth.properties.KakaoOauthProperties;
+import com.feelory.feelory_backend.global.security.auth.dto.response.KakaoUserInfoResponse;
 import io.netty.handler.codec.http.HttpHeaderValues;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;

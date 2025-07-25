@@ -1,7 +1,11 @@
-package com.feelory.feelory_backend.global.security.auth;
+package com.feelory.feelory_backend.global.security.auth.controller;
 
 import com.feelory.feelory_backend.global.api.ApiResponse;
 import com.feelory.feelory_backend.global.api.SuccessCode;
+import com.feelory.feelory_backend.global.security.auth.dto.response.KakaoAccessTokenResponse;
+import com.feelory.feelory_backend.global.security.auth.dto.response.KakaoLoginResponse;
+import com.feelory.feelory_backend.global.security.auth.dto.response.KakaoUserInfoResponse;
+import com.feelory.feelory_backend.global.security.auth.service.AuthService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;

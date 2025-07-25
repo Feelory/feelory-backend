@@ -1,4 +1,4 @@
-package com.feelory.feelory_backend.global.security.auth;
+package com.feelory.feelory_backend.global.security.auth.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
