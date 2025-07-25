@@ -1,6 +1,7 @@
 package com.feelory.feelory_backend.writings.repository;
 
 import com.feelory.feelory_backend.words.entity.QDailyWords;
+import com.feelory.feelory_backend.words.model.WritingDetailDto;
 import com.feelory.feelory_backend.writings.entity.DailyWordWritings;
 import com.feelory.feelory_backend.writings.entity.QDailyWordWritings;
 import com.feelory.feelory_backend.writings.entity.QWritingGoals;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,5 +57,27 @@ public class DailyWordWritingsRepositoryImpl implements DailyWordWritingsReposit
         ).orElse(0L);
 
         return new PageImpl<>(content, pageable, total);
+    }
+
+    @Override
+    public Optional<DailyWordWritings> searchWritingDetail(WritingDetailDto writingDetailDto) {
+        QDailyWordWritings qDailyWordWritings = QDailyWordWritings.dailyWordWritings;
+
+        LocalDateTime searchDate = writingDetailDto.getSearchDate();
+        LocalDateTime start = searchDate.toLocalDate().atStartOfDay();
+        LocalDateTime end = searchDate.toLocalDate().atTime(23, 59, 59);
+
+        DailyWordWritings content = jpaQueryFactory
+                .selectFrom(qDailyWordWritings)
+                .join(qDailyWordWritings.dailyWord, QDailyWords.dailyWords).fetchJoin()
+                .join(qDailyWordWritings.writingGoal, QWritingGoals.writingGoals).fetchJoin()
+                .where(
+                    qDailyWordWritings.userId.eq(writingDetailDto.getUserId()),
+                    qDailyWordWritings.createdAt.between(start, end),
+                    qDailyWordWritings.isActive.eq(writingDetailDto.getIsActive())
+                )
+                .fetchOne();
+
+        return Optional.ofNullable(content);
     }
 }

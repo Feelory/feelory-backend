@@ -2,6 +2,8 @@ package com.feelory.feelory_backend.writings.controller;
 
 import com.feelory.feelory_backend.global.api.ApiResponse;
 import com.feelory.feelory_backend.global.api.SuccessCode;
+import com.feelory.feelory_backend.writings.model.UserTodayWritingRequest;
+import com.feelory.feelory_backend.writings.model.UserTodayWritingResponse;
 import com.feelory.feelory_backend.writings.model.UserWritingListRequest;
 import com.feelory.feelory_backend.writings.model.UserWritingListResponse;
 import com.feelory.feelory_backend.writings.service.WritingsService;
@@ -30,5 +32,17 @@ public class WritingsController {
         UserWritingListResponse response = writingsService.getUserWritings(request);
 
         return ApiResponse.success(response, SuccessCode.GET_USER_WRITINGS_LIST_SUCCESS);
+    }
+
+    @Operation(
+            summary = "오늘 내가 쓴 글 조회",
+            description = "조건에 따른 모든 단어 카테고리 목록 조회 API"
+    )
+    @GetMapping("/me/today")
+    public ApiResponse<UserTodayWritingResponse> getUserTodayWriting(UserTodayWritingRequest request) {
+
+        UserTodayWritingResponse response = writingsService.getUserTodayWriting(request);
+
+        return ApiResponse.success(response, SuccessCode.GET_USER_TODAY_WRITING_SUCCESS);
     }
 }

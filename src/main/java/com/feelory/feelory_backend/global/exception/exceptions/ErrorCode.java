@@ -23,6 +23,7 @@ public enum ErrorCode {
     WORD_ALREADY_USED(HttpStatus.BAD_REQUEST, "E207", "이미 등록된 단어입니다."),
 
     // E3XX : WRITINGS(글)
+    WRITING_NOT_FOUND(HttpStatus.NOT_FOUND, "E300", "글을 찾지 못했습니다"),
 
     // E4XX : LIKES, BOOKMARKS (좋아요, 북마크)
 

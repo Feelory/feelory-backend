@@ -1,9 +1,9 @@
 package com.feelory.feelory_backend.writings.service;
 
-import com.feelory.feelory_backend.words.entity.Words;
+import com.feelory.feelory_backend.global.exception.exceptions.writings.WritingNotFoundException;
+import com.feelory.feelory_backend.words.model.WritingDetailDto;
 import com.feelory.feelory_backend.writings.entity.DailyWordWritings;
-import com.feelory.feelory_backend.writings.model.UserWritingListRequest;
-import com.feelory.feelory_backend.writings.model.UserWritingListResponse;
+import com.feelory.feelory_backend.writings.model.*;
 import com.feelory.feelory_backend.writings.repository.DailyWordWritingsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -23,5 +23,18 @@ public class WritingsService {
         Page<DailyWordWritings> writings = dailyWordWritingsRepository.searchWritings(request.getUserId(), true, pageable);
 
         return UserWritingListResponse.fromPage(writings);
+    }
+
+    public UserTodayWritingResponse getUserTodayWriting(UserTodayWritingRequest request) {
+
+        WritingDetailDto dto = WritingDetailDto.fromTodayRequest(request);
+        DailyWordWritings entity = dailyWordWritingsRepository.searchWritingDetail(dto)
+                .orElseThrow(WritingNotFoundException::new);
+
+        WritingDto writing = WritingDto.fromEntity(entity);
+
+        return UserTodayWritingResponse.builder()
+                .writing(writing)
+                .build();
     }
 }
