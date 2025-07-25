@@ -26,10 +26,12 @@ public class AuthController {
     }
 
     @GetMapping("/kakao/callback")
-    public ApiResponse<KakaoAccessTokenResponse> kakaoCallback(@RequestParam("code") String code) {
+    public ApiResponse<KakaoUserInfoResponse> kakaoCallback(@RequestParam("code") String code) {
 
         KakaoAccessTokenResponse tokenResponse = authService.getKakaoAccessToken(code);
 
-        return ApiResponse.success(tokenResponse,SuccessCode.DEFAULT_SUCCESS);
+        KakaoUserInfoResponse userInfoResponse = authService.getUserInfo(tokenResponse.getAccessToken());
+
+        return ApiResponse.success(userInfoResponse,SuccessCode.DEFAULT_SUCCESS);
     }
 }
