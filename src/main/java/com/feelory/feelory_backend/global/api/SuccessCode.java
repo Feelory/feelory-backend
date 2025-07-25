@@ -29,7 +29,7 @@ public enum SuccessCode {
     DELETE_DAILY_WORD_SUCCESS("오늘의 단어 삭제 완료"),
 
     // WRITINGS(글)
-
+    GET_USER_WRITINGS_LIST_SUCCESS("내가 쓴 글 목록 조회 완료"),
 
     // LIKES, BOOKMARKS (좋아요, 북마크)
 
