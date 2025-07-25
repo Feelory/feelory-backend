@@ -60,7 +60,7 @@ public class DailyWordWritingsRepositoryImpl implements DailyWordWritingsReposit
     }
 
     @Override
-    public Optional<DailyWordWritings> searchWritingDetail(WritingDetailDto writingDetailDto) {
+    public Optional<DailyWordWritings> searchWritingDetailByDto(WritingDetailDto writingDetailDto) {
         QDailyWordWritings qDailyWordWritings = QDailyWordWritings.dailyWordWritings;
 
         LocalDateTime searchDate = writingDetailDto.getSearchDate();

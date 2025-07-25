@@ -28,12 +28,24 @@ public class WritingsService {
     public UserTodayWritingResponse getUserTodayWriting(UserTodayWritingRequest request) {
 
         WritingDetailDto dto = WritingDetailDto.fromTodayRequest(request);
-        DailyWordWritings entity = dailyWordWritingsRepository.searchWritingDetail(dto)
+        DailyWordWritings entity = dailyWordWritingsRepository.searchWritingDetailByDto(dto)
                 .orElseThrow(WritingNotFoundException::new);
 
         WritingDto writing = WritingDto.fromEntity(entity);
 
         return UserTodayWritingResponse.builder()
+                .writing(writing)
+                .build();
+    }
+
+    public UserWritingDetailResponse getUserWritingDetail(Long id) {
+
+        DailyWordWritings entity = dailyWordWritingsRepository.findById(id)
+                .orElseThrow(WritingNotFoundException::new);
+
+        WritingDto writing = WritingDto.fromEntity(entity);
+
+        return UserWritingDetailResponse.builder()
                 .writing(writing)
                 .build();
     }

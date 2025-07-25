@@ -11,5 +11,5 @@ public interface DailyWordWritingsRepositoryCustom {
 
     Page<DailyWordWritings> searchWritings(Long userId, Boolean isActive, Pageable pageable);
 
-    Optional<DailyWordWritings> searchWritingDetail(WritingDetailDto writingDetailDto);
+    Optional<DailyWordWritings> searchWritingDetailByDto(WritingDetailDto writingDetailDto);
 }
