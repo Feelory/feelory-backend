@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 public enum SuccessCode {
 
     // AUTH(인증/토큰)
+    CREATE_KAKAO_LOGIN_URL_SUCCESS("카카오 로그인 URL 생성 완료"),
 
     // USERS(사용자)
 
