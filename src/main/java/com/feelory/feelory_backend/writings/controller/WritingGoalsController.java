@@ -23,21 +23,11 @@ public class WritingGoalsController {
 
     private final WritingGoalsService writingGoalsService;
 
-    /*
-        TODO. [TR YOO] 로그인 API 구현 후 userId 파라미터 제거하기
-    */
-    @GetMapping("/{date}")
-    public ApiResponse<WritingGoalDetailResponse> getWritingGoalDetail(@PathVariable String date, Long userId) {
 
-        LocalDateTime parsed;
+    @GetMapping("/{id}")
+    public ApiResponse<WritingGoalDetailResponse> getWritingGoalDetail(@PathVariable Long id) {
 
-        try {
-            parsed = LocalDateTime.parse(date);
-        } catch (DateTimeParseException e) {
-            throw new InvalidDateFormatException();
-        }
-
-        WritingGoalDetailResponse response = writingGoalsService.getWritingGoalDetail(parsed, userId);
+        WritingGoalDetailResponse response = writingGoalsService.getWritingGoalDetail(id);
 
         return ApiResponse.success(response, SuccessCode.GET_WRITING_GOAL_DETAIL_SUCCESS);
     }

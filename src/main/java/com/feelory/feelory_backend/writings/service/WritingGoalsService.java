@@ -17,16 +17,11 @@ public class WritingGoalsService {
 
     private final WritingGoalsRepository writingGoalsRepository;
 
-    public WritingGoalDetailResponse getWritingGoalDetail(LocalDateTime date, Long userId) {
+    public WritingGoalDetailResponse getWritingGoalDetail(Long id) {
 
-        WritingGoalSearchDto dto = WritingGoalSearchDto.builder()
-                .userId(userId)
-                .searchDate(date)
-                .isActive(true)
-                .build();
-
-        WritingGoals entity = writingGoalsRepository.searchWritingGoalDetailByDto(dto)
+        WritingGoals entity = writingGoalsRepository.findById(id)
                 .orElseThrow(WritingGoalNotFoundException::new);
+
         WritingGoalDto writingGoal = WritingGoalDto.fromEntity(entity);
 
         return WritingGoalDetailResponse.builder()
