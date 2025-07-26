@@ -2,7 +2,6 @@ package com.feelory.feelory_backend.writings.controller;
 
 import com.feelory.feelory_backend.global.api.ApiResponse;
 import com.feelory.feelory_backend.global.api.SuccessCode;
-import com.feelory.feelory_backend.words.model.WritingDetailDto;
 import com.feelory.feelory_backend.writings.model.*;
 import com.feelory.feelory_backend.writings.service.WritingsService;
 import io.swagger.v3.oas.annotations.Operation;

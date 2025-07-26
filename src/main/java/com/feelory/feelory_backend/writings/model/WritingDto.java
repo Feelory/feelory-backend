@@ -17,7 +17,7 @@ public class WritingDto {
     private Long id;
     private DailyWordDto dailyWord;
     private Long userId;
-    private WritingGoalDto writingGoal;
+    private WritingGoalSummaryDto writingGoal;
     private String content;
     private Boolean visibility;
     private LocalDateTime createdAt;
@@ -27,12 +27,13 @@ public class WritingDto {
     public static WritingDto fromEntity(DailyWordWritings writings) {
         DailyWordDto dailyWord = DailyWordDto.fromEntity(writings.getDailyWord());
         WritingGoalDto writingGoal = WritingGoalDto.fromEntity(writings.getWritingGoal());
+        WritingGoalSummaryDto summary = WritingGoalSummaryDto.fromDto(writingGoal);
 
         return WritingDto.builder()
                 .id(writings.getId())
                 .dailyWord(dailyWord)
                 .userId(writingGoal.getUserId())
-                .writingGoal(writingGoal)
+                .writingGoal(summary)
                 .content(writings.getContent())
                 .visibility(writings.getVisibility())
                 .createdAt(writings.getCreatedAt())
