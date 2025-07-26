@@ -2,7 +2,7 @@ package com.feelory.feelory_backend.words.controller;
 
 import com.feelory.feelory_backend.global.api.ApiResponse;
 import com.feelory.feelory_backend.global.api.SuccessCode;
-import com.feelory.feelory_backend.global.exception.exceptions.words.InvalidDateFormatException;
+import com.feelory.feelory_backend.global.exception.exceptions.common.InvalidDateFormatException;
 import com.feelory.feelory_backend.words.docs.DailyWordsDocs;
 import com.feelory.feelory_backend.words.model.*;
 import com.feelory.feelory_backend.words.service.DailyWordsService;

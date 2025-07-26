@@ -1,7 +1,6 @@
 package com.feelory.feelory_backend.writings.model;
 
-import com.feelory.feelory_backend.global.exception.exceptions.words.InvalidDateFormatException;
-import jakarta.validation.constraints.NotBlank;
+import com.feelory.feelory_backend.global.exception.exceptions.common.InvalidDateFormatException;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

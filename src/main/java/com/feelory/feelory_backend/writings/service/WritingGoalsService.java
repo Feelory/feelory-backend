@@ -1,9 +1,9 @@
 package com.feelory.feelory_backend.writings.service;
 
-import com.feelory.feelory_backend.global.exception.exceptions.words.DayTooFarInFutureException;
-import com.feelory.feelory_backend.global.exception.exceptions.words.DayTooFarInPastException;
+import com.feelory.feelory_backend.global.exception.exceptions.common.DayTooFarInFutureException;
+import com.feelory.feelory_backend.global.exception.exceptions.common.DayTooFarInPastException;
 import com.feelory.feelory_backend.global.exception.exceptions.words.DuplicateWritingGoalNameException;
-import com.feelory.feelory_backend.global.exception.exceptions.words.WritingGoalNotFoundException;
+import com.feelory.feelory_backend.global.exception.exceptions.writings.WritingGoalNotFoundException;
 import com.feelory.feelory_backend.writings.entity.WritingGoals;
 import com.feelory.feelory_backend.writings.model.*;
 import com.feelory.feelory_backend.writings.repository.WritingGoalsRepository;
