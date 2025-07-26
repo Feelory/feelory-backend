@@ -1,6 +1,5 @@
-package com.feelory.feelory_backend.words.model;
+package com.feelory.feelory_backend.writings.model;
 
-import com.feelory.feelory_backend.writings.model.UserTodayWritingRequest;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,16 +11,16 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class WritingDetailDto {
+public class WritingSearchDto {
     private Long userId;
     private LocalDateTime searchDate;
     private Boolean isActive;
 
-    public static WritingDetailDto fromTodayRequest(UserTodayWritingRequest request) {
+    public static WritingSearchDto fromTodayRequest(UserTodayWritingRequest request) {
 
         LocalDateTime today = LocalDateTime.now();
 
-        return WritingDetailDto.builder()
+        return WritingSearchDto.builder()
                 .userId(request.getUserid())
                 .searchDate(today)
                 .isActive(true)

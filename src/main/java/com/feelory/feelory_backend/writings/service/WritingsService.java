@@ -1,7 +1,7 @@
 package com.feelory.feelory_backend.writings.service;
 
 import com.feelory.feelory_backend.global.exception.exceptions.writings.WritingNotFoundException;
-import com.feelory.feelory_backend.words.model.WritingDetailDto;
+import com.feelory.feelory_backend.writings.model.WritingSearchDto;
 import com.feelory.feelory_backend.writings.entity.DailyWordWritings;
 import com.feelory.feelory_backend.writings.model.*;
 import com.feelory.feelory_backend.writings.repository.DailyWordWritingsRepository;
@@ -27,7 +27,7 @@ public class WritingsService {
 
     public UserTodayWritingResponse getUserTodayWriting(UserTodayWritingRequest request) {
 
-        WritingDetailDto dto = WritingDetailDto.fromTodayRequest(request);
+        WritingSearchDto dto = WritingSearchDto.fromTodayRequest(request);
         DailyWordWritings entity = dailyWordWritingsRepository.searchWritingDetailByDto(dto)
                 .orElseThrow(WritingNotFoundException::new);
 

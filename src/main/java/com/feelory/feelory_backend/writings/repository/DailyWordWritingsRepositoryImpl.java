@@ -1,7 +1,7 @@
 package com.feelory.feelory_backend.writings.repository;
 
 import com.feelory.feelory_backend.words.entity.QDailyWords;
-import com.feelory.feelory_backend.words.model.WritingDetailDto;
+import com.feelory.feelory_backend.writings.model.WritingSearchDto;
 import com.feelory.feelory_backend.writings.entity.DailyWordWritings;
 import com.feelory.feelory_backend.writings.entity.QDailyWordWritings;
 import com.feelory.feelory_backend.writings.entity.QWritingGoals;
@@ -60,10 +60,10 @@ public class DailyWordWritingsRepositoryImpl implements DailyWordWritingsReposit
     }
 
     @Override
-    public Optional<DailyWordWritings> searchWritingDetailByDto(WritingDetailDto writingDetailDto) {
+    public Optional<DailyWordWritings> searchWritingDetailByDto(WritingSearchDto writingSearchDto) {
         QDailyWordWritings qDailyWordWritings = QDailyWordWritings.dailyWordWritings;
 
-        LocalDateTime searchDate = writingDetailDto.getSearchDate();
+        LocalDateTime searchDate = writingSearchDto.getSearchDate();
         LocalDateTime start = searchDate.toLocalDate().atStartOfDay();
         LocalDateTime end = searchDate.toLocalDate().atTime(23, 59, 59);
 
@@ -72,9 +72,9 @@ public class DailyWordWritingsRepositoryImpl implements DailyWordWritingsReposit
                 .join(qDailyWordWritings.dailyWord, QDailyWords.dailyWords).fetchJoin()
                 .join(qDailyWordWritings.writingGoal, QWritingGoals.writingGoals).fetchJoin()
                 .where(
-                    qDailyWordWritings.userId.eq(writingDetailDto.getUserId()),
+                    qDailyWordWritings.userId.eq(writingSearchDto.getUserId()),
                     qDailyWordWritings.createdAt.between(start, end),
-                    qDailyWordWritings.isActive.eq(writingDetailDto.getIsActive())
+                    qDailyWordWritings.isActive.eq(writingSearchDto.getIsActive())
                 )
                 .fetchOne();
 
