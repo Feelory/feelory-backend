@@ -1,11 +1,13 @@
 package com.feelory.feelory_backend.writings.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.feelory.feelory_backend.writings.entity.WritingGoals;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -19,8 +21,10 @@ public class WritingGoalDto {
     private String name;
     private int duration;
     private String description;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate startDate;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate endDate;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private Boolean isActive;
@@ -33,8 +37,8 @@ public class WritingGoalDto {
                 .name(writingGoals.getName())
                 .duration(writingGoals.getDuration())
                 .description(writingGoals.getDescription())
-                .startDate(writingGoals.getStartDate())
-                .endDate(writingGoals.getEndDate())
+                .startDate(writingGoals.getStartDate().toLocalDate())
+                .endDate(writingGoals.getEndDate().toLocalDate())
                 .createdAt(writingGoals.getCreatedAt())
                 .updatedAt(writingGoals.getUpdatedAt())
                 .isActive(writingGoals.getIsActive())
