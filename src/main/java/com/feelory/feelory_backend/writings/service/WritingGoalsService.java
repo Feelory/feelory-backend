@@ -1,5 +1,6 @@
 package com.feelory.feelory_backend.writings.service;
 
+import com.feelory.feelory_backend.global.exception.exceptions.words.DuplicateWritingGoalNameException;
 import com.feelory.feelory_backend.global.exception.exceptions.words.WritingGoalNotFoundException;
 import com.feelory.feelory_backend.writings.entity.WritingGoals;
 import com.feelory.feelory_backend.writings.model.*;
@@ -41,5 +42,28 @@ public class WritingGoalsService {
         return WritingGoalDetailResponse.builder()
                 .writingGoal(writingGoal)
                 .build();
+    }
+
+    public WritingGoalCreateResponse registerWritingGoal(WritingGoalCreateRequest request) {
+
+        checkDuplicateName(request.getUserId(), request.getName());
+
+        WritingGoals entity = request.toEntity();
+        WritingGoals createdWritingGoal = writingGoalsRepository.save(entity);
+        writingGoalsRepository.flush();
+
+        WritingGoalDto writingGoal = WritingGoalDto.fromEntity(createdWritingGoal);
+
+        return WritingGoalCreateResponse.builder()
+                .writingGoal(writingGoal)
+                .build();
+    }
+
+    private void checkDuplicateName(Long userId, String name) {
+        boolean isExist = writingGoalsRepository.existsByUserIdAndName(userId, name);
+
+        if(isExist) {
+            throw new DuplicateWritingGoalNameException();
+        }
     }
 }
