@@ -78,4 +78,19 @@ public class WritingGoalsController {
 
         return ApiResponse.success(response, SuccessCode.UPDATE_WRITING_GOAL_SUCCESS);
     }
+
+    /*
+        TODO. [TR YOO] 로그인 유저 검증 로직 필요
+    */
+    @Operation(
+            summary = "글쓰기 목표 삭제",
+            description = "글쓰기 목표 삭제 API"
+    )
+    @DeleteMapping("")
+    public ApiResponse<WritingGoalDeleteResponse> deleteWritingGoal(@Valid WritingGoalDeleteRequest request) {
+
+        WritingGoalDeleteResponse response = writingGoalsService.removeWritingGoal(request);
+
+        return ApiResponse.success(response, SuccessCode.DELETE_WRITING_GOAL_SUCCESS);
+    }
 }

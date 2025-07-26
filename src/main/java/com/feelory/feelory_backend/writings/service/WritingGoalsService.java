@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -49,6 +50,7 @@ public class WritingGoalsService {
                 .build();
     }
 
+    @Transactional
     public WritingGoalCreateResponse registerWritingGoal(WritingGoalCreateRequest request) {
 
         checkDuplicateName(request.getUserId(), request.getName());
@@ -64,6 +66,7 @@ public class WritingGoalsService {
                 .build();
     }
 
+    @Transactional
     public WritingGoalUpdateResponse modifyWritingGoal(WritingGoalUpdateRequest request) {
 
         WritingGoals entity = writingGoalsRepository.findByIdAndIsActive(request.getId(), true)
@@ -102,6 +105,28 @@ public class WritingGoalsService {
         WritingGoalDto writingGoal = WritingGoalDto.fromEntity(loaded);
 
         return WritingGoalUpdateResponse.builder()
+                .writingGoal(writingGoal)
+                .build();
+    }
+
+    @Transactional
+    public WritingGoalDeleteResponse removeWritingGoal(WritingGoalDeleteRequest request) {
+        WritingGoals entity = writingGoalsRepository.findByIdAndIsActive(request.getId(), true)
+                .orElseThrow(WritingGoalNotFoundException::new);
+
+        WritingGoals updated = entity.toBuilder()
+                .isActive(false)
+                .build();
+
+        writingGoalsRepository.save(updated);
+        writingGoalsRepository.flush();
+
+        WritingGoals loaded = writingGoalsRepository.findByIdAndIsActive(updated.getId(), true)
+                .orElseThrow(WritingGoalNotFoundException::new);
+
+        WritingGoalDto writingGoal = WritingGoalDto.fromEntity(loaded);
+
+        return WritingGoalDeleteResponse.builder()
                 .writingGoal(writingGoal)
                 .build();
     }
