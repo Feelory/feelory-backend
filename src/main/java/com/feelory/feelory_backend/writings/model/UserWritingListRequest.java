@@ -14,8 +14,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserWritingListRequest {
     private Long userId;
-    private int year;
-    private int month;
+    private Integer year;
+    private Integer month;
     private int page = 0 ;
     private int size = 10;
 }

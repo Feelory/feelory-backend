@@ -25,7 +25,7 @@ public class WritingGoalCreateRequest {
     private String name;
     private String description;
     @NotNull(message = "기간은 필수입니다.")
-    private int duration;
+    private Integer duration;
 
     public WritingGoals toEntity() {
         LocalDateTime startDate = LocalDate.now().atStartOfDay();
