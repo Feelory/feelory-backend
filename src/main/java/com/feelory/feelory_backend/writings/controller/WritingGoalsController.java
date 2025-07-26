@@ -5,6 +5,7 @@ import com.feelory.feelory_backend.global.api.SuccessCode;
 import com.feelory.feelory_backend.global.exception.exceptions.words.InvalidDateFormatException;
 import com.feelory.feelory_backend.writings.model.WritingGoalDetailResponse;
 import com.feelory.feelory_backend.writings.service.WritingGoalsService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +25,13 @@ public class WritingGoalsController {
     private final WritingGoalsService writingGoalsService;
 
 
+    /*
+        TODO. [TR YOO] 로그인 유저 검증 로직 필요
+    */
+    @Operation(
+            summary = "글쓰기 목표 상세 조회",
+            description = "글쓰기 목표 상세 조회 API"
+    )
     @GetMapping("/{id}")
     public ApiResponse<WritingGoalDetailResponse> getWritingGoalDetail(@PathVariable Long id) {
 
