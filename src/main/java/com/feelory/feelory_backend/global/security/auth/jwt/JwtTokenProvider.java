@@ -1,6 +1,6 @@
 package com.feelory.feelory_backend.global.security.auth.jwt;
 
-import com.feelory.feelory_backend.global.security.auth.model.UserRole;
+import com.feelory.feelory_backend.users.model.UserRole;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 
 @Component
@@ -33,6 +35,15 @@ public class JwtTokenProvider {
                 .compact();
     }
 
+    public String generateRefreshToken(Long userId) {
+        return Jwts.builder()
+                .setSubject(userId.toString())
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + jwtProperties.getRefreshTokenExpiration()))
+                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
+                .compact();
+    }
+
     public boolean validateToken(String token) {
         try {
             Jwts.parserBuilder()
@@ -51,6 +62,15 @@ public class JwtTokenProvider {
 
     public String getRoleFromToken(String token) {
         return (String) parseClaims(token).get("role");
+    }
+
+    public LocalDateTime getExpirationLocalDateTimeFromToken(String token) {
+        Date expiration = parseClaims(token).getExpiration();
+
+        // UTC -> 시스템 시간대 변환
+        return expiration.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDateTime();
     }
 
     private Claims parseClaims(String token) {
