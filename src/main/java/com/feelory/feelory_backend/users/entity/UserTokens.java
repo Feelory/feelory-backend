@@ -18,6 +18,7 @@ public class UserTokens extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private Users user;
@@ -31,8 +32,4 @@ public class UserTokens extends BaseEntity {
     @Column(name = "is_active", nullable = false)
     private boolean isActive;
 
-    public void setUser(Users users) {
-        this.user = users;
-        users.addUserToken(this);
-    }
 }
