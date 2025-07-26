@@ -1,4 +1,4 @@
-package com.feelory.feelory_backend.global.security.auth.model;
+package com.feelory.feelory_backend.users.model;
 
 import lombok.RequiredArgsConstructor;
 
