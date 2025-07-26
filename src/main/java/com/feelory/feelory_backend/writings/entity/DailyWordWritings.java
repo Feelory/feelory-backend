@@ -32,6 +32,9 @@ public class DailyWordWritings extends BaseEntity {
     @JoinColumn(name = "writing_goals_id", nullable = false)
     private WritingGoals writingGoal;
 
+    @Column(name="title", nullable = false)
+    private String title;
+
     @Column(name="content", nullable = false)
     private String content;
 
