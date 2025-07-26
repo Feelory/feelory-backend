@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -16,8 +17,8 @@ public class WritingGoalSummaryDto {
     private String name;
     private int duration;
     private String description;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
