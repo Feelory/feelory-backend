@@ -83,16 +83,10 @@ public class WritingGoalsService {
             builder.description(request.getDescription());
         }
 
-        if (request.getStartDate() != null) {
-            LocalDateTime parsed = request.getParsedStartDate();
-            validDate(parsed);
-            builder.startDate(parsed);
-        }
-
-        if(request.getEndDate() != null) {
-            LocalDateTime parsed = request.getParsedEndDate();
-            validDate(parsed);
-            builder.endDate(parsed);
+        if(request.getDuration() != null) {
+            builder.duration(request.getDuration());
+            builder.startDate(request.getStartDate());
+            builder.endDate(request.getEndDate());
         }
 
         WritingGoals updatedWritingGoals = builder.build();

@@ -24,37 +24,23 @@ public class WritingGoalCreateRequest {
     @NotBlank(message = "단어 이름은 필수입니다.")
     private String name;
     private String description;
-    private String startDate;
-    private String endDate;
-
-    public LocalDateTime getParsedStartDate() {
-        try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            return LocalDate.parse(this.startDate, formatter).atStartOfDay();
-        } catch(DateTimeParseException e) {
-            throw new InvalidDateFormatException();
-        }
-    }
-
-    public LocalDateTime getParsedEndDate() {
-        try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            return LocalDate.parse(this.endDate, formatter).atStartOfDay();
-        } catch(DateTimeParseException e) {
-            throw new InvalidDateFormatException();
-        }
-    }
+    @NotNull(message = "기간은 필수입니다.")
+    private int duration;
 
     public WritingGoals toEntity() {
-        LocalDateTime parsedStartDate = getParsedStartDate();
-        LocalDateTime parsedEndDate = getParsedEndDate();
+        LocalDateTime startDate = LocalDate.now().atStartOfDay();
+
+        LocalDateTime endDate = startDate
+                .plusDays(this.duration - 1)
+                .withHour(23).withMinute(59).withSecond(59);
 
         return WritingGoals.builder()
                 .userId(this.userId)
                 .name(this.name)
                 .description(this.description)
-                .startDate(parsedStartDate)
-                .endDate(parsedEndDate)
+                .duration(this.duration)
+                .startDate(startDate)
+                .endDate(endDate)
                 .build();
     }
 }

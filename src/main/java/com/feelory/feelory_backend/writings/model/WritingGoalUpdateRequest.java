@@ -21,24 +21,20 @@ public class WritingGoalUpdateRequest {
     private Long id;
     private String name;
     private String description;
-    private String startDate;
-    private String endDate;
+    private Integer duration;
 
-    public LocalDateTime getParsedStartDate() {
-        try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            return LocalDate.parse(this.startDate, formatter).atStartOfDay();
-        } catch(DateTimeParseException e) {
-            throw new InvalidDateFormatException();
-        }
+    public LocalDateTime getStartDate() {
+        if (this.duration == null) return null;
+        return LocalDate.now().atStartOfDay();
     }
 
-    public LocalDateTime getParsedEndDate() {
-        try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            return LocalDate.parse(this.endDate, formatter).atStartOfDay();
-        } catch(DateTimeParseException e) {
-            throw new InvalidDateFormatException();
-        }
+    public LocalDateTime getEndDate() {
+        if (duration == null) return null;
+
+        return getStartDate()
+                .plusDays(duration - 1L)
+                .withHour(23)
+                .withMinute(59)
+                .withSecond(59);
     }
 }
