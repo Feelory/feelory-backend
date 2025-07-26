@@ -10,6 +10,7 @@ public enum ErrorCode {
 
     // E1XX : USERS(사용자)
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "E100", "해당 유저를 찾을 수 없습니다."),
+    INVALID_PHONE_NUMBER(HttpStatus.BAD_REQUEST, "E001", "유효하지 않은 전화번호 형식입니다."),
 
     // E2XX : WORDS(단어)
     WORD_NOT_FOUND(HttpStatus.NOT_FOUND, "E200", "단어를 찾을 수 없습니다."),
