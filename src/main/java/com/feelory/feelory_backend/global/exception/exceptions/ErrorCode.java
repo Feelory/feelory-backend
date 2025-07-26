@@ -31,6 +31,8 @@ public enum ErrorCode {
     // E5XX : FEEDBACKS(피드백)
 
     // E9XX : 기타
+    DAY_TO_FAR_IN_PAST(HttpStatus.BAD_REQUEST, "994", "날짜는 현재로부터 이전 %개월 까지만 가능합니다."),
+    DAY_TO_FAR_IN_FUTURE(HttpStatus.BAD_REQUEST, "995", "날짜는 현재로부터 최후 %개월 까지만 가능합니다."),
     INVALID_DATE_FORMAT(HttpStatus.BAD_REQUEST, "996", "잘못된 날짜 형식입니다."),
     INVALID_INPUT_VALUE(HttpStatus.BAD_REQUEST,"E997", "입력값이 유효하지 않습니다."),
     NOT_FOUND_END_POINT(HttpStatus.INTERNAL_SERVER_ERROR, "E998", "요청한 API가 존재하지 않습니다."),
@@ -45,5 +47,9 @@ public enum ErrorCode {
         this.status = status;
         this.code = code;
         this.message = message;
+    }
+
+    public String formatMessage(Object... args) {
+        return String.format(this.message, args);
     }
 }

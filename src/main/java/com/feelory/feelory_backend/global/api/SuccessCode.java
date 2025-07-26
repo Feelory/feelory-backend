@@ -35,6 +35,7 @@ public enum SuccessCode {
     GET_WRITING_GOAL_LIST_SUCCESS("글쓰기 목표 목록 조회 완료"),
     GET_WRITING_GOAL_DETAIL_SUCCESS("글쓰기 목표 상세 조회 완료"),
     REGISTER_WRITING_GOAL_SUCCESS("글쓰기 목표 추가 완료"),
+    UPDATE_WRITING_GOAL_SUCCESS("글쓰기 목표 수정 완료"),
 
     // LIKES, BOOKMARKS (좋아요, 북마크)
 

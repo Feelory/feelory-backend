@@ -63,4 +63,19 @@ public class WritingGoalsController {
 
         return ApiResponse.success(response, SuccessCode.REGISTER_WRITING_GOAL_SUCCESS);
     }
+
+    /*
+        TODO. [TR YOO] 로그인 유저 검증 로직 필요
+    */
+    @Operation(
+            summary = "글쓰기 목표 수정",
+            description = "글쓰기 목표 수정 API"
+    )
+    @PatchMapping("")
+    public ApiResponse<WritingGoalUpdateResponse> patchWritingGoal(@Valid @RequestBody WritingGoalUpdateRequest request) {
+
+        WritingGoalUpdateResponse response = writingGoalsService.modifyWritingGoal(request);
+
+        return ApiResponse.success(response, SuccessCode.UPDATE_WRITING_GOAL_SUCCESS);
+    }
 }
