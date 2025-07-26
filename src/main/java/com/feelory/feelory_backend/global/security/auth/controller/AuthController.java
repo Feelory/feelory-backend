@@ -2,9 +2,8 @@ package com.feelory.feelory_backend.global.security.auth.controller;
 
 import com.feelory.feelory_backend.global.api.ApiResponse;
 import com.feelory.feelory_backend.global.api.SuccessCode;
-import com.feelory.feelory_backend.global.security.auth.dto.response.KakaoAccessTokenResponse;
 import com.feelory.feelory_backend.global.security.auth.dto.response.KakaoLoginResponse;
-import com.feelory.feelory_backend.global.security.auth.dto.response.KakaoUserInfoResponse;
+import com.feelory.feelory_backend.global.security.auth.dto.response.LoginResponse;
 import com.feelory.feelory_backend.global.security.auth.service.AuthService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -30,12 +29,9 @@ public class AuthController {
     }
 
     @GetMapping("/kakao/callback")
-    public ApiResponse<KakaoUserInfoResponse> kakaoCallback(@RequestParam("code") String code) {
+    public ApiResponse<LoginResponse> kakaoCallback(@RequestParam("code") String code) {
+        LoginResponse loginResponse = authService.loginWithKakaoCode(code);
 
-        KakaoAccessTokenResponse tokenResponse = authService.getKakaoAccessToken(code);
-
-        KakaoUserInfoResponse userInfoResponse = authService.getUserInfo(tokenResponse.getAccessToken());
-
-        return ApiResponse.success(userInfoResponse,SuccessCode.DEFAULT_SUCCESS);
+        return ApiResponse.success(loginResponse,SuccessCode.LOGIN_KAKAO_SUCCESS);
     }
 }

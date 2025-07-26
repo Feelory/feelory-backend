@@ -8,6 +8,7 @@ public enum SuccessCode {
 
     // AUTH(인증/토큰)
     CREATE_KAKAO_LOGIN_URL_SUCCESS("카카오 로그인 URL 생성 완료"),
+    LOGIN_KAKAO_SUCCESS("카카오 로그인 성공"),
 
     // USERS(사용자)
 
