@@ -27,10 +27,10 @@ public class DailyWordsService {
     @Transactional
     public DailyWordCreateResponse registerAndUpdateDailyWord(DailyWordCreateRequest request) {
 
-        validateDateTime(request.getTopicDate());
+        validateDateTime(request.getParsedTopicDate());
         checkDuplicateWordId(request.getWordId());
 
-        DailyWords duplicatedDailyWord = dailyWordsRepository.findByTopicDateAndIsActive(request.getTopicDate(), true)
+        DailyWords duplicatedDailyWord = dailyWordsRepository.findByTopicDateAndIsActive(request.getParsedTopicDate(), true)
                 .orElse(null);
 
         boolean isAlreadyAssigned = false;
@@ -77,7 +77,7 @@ public class DailyWordsService {
     @Transactional
     public DailyWordUpdateResponse modifyDailyWord(DailyWordUpdateRequest request) {
 
-        validateDateTime(request.getTopicDate());
+        validateDateTime(request.getParsedTopicDate());
         checkDuplicateWordId(request.getWordId());
 
         DailyWords dailyWords = dailyWordsRepository.findById(request.getId())
@@ -150,7 +150,7 @@ public class DailyWordsService {
         DailyWords.DailyWordsBuilder builder = existing.toBuilder();
 
         if (word != null) builder.word(word);
-        if (request.getTopicDate() != null) builder.topicDate(request.getTopicDate());
+        if (request.getTopicDate() != null) builder.topicDate(request.getParsedTopicDate());
         if (request.getDescription() != null) builder.description(request.getDescription());
 
         DailyWords updated = dailyWordsRepository.save(builder.build());
