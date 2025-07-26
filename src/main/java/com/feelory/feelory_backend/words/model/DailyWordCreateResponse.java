@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class WordDeleteResponse {
-    private WordDto word;
+public class DailyWordCreateResponse {
+    private Boolean isAlreadyAssigned;
+    private DailyWordDto dailyWord;
 }

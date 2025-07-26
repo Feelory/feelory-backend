@@ -9,6 +9,4 @@ import java.util.Optional;
 public interface WordsRepositoryCustom {
 
     Page<Words> searchWords(Long categoryId, Boolean isActive, Pageable pageable);
-
-    Optional<Words> findByIdAndIsActive(Long id, Boolean isActive);
 }

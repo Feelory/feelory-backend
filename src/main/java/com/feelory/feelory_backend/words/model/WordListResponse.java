@@ -18,11 +18,11 @@ public class WordListResponse {
     private int page;
     private int size;
     private boolean hasNext;
-    private List<Word> words;
+    private List<WordDto> words;
 
     public static WordListResponse fromPage(Page<Words> page) {
-        List<Word> wordList = page.getContent().stream()
-                .map(Word::fromEntity)
+        List<WordDto> wordList = page.getContent().stream()
+                .map(WordDto::fromEntity)
                 .toList();
 
         return WordListResponse.builder()

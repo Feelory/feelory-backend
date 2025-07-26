@@ -12,19 +12,19 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Word {
+public class WordDto {
     private Long id;
-    private Category category;
+    private CategoryDto category;
     private String name;
     private String description;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private Boolean isActive;
 
-    public static Word fromEntity(Words words) {
-        Category category = Category.fromEntity(words.getCategory());
+    public static WordDto fromEntity(Words words) {
+        CategoryDto category = CategoryDto.fromEntity(words.getCategory());
 
-        return Word.builder()
+        return WordDto.builder()
                 .id(words.getId())
                 .category(category)
                 .name(words.getName())

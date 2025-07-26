@@ -22,7 +22,6 @@ public class WordsService {
     private final WordsRepository wordsRepository;
     private final CategoriesRepository categoriesRepository;
 
-    @Transactional(readOnly = true)
     public WordListResponse getWords(WordListRequest request) {
 
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
@@ -31,6 +30,7 @@ public class WordsService {
         return WordListResponse.fromPage(words);
     }
 
+    @Transactional
     public WordCreateResponse registerWord(WordCreateRequest request) {
 
         checkDuplicateName(request.getName());
@@ -39,14 +39,16 @@ public class WordsService {
 
         Words entity = request.toEntity(category);
         Words createdWord = wordsRepository.save(entity);
+        wordsRepository.flush();
 
-        Word word = Word.fromEntity(createdWord);
+        WordDto word = WordDto.fromEntity(createdWord);
 
         return WordCreateResponse.builder()
                 .word(word)
                 .build();
     }
 
+    @Transactional
     public WordUpdateResponse modifyWord(WordUpdateRequest request) {
 
         Words entity = wordsRepository.findByIdAndIsActive(request.getId(), true)
@@ -70,28 +72,31 @@ public class WordsService {
 
         Words updatedWord = builder.build();
         Words saved = wordsRepository.save(updatedWord);
+        wordsRepository.flush();
 
         Words loaded = wordsRepository.findByIdAndIsActive(saved.getId(), true)
                 .orElseThrow(WordNotFoundException::new);
 
-        Word word = Word.fromEntity(loaded);
+        WordDto word = WordDto.fromEntity(loaded);
 
         return WordUpdateResponse.builder()
                 .word(word)
                 .build();
     }
 
+    @Transactional
     public WordDeleteResponse removeWord(WordDeleteRequest request) {
         Words entity = wordsRepository.findByIdAndIsActive(request.getId(), true)
                 .orElseThrow(WordNotFoundException::new);
 
-        Words updatedEntity = entity.toBuilder()
+        Words updated = entity.toBuilder()
                 .isActive(false)
                 .build();
 
-        wordsRepository.save(updatedEntity);
+        wordsRepository.save(updated);
+        wordsRepository.flush();
 
-        Word word = Word.fromEntity(updatedEntity);
+        WordDto word = WordDto.fromEntity(updated);
 
         return WordDeleteResponse.builder()
                 .word(word)
