@@ -84,9 +84,10 @@ public class WritingGoalsService {
         }
 
         if(request.getDuration() != null) {
+            LocalDateTime baseTime = entity.getCreatedAt();
             builder.duration(request.getDuration());
-            builder.startDate(request.getStartDate());
-            builder.endDate(request.getEndDate());
+            builder.startDate(request.getStartDate(baseTime));
+            builder.endDate(request.getEndDate(baseTime));
         }
 
         WritingGoals updatedWritingGoals = builder.build();

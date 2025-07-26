@@ -23,16 +23,16 @@ public class WritingGoalUpdateRequest {
     private String description;
     private Integer duration;
 
-    public LocalDateTime getStartDate() {
-        if (this.duration == null) return null;
-        return LocalDate.now().atStartOfDay();
+    public LocalDateTime getStartDate(LocalDateTime baseDateTime) {
+        if (this.duration == null || baseDateTime == null) return null;
+        return baseDateTime.toLocalDate().atStartOfDay();
     }
 
-    public LocalDateTime getEndDate() {
-        if (duration == null) return null;
+    public LocalDateTime getEndDate(LocalDateTime baseDateTime) {
+        if (this.duration == null || baseDateTime == null) return null;
 
-        return getStartDate()
-                .plusDays(duration - 1L)
+        return getStartDate(baseDateTime)
+                .plusDays(this.duration - 1L)
                 .withHour(23)
                 .withMinute(59)
                 .withSecond(59);
