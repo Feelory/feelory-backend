@@ -32,6 +32,7 @@ public enum SuccessCode {
     GET_USER_WRITINGS_LIST_SUCCESS("내가 쓴 글 목록 조회 완료"),
     GET_USER_TODAY_WRITING_SUCCESS("오늘 내가 쓴 글 조회 완료"),
     GET_USER_WRITING_DETAIL_SUCCESS("내가 쓴 글 상세 조회 완료"),
+    GET_WRITING_GOAL_LIST_SUCCESS("글쓰기 목표 목록 조회 완료"),
     GET_WRITING_GOAL_DETAIL_SUCCESS("글쓰기 목표 상세 조회 완료"),
 
     // LIKES, BOOKMARKS (좋아요, 북마크)
