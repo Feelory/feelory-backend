@@ -80,14 +80,17 @@ public class CategoriesService {
         WordCategories entity = categoriesRepository.findByIdAndIsActive(request.getId(), true)
                 .orElseThrow(CategoryNotFoundException::new);
 
-        WordCategories updatedEntity = entity.toBuilder()
+        WordCategories updated = entity.toBuilder()
                 .isActive(false)
                 .build();
 
-        categoriesRepository.save(updatedEntity);
+        categoriesRepository.save(updated);
         categoriesRepository.flush();
 
-        CategoryDto category = CategoryDto.fromEntity(updatedEntity);
+        WordCategories loaded = categoriesRepository.findByIdAndIsActive(updated.getId(), true)
+                .orElseThrow(CategoryNotFoundException::new);
+
+        CategoryDto category = CategoryDto.fromEntity(loaded);
 
         return CategoryDeleteResponse.builder()
                 .category(category)

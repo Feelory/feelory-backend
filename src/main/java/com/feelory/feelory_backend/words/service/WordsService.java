@@ -96,7 +96,11 @@ public class WordsService {
         wordsRepository.save(updated);
         wordsRepository.flush();
 
-        WordDto word = WordDto.fromEntity(updated);
+        Words loaded = wordsRepository.findByIdAndIsActive(updated.getId(), true)
+                .orElseThrow(WordNotFoundException::new);
+
+        WordDto word = WordDto.fromEntity(loaded);
+
 
         return WordDeleteResponse.builder()
                 .word(word)

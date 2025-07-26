@@ -93,7 +93,7 @@ public class DailyWordsService {
     @Transactional
     public DailyWordDeleteResponse removeDailyWord(DailyWordDeleteRequest request) {
 
-        DailyWords entity = dailyWordsRepository.findById(request.getId())
+        DailyWords entity = dailyWordsRepository.findByIdAndIsActive(request.getId(), true)
                 .orElseThrow(DailyWordNotFoundException::new);
 
         DailyWords updated = entity.toBuilder()
@@ -103,7 +103,10 @@ public class DailyWordsService {
         dailyWordsRepository.save(updated);
         dailyWordsRepository.flush();
 
-        DailyWordDto dailyWord = DailyWordDto.fromEntity(updated);
+        DailyWords loaded = dailyWordsRepository.findByIdAndIsActive(updated.getId(), true)
+                .orElseThrow(DailyWordNotFoundException::new);
+
+        DailyWordDto dailyWord = DailyWordDto.fromEntity(loaded);
 
         return DailyWordDeleteResponse.builder()
                 .dailyWord(dailyWord)
