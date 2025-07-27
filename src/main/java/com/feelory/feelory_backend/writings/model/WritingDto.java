@@ -29,7 +29,7 @@ public class WritingDto {
     private int bookmarks;
 
     /*
-        TODO. [TR YOO] 북마크 / 좋아요 기능 구현 후 likes, bookmarks 수정하기
+        TODO. [TR-YOO] 북마크 / 좋아요 기능 구현 후 likes, bookmarks 수정하기
     */
     public static WritingDto fromEntity(DailyWordWritings writings) {
         DailyWordDto dailyWord = DailyWordDto.fromEntity(writings.getDailyWord());

@@ -20,7 +20,7 @@ public class WritingGoalsController {
     private final WritingGoalsService writingGoalsService;
 
     /*
-        TODO. [TR YOO] 로그인 유저 검증 로직 필요
+        TODO. [TR-YOO] 로그인 유저 검증 로직 필요
     */
     @Operation(
             summary = "글쓰기 목표 목록 조회",
@@ -35,7 +35,7 @@ public class WritingGoalsController {
     }
 
     /*
-        TODO. [TR YOO] 로그인 유저 검증 로직 필요
+        TODO. [TR-YOO] 로그인 유저 검증 로직 필요
     */
     @Operation(
             summary = "글쓰기 목표 상세 조회",
@@ -50,7 +50,7 @@ public class WritingGoalsController {
     }
 
     /*
-        TODO. [TR YOO] 로그인 유저 검증 로직 필요
+        TODO. [TR-YOO] 로그인 유저 검증 로직 필요
     */
     @Operation(
             summary = "글쓰기 목표 추가",
@@ -65,7 +65,7 @@ public class WritingGoalsController {
     }
 
     /*
-        TODO. [TR YOO] 로그인 유저 검증 로직 필요
+        TODO. [TR-YOO] 로그인 유저 검증 로직 필요
     */
     @Operation(
             summary = "글쓰기 목표 수정",
@@ -80,7 +80,7 @@ public class WritingGoalsController {
     }
 
     /*
-        TODO. [TR YOO] 로그인 유저 검증 로직 필요
+        TODO. [TR-YOO] 로그인 유저 검증 로직 필요
     */
     @Operation(
             summary = "글쓰기 목표 삭제",

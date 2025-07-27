@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 /*
-    TODO. [TR YOO] userId -> user객체로 추후 변경하기
+    TODO. [TR-YOO] userId -> user객체로 추후 변경하기
 */
 @RequiredArgsConstructor
 public class DailyWordWritingsRepositoryImpl implements DailyWordWritingsRepositoryCustom{
