@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CategoryDeleteResponse {
-    private Category category;
+    private CategoryDto category;
 }

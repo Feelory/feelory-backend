@@ -50,17 +50,4 @@ public class WordsRepositoryImpl implements WordsRepositoryCustom {
 
         return new PageImpl<>(content, pageable, total);
     }
-
-    @Override
-    public Optional<Words> findByIdAndIsActive(Long id, Boolean isActive) {
-        QWords qWords = QWords.words;
-
-        Words word = jpaQueryFactory
-                .selectFrom(qWords)
-                .join(qWords.category, QWordCategories.wordCategories).fetchJoin()
-                .where(qWords.id.eq(id).and(qWords.isActive.eq(true)))
-                .fetchOne();
-
-        return Optional.ofNullable(word);
-    }
 }

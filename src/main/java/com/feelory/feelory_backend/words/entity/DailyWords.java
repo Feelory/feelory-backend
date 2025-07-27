@@ -4,23 +4,26 @@ import com.feelory.feelory_backend.global.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Builder(toBuilder = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Entity
-@Table(name = "words")
-public class Words extends BaseEntity {
+@Table(name = "daily_words")
+public class DailyWords extends BaseEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "word_category_id", nullable = false)
-    private WordCategories category;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "words_id", nullable = false)
+    private Words word;
 
-    @Column(name="name", nullable = false, unique = true)
-    private String name;
+    @Column(name="topic_date", nullable = false)
+    private LocalDateTime topicDate;
 
     @Column(name="description")
     private String description;

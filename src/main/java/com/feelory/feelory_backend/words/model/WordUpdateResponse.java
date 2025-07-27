@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class WordUpdateResponse {
-    private Word word;
+    private WordDto word;
 }
