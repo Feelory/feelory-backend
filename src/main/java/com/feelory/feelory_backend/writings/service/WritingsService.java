@@ -132,6 +132,28 @@ public class WritingsService {
                 .build();
     }
 
+    @Transactional
+    public UserWritingDeleteResponse removeUserWriting(UserWritingDeleteRequest request) {
+        DailyWordWritings entity = dailyWordWritingsRepository.findByIdAndIsActive(request.getId(), true)
+                .orElseThrow(WritingNotFoundException::new);
+
+        DailyWordWritings updated = entity.toBuilder()
+                .isActive(false)
+                .build();
+
+        dailyWordWritingsRepository.save(updated);
+        dailyWordWritingsRepository.flush();
+
+        DailyWordWritings loaded = dailyWordWritingsRepository.findByIdAndIsActive(updated.getId(), true)
+                .orElseThrow(WritingNotFoundException::new);
+
+        WritingDto writing = WritingDto.fromEntity(loaded);
+
+        return UserWritingDeleteResponse.builder()
+                .writing(writing)
+                .build();
+    }
+
     private void checkDuplicateTitle(Long userId, String name) {
         boolean isExist = dailyWordWritingsRepository.existsByUserIdAndTitle(userId, name);
 

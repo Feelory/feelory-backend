@@ -77,4 +77,13 @@ public class WritingsController {
 
         return ApiResponse.success(response, SuccessCode.UPDATE_WRITING_SUCCESS);
     }
+
+
+    @DeleteMapping("")
+    public ApiResponse<UserWritingDeleteResponse> deleteUserWriting(@Valid UserWritingDeleteRequest request) {
+
+        UserWritingDeleteResponse response = writingsService.removeUserWriting(request);
+
+        return ApiResponse.success(response, SuccessCode.DELETE_WRITING_SUCCESS);
+    }
 }
