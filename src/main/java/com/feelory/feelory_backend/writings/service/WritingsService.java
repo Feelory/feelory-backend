@@ -4,6 +4,7 @@ import com.feelory.feelory_backend.global.exception.exceptions.words.DailyWordNo
 import com.feelory.feelory_backend.global.exception.exceptions.words.DuplicateWritingGoalNameException;
 import com.feelory.feelory_backend.global.exception.exceptions.writings.WritingNotFoundException;
 import com.feelory.feelory_backend.words.entity.DailyWords;
+import com.feelory.feelory_backend.words.entity.WordCategories;
 import com.feelory.feelory_backend.words.repository.DailyWordsRepository;
 import com.feelory.feelory_backend.writings.entity.WritingGoals;
 import com.feelory.feelory_backend.writings.model.WritingSearchDto;
@@ -74,9 +75,59 @@ public class WritingsService {
         DailyWordWritings created = dailyWordWritingsRepository.save(entity);
         dailyWordWritingsRepository.flush();
 
-        WritingDto writing = WritingDto.fromEntity(entity);
+        WritingDto writing = WritingDto.fromEntity(created);
 
         return UserWritingCreateResponse.builder()
+                .writing(writing)
+                .build();
+    }
+
+    @Transactional
+    public UserWritingUpdateResponse modifyUserWriting(UserWritingUpdateRequest request) {
+
+        DailyWordWritings entity = dailyWordWritingsRepository.findByIdAndIsActive(request.getId(), true)
+                .orElseThrow(WritingNotFoundException::new);
+
+        DailyWordWritings.DailyWordWritingsBuilder builder = entity.toBuilder();
+
+        // TODO. [TR-YOO] 로그인 기능 완성 후 userId 교체하기
+        if (request.getTitle() != null && !request.getTitle().isBlank()) {
+            checkDuplicateTitle(entity.getUserId(), request.getTitle());
+            builder.title(request.getTitle());
+        }
+
+        if (request.getContent() != null && !request.getContent().isBlank()) {
+            builder.content(request.getContent());
+        }
+
+        if (request.getDailyWordId() != null) {
+            DailyWords dailyWord = dailyWordsRepository.findByIdAndIsActive(request.getDailyWordId(), true)
+                    .orElseThrow(DailyWordNotFoundException::new);
+
+            builder.dailyWord(dailyWord);
+        }
+
+        if(request.getWritingGoalId() != null) {
+            WritingGoals writingGoal = writingGoalsRepository.findByIdAndIsActive(request.getWritingGoalId(), true)
+                    .orElseThrow(WritingNotFoundException::new);
+
+            builder.writingGoal(writingGoal);
+        }
+
+        if(request.getVisibility() != null) {
+            builder.visibility(request.getVisibility());
+        }
+
+        DailyWordWritings updated = builder.build();
+        DailyWordWritings saved = dailyWordWritingsRepository.save(updated);
+        dailyWordWritingsRepository.flush();
+
+        DailyWordWritings loaded = dailyWordWritingsRepository.findByIdAndIsActive(saved.getId(), true)
+                .orElseThrow(WritingNotFoundException::new);
+
+        WritingDto writing = WritingDto.fromEntity(loaded);
+
+        return UserWritingUpdateResponse.builder()
                 .writing(writing)
                 .build();
     }

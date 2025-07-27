@@ -65,4 +65,16 @@ public class WritingsController {
 
         return ApiResponse.success(response, SuccessCode.REGISTER_WRITING_SUCCESS);
     }
+
+    @Operation(
+            summary = "글 수정",
+            description = "글 수정 API"
+    )
+    @PatchMapping("")
+    public ApiResponse<UserWritingUpdateResponse> patchUserWriting(@Valid @RequestBody UserWritingUpdateRequest request) {
+
+        UserWritingUpdateResponse response = writingsService.modifyUserWriting(request);
+
+        return ApiResponse.success(response, SuccessCode.UPDATE_WRITING_SUCCESS);
+    }
 }
