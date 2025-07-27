@@ -86,4 +86,12 @@ public class WritingsController {
 
         return ApiResponse.success(response, SuccessCode.DELETE_WRITING_SUCCESS);
     }
+
+    @PatchMapping("/visibility")
+    public ApiResponse<VisibilityUpdateResponse> deleteUserWriting(@Valid VisibilityUpdateRequest request) {
+
+        VisibilityUpdateResponse response = writingsService.modifyVisibility(request);
+
+        return ApiResponse.success(response, SuccessCode.DELETE_WRITING_SUCCESS);
+    }
 }

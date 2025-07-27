@@ -4,7 +4,6 @@ import com.feelory.feelory_backend.global.exception.exceptions.words.DailyWordNo
 import com.feelory.feelory_backend.global.exception.exceptions.words.DuplicateWritingGoalNameException;
 import com.feelory.feelory_backend.global.exception.exceptions.writings.WritingNotFoundException;
 import com.feelory.feelory_backend.words.entity.DailyWords;
-import com.feelory.feelory_backend.words.entity.WordCategories;
 import com.feelory.feelory_backend.words.repository.DailyWordsRepository;
 import com.feelory.feelory_backend.writings.entity.WritingGoals;
 import com.feelory.feelory_backend.writings.model.WritingSearchDto;
@@ -141,15 +140,37 @@ public class WritingsService {
                 .isActive(false)
                 .build();
 
-        dailyWordWritingsRepository.save(updated);
+        DailyWordWritings saved = dailyWordWritingsRepository.save(updated);
         dailyWordWritingsRepository.flush();
 
-        DailyWordWritings loaded = dailyWordWritingsRepository.findByIdAndIsActive(updated.getId(), true)
+        DailyWordWritings loaded = dailyWordWritingsRepository.findByIdAndIsActive(saved.getId(), true)
                 .orElseThrow(WritingNotFoundException::new);
 
         WritingDto writing = WritingDto.fromEntity(loaded);
 
         return UserWritingDeleteResponse.builder()
+                .writing(writing)
+                .build();
+    }
+
+    @Transactional
+    public VisibilityUpdateResponse modifyVisibility(VisibilityUpdateRequest request) {
+        DailyWordWritings entity = dailyWordWritingsRepository.findByIdAndIsActive(request.getId(), true)
+                .orElseThrow(WritingNotFoundException::new);
+
+        DailyWordWritings updated = entity.toBuilder()
+                .visibility(request.getVisibility())
+                .build();
+
+        DailyWordWritings saved = dailyWordWritingsRepository.save(updated);
+        dailyWordWritingsRepository.flush();
+
+        DailyWordWritings loaded = dailyWordWritingsRepository.findByIdAndIsActive(saved.getId(), true)
+                .orElseThrow(WritingNotFoundException::new);
+
+        WritingDto writing = WritingDto.fromEntity(loaded);
+
+        return VisibilityUpdateResponse.builder()
                 .writing(writing)
                 .build();
     }
