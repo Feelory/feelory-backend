@@ -1,21 +1,30 @@
 package com.feelory.feelory_backend.writings.service;
 
+import com.feelory.feelory_backend.global.exception.exceptions.words.DailyWordNotFoundException;
+import com.feelory.feelory_backend.global.exception.exceptions.words.DuplicateWritingGoalNameException;
 import com.feelory.feelory_backend.global.exception.exceptions.writings.WritingNotFoundException;
+import com.feelory.feelory_backend.words.entity.DailyWords;
+import com.feelory.feelory_backend.words.repository.DailyWordsRepository;
+import com.feelory.feelory_backend.writings.entity.WritingGoals;
 import com.feelory.feelory_backend.writings.model.WritingSearchDto;
 import com.feelory.feelory_backend.writings.entity.DailyWordWritings;
 import com.feelory.feelory_backend.writings.model.*;
 import com.feelory.feelory_backend.writings.repository.DailyWordWritingsRepository;
+import com.feelory.feelory_backend.writings.repository.WritingGoalsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 public class WritingsService {
 
     private final DailyWordWritingsRepository dailyWordWritingsRepository;
+    private final DailyWordsRepository dailyWordsRepository;
+    private final WritingGoalsRepository writingGoalsRepository;
 
     public UserWritingListResponse getUserWritings(UserWritingListRequest request) {
 
@@ -48,5 +57,35 @@ public class WritingsService {
         return UserWritingDetailResponse.builder()
                 .writing(writing)
                 .build();
+    }
+
+    @Transactional
+    public UserWritingCreateResponse registerUserWriting(UserWritingCreateRequest request) {
+
+        checkDuplicateTitle(request.getUserId(), request.getTitle());
+
+        DailyWords dailyWord = dailyWordsRepository.findByIdAndIsActive(request.getDailyWordId(), true)
+                .orElseThrow(DailyWordNotFoundException::new);
+        WritingGoals writingGoal = writingGoalsRepository.findByIdAndIsActive(request.getWritingGoalId(), true)
+                .orElseThrow(WritingNotFoundException::new);
+
+        DailyWordWritings entity = request.toEntity(dailyWord, writingGoal);
+
+        DailyWordWritings created = dailyWordWritingsRepository.save(entity);
+        dailyWordWritingsRepository.flush();
+
+        WritingDto writing = WritingDto.fromEntity(entity);
+
+        return UserWritingCreateResponse.builder()
+                .writing(writing)
+                .build();
+    }
+
+    private void checkDuplicateTitle(Long userId, String name) {
+        boolean isExist = dailyWordWritingsRepository.existsByUserIdAndTitle(userId, name);
+
+        if(isExist) {
+            throw new DuplicateWritingGoalNameException();
+        }
     }
 }

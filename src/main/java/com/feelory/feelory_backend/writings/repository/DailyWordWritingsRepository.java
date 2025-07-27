@@ -7,4 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface DailyWordWritingsRepository extends JpaRepository<DailyWordWritings, Long>, DailyWordWritingsRepositoryCustom {
+
+    Boolean existsByUserIdAndTitle(Long userId, String title);
 }
