@@ -2,9 +2,11 @@ package com.feelory.feelory_backend.sample.contoller;
 
 import com.feelory.feelory_backend.sample.service.SampleService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -70,5 +72,27 @@ public class SampleController {
     public String throwUnknownException() {
         sampleService.throwUnknownException();
         return "이 메시지도 도달하지 않습니다.";
+    }
+
+    @Operation(
+            summary = "인증 필요 API",
+            description = "인증되지 않은 경우 401 반환",
+            security = {@SecurityRequirement(name = "JWT")}
+    )
+    @GetMapping("/need-auth")
+    @PreAuthorize("hasRole('USER')")
+    public String onlyAuthenticatedUser() {
+        return "인증된 사용자일 경우 정상 출력(유저)";
+    }
+
+    @Operation(
+            summary = "관리자 권한 필요 API",
+            description = "ROLE_ADMIN만 접근 가능, 그렇지 않으면 403 반환",
+            security = {@SecurityRequirement(name = "JWT")}
+    )
+    @GetMapping("/admin-only")
+    @PreAuthorize("hasRole('ADMIN')")
+    public String onlyAdminAccess() {
+        return "관리자일 경우 정상 출력";
     }
 }
