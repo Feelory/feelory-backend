@@ -12,6 +12,7 @@
     import com.feelory.feelory_backend.users.entity.Users;
     import com.feelory.feelory_backend.users.repository.UserTokensRepository;
     import com.feelory.feelory_backend.users.repository.UsersRepository;
+    import com.feelory.feelory_backend.users.service.UserTokenService;
     import jakarta.servlet.ServletException;
     import jakarta.servlet.http.HttpServletRequest;
     import jakarta.servlet.http.HttpServletResponse;
@@ -33,7 +34,7 @@
 
         private final JwtTokenProvider jwtTokenProvider;
         private final UsersRepository usersRepository;
-        private final UserTokensRepository userTokensRepository;
+        private final UserTokenService userTokenService;
         private final ObjectMapper objectMapper;
 
         @Override
@@ -56,6 +57,8 @@
                 String refreshToken = jwtTokenProvider.generateRefreshToken(user.getId());
                 LocalDateTime refreshTokenExp = jwtTokenProvider.getExpirationLocalDateTimeFromToken(refreshToken);
 
+                userTokenService.saveUserToken(user, refreshToken, refreshTokenExp);
+
                 LoginResponse loginResponse = LoginResponse.builder()
                         .accessToken(accessToken)
                         .expireAt(accessTokenExp)
@@ -63,9 +66,6 @@
                         .refreshTokenExpireAt(refreshTokenExp)
                         .nickname(user.getNickname())
                         .build();
-
-                UserTokens newTokens = createUserTokens(user, refreshToken, refreshTokenExp);
-                userTokensRepository.save(newTokens);
 
                 ApiResponse<LoginResponse> apiResponse = ApiResponse.success(loginResponse);
                 response.setContentType("application/json;charset=UTF-8");
