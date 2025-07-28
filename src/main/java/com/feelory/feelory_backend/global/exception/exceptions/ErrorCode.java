@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 public enum ErrorCode {
 
     // E0XX : AUTH(인증/토큰)
+    AUTHENTICATION_FAILED(HttpStatus.UNAUTHORIZED, "E000", "인증에 실패하였습니다."),
+    ACCESS_DENIED(HttpStatus.FORBIDDEN, "E001", "접근 권한이 없습니다."),
 
     // E1XX : USERS(사용자)
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "E100", "해당 유저를 찾을 수 없습니다."),
