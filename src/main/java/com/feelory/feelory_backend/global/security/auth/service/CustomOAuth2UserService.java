@@ -5,6 +5,7 @@ import com.feelory.feelory_backend.users.entity.Users;
 import com.feelory.feelory_backend.users.model.AuthProvider;
 import com.feelory.feelory_backend.users.model.UserRole;
 import com.feelory.feelory_backend.users.repository.UsersRepository;
+import com.feelory.feelory_backend.users.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -22,7 +23,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
-    private final UsersRepository usersRepository;
+    private final UserService userService;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -38,10 +39,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         String name = (String) kakaoAccount.get("name");
         String phoneNumber = formatPhoneNumber((String) kakaoAccount.get("phone_number"));
 
-        Users user = usersRepository.findByPhoneNumberAndIsActive(phoneNumber, true)
-                .orElseGet(() -> usersRepository.save(
-                        createUsers(name, phoneNumber, AuthProvider.KAKAO, kakaoId)
-                ));
+        Users user = userService.findOrCreateUser(name, phoneNumber, AuthProvider.KAKAO, kakaoId);
 
         return new DefaultOAuth2User(
                 Collections.singleton(new SimpleGrantedAuthority(user.getRole().name())),
