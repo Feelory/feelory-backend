@@ -5,6 +5,8 @@ import com.feelory.feelory_backend.global.exception.exceptions.*;
 import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.BindException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -113,6 +115,34 @@ public class GlobalExceptionHandler {
 
         ErrorCode errorCode = ErrorCode.INVALID_INPUT_VALUE;
         ApiResponse<List<ValidationDetail>> apiResponse = ApiResponse.error(errorCode, errors);
+        return ResponseEntity
+                .status(errorCode.getStatus())
+                .body(apiResponse);
+    }
+
+    /*
+        메서드 보안 전역 처리
+    */
+
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<ApiResponse<Void>> handleAuthenticationException(AuthenticationException exception) {
+
+        ErrorCode errorCode = ErrorCode.AUTHENTICATION_FAILED;
+        ApiResponse<Void> apiResponse = ApiResponse.error(errorCode);
+
+        log.warn("AuthenticationException: {}", exception.getMessage());
+        return ResponseEntity
+                .status(errorCode.getStatus())
+                .body(apiResponse);
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ApiResponse<Void>> handleAccessDeniedException(AccessDeniedException exception) {
+
+        ErrorCode errorCode = ErrorCode.ACCESS_DENIED;
+        ApiResponse<Void> apiResponse = ApiResponse.error(errorCode);
+
+        log.warn("AccessDeniedException: {}", exception.getMessage());
         return ResponseEntity
                 .status(errorCode.getStatus())
                 .body(apiResponse);

@@ -26,10 +26,13 @@ public class UserTokens extends BaseEntity {
     @Column(name = "refresh_token", nullable = false)
     private String refreshToken;
 
-    @Column(name = "refresh_token_exp", nullable = false)
+    @Column(name = "refresh_token_exp", nullable = false, unique = true)
     private LocalDateTime refreshTokenExp;
 
     @Column(name = "is_active", nullable = false)
     private boolean isActive;
 
+    public void deactivate() {
+        this.isActive = false;
+    }
 }

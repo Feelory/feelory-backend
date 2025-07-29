@@ -2,36 +2,36 @@ package com.feelory.feelory_backend.global.security.auth.controller;
 
 import com.feelory.feelory_backend.global.api.ApiResponse;
 import com.feelory.feelory_backend.global.api.SuccessCode;
-import com.feelory.feelory_backend.global.security.auth.dto.response.KakaoLoginResponse;
-import com.feelory.feelory_backend.global.security.auth.dto.response.LoginResponse;
 import com.feelory.feelory_backend.global.security.auth.service.AuthService;
+import com.feelory.feelory_backend.users.model.request.RefreshTokenRequest;
+import com.feelory.feelory_backend.users.model.response.RefreshTokenResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
-@Tag(name = "인증(Auth)", description = "인증 API 목록")
+@Tag(name = "인증 (Auth)", description = "인증 관련 API 목록")
 public class AuthController {
-
     private final AuthService authService;
 
-    @GetMapping("/login/kakao")
-    public ApiResponse<KakaoLoginResponse> kakaoLogin() {
-        KakaoLoginResponse kakaoLoginResponse = authService.createKakaoLoginUrl();
+    @Operation(
+            summary = "JWT 재발급",
+            description = "RefreshToken을 서버에 제출하여 새로운 AccessToken과 RefreshToken을 재발급받습니다.\n" +
+                    "기존의 RefreshToken은 재발급 이후 폐기됩니다.",
+            security = {@SecurityRequirement(name = "JWT")}
+    )
+    @PostMapping("/refresh-token")
+    public ApiResponse<RefreshTokenResponse> reissueToken(@RequestBody RefreshTokenRequest request) {
 
-        return ApiResponse.success(kakaoLoginResponse, SuccessCode.CREATE_KAKAO_LOGIN_URL_SUCCESS);
-    }
+        RefreshTokenResponse refreshTokenResponse = authService.reissueToken(request);
 
-    @GetMapping("/kakao/callback")
-    public ApiResponse<LoginResponse> kakaoCallback(@RequestParam("code") String code) {
-        LoginResponse loginResponse = authService.loginWithKakaoCode(code);
-
-        return ApiResponse.success(loginResponse,SuccessCode.LOGIN_KAKAO_SUCCESS);
+        return ApiResponse.success(refreshTokenResponse, SuccessCode.REISSUE_TOKENS_SUCCESS);
     }
 }
