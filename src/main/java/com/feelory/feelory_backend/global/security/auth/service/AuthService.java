@@ -1,5 +1,6 @@
 package com.feelory.feelory_backend.global.security.auth.service;
 
+import com.feelory.feelory_backend.global.exception.exceptions.users.InvalidPhoneNumberException;
 import com.feelory.feelory_backend.global.security.auth.dto.response.LoginResponse;
 import com.feelory.feelory_backend.global.security.auth.jwt.JwtTokenProvider;
 import com.feelory.feelory_backend.users.entity.Users;
@@ -50,7 +51,7 @@ public class AuthService {
 
     private String formatPhoneNumber(String phoneNumber) {
         if (phoneNumber == null || phoneNumber.isEmpty()) {
-            throw new RuntimeException("휴대폰 번호가 없습니다.");
+            throw new InvalidPhoneNumberException();
         }
         return phoneNumber.replace("+82", "0").replaceAll("[^0-9]", "");
     }
