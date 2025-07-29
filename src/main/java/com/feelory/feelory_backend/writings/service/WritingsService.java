@@ -3,6 +3,7 @@ package com.feelory.feelory_backend.writings.service;
 import com.feelory.feelory_backend.global.exception.exceptions.words.DailyWordNotFoundException;
 import com.feelory.feelory_backend.global.exception.exceptions.words.DuplicateWritingGoalNameException;
 import com.feelory.feelory_backend.global.exception.exceptions.writings.WritingNotFoundException;
+import com.feelory.feelory_backend.global.util.ValidationUtil;
 import com.feelory.feelory_backend.words.entity.DailyWords;
 import com.feelory.feelory_backend.words.repository.DailyWordsRepository;
 import com.feelory.feelory_backend.writings.entity.WritingGoals;
@@ -25,6 +26,7 @@ public class WritingsService {
     private final DailyWordWritingsRepository dailyWordWritingsRepository;
     private final DailyWordsRepository dailyWordsRepository;
     private final WritingGoalsRepository writingGoalsRepository;
+    private final ValidationUtil validationUtil;
 
     public UserWritingListResponse getUserWritings(UserWritingListRequest request) {
 
@@ -90,12 +92,12 @@ public class WritingsService {
         DailyWordWritings.DailyWordWritingsBuilder builder = entity.toBuilder();
 
         // TODO. [TR-YOO] 로그인 기능 완성 후 userId 교체하기
-        if (request.getTitle() != null && !request.getTitle().isBlank()) {
+        if (validationUtil.hasText(request.getTitle())) {
             checkDuplicateTitle(entity.getUserId(), request.getTitle());
             builder.title(request.getTitle());
         }
 
-        if (request.getContent() != null && !request.getContent().isBlank()) {
+        if (validationUtil.hasText(request.getContent())) {
             builder.content(request.getContent());
         }
 

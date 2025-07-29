@@ -4,6 +4,7 @@ import com.feelory.feelory_backend.global.exception.exceptions.common.DayTooFarI
 import com.feelory.feelory_backend.global.exception.exceptions.common.DayTooFarInPastException;
 import com.feelory.feelory_backend.global.exception.exceptions.words.DuplicateWritingGoalNameException;
 import com.feelory.feelory_backend.global.exception.exceptions.writings.WritingGoalNotFoundException;
+import com.feelory.feelory_backend.global.util.ValidationUtil;
 import com.feelory.feelory_backend.writings.entity.WritingGoals;
 import com.feelory.feelory_backend.writings.model.*;
 import com.feelory.feelory_backend.writings.repository.WritingGoalsRepository;
@@ -22,6 +23,7 @@ import java.time.temporal.ChronoUnit;
 public class WritingGoalsService {
 
     private final WritingGoalsRepository writingGoalsRepository;
+    private final ValidationUtil validationUtil;
 
     public WritingGoalListResponse getWritingGoals(WritingGoalListRequest request) {
 
@@ -74,12 +76,12 @@ public class WritingGoalsService {
 
         WritingGoals.WritingGoalsBuilder builder = entity.toBuilder();
 
-        if (request.getName() != null && !request.getName().isBlank()) {
+        if (validationUtil.hasText(request.getName())) {
             checkDuplicateName(entity.getUserId(), request.getName());
             builder.name(request.getName());
         }
 
-        if (request.getDescription() != null && !request.getDescription().isBlank()) {
+        if (validationUtil.hasText(request.getDescription())) {
             builder.description(request.getDescription());
         }
 

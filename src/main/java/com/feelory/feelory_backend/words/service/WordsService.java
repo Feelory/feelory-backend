@@ -3,6 +3,7 @@ package com.feelory.feelory_backend.words.service;
 import com.feelory.feelory_backend.global.exception.exceptions.words.CategoryNotFoundException;
 import com.feelory.feelory_backend.global.exception.exceptions.words.DuplicateWordNameException;
 import com.feelory.feelory_backend.global.exception.exceptions.words.WordNotFoundException;
+import com.feelory.feelory_backend.global.util.ValidationUtil;
 import com.feelory.feelory_backend.words.entity.WordCategories;
 import com.feelory.feelory_backend.words.entity.Words;
 import com.feelory.feelory_backend.words.model.*;
@@ -21,6 +22,7 @@ public class WordsService {
 
     private final WordsRepository wordsRepository;
     private final CategoriesRepository categoriesRepository;
+    private final ValidationUtil validationUtil;
 
     public WordListResponse getWords(WordListRequest request) {
 
@@ -56,12 +58,12 @@ public class WordsService {
 
         Words.WordsBuilder builder = entity.toBuilder();
 
-        if (request.getName() != null && !request.getName().isBlank()) {
+        if (validationUtil.hasText(request.getName())) {
             checkDuplicateName(request.getName());
             builder.name(request.getName());
         }
 
-        if (request.getDescription() != null && !request.getDescription().isBlank()) {
+        if (validationUtil.hasText(request.getDescription())) {
             builder.description(request.getDescription());
         }
 
