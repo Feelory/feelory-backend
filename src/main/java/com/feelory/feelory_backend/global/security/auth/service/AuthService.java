@@ -3,8 +3,11 @@ package com.feelory.feelory_backend.global.security.auth.service;
 import com.feelory.feelory_backend.global.exception.exceptions.users.InvalidPhoneNumberException;
 import com.feelory.feelory_backend.global.security.auth.dto.response.LoginResponse;
 import com.feelory.feelory_backend.global.security.auth.jwt.JwtTokenProvider;
+import com.feelory.feelory_backend.users.entity.UserTokens;
 import com.feelory.feelory_backend.users.entity.Users;
 import com.feelory.feelory_backend.users.model.AuthProvider;
+import com.feelory.feelory_backend.users.model.request.RefreshTokenRequest;
+import com.feelory.feelory_backend.users.model.response.RefreshTokenResponse;
 import com.feelory.feelory_backend.users.service.UserService;
 import com.feelory.feelory_backend.users.service.UserTokenService;
 import lombok.RequiredArgsConstructor;
@@ -46,6 +49,30 @@ public class AuthService {
                 .refreshToken(refreshToken)
                 .refreshTokenExpireAt(refreshTokenExp)
                 .nickname(user.getNickname())
+                .build();
+    }
+
+    @Transactional
+    public RefreshTokenResponse reissueToken(RefreshTokenRequest request) {
+        String oldRefreshToken = request.getRefreshToken();
+
+        UserTokens userToken = userTokenService.findRefreshToken(oldRefreshToken);
+
+        Users user = userToken.getUser();
+
+        String newAccessToken = jwtTokenProvider.generateAccessToken(user.getId(), user.getRole());
+        LocalDateTime newAccessTokenExp = jwtTokenProvider.getExpirationLocalDateTimeFromToken(newAccessToken);
+
+        String newRefreshToken = jwtTokenProvider.generateRefreshToken(user.getId());
+        LocalDateTime newRefreshTokenExp = jwtTokenProvider.getExpirationLocalDateTimeFromToken(newRefreshToken);
+
+        userTokenService.rotateRefreshToken(userToken, newRefreshToken, newRefreshTokenExp);
+
+        return RefreshTokenResponse.builder()
+                .accessToken(newAccessToken)
+                .expireAt(newAccessTokenExp)
+                .refreshToken(newRefreshToken)
+                .refreshTokenExpireAt(newRefreshTokenExp)
                 .build();
     }
 
