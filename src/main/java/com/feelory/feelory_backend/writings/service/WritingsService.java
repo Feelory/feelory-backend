@@ -52,7 +52,7 @@ public class WritingsService {
 
     public UserWritingDetailResponse getUserWritingDetail(Long id) {
 
-        DailyWordWritings entity = dailyWordWritingsRepository.findById(id)
+        DailyWordWritings entity = dailyWordWritingsRepository.findByIdAndIsActive(id, true)
                 .orElseThrow(WritingNotFoundException::new);
 
         WritingDto writing = WritingDto.fromEntity(entity);
