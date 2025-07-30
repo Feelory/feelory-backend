@@ -1,15 +1,12 @@
 package com.feelory.feelory_backend.writings.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 /*
     TODO. [TR-YOO] 로그인 기능 완성 후 userId는 Token에서 추출하기
 */
 @Getter
-@Builder
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserWritingListRequest {
