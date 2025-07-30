@@ -30,7 +30,18 @@ public enum SuccessCode {
     DELETE_DAILY_WORD_SUCCESS("오늘의 단어 삭제 완료"),
 
     // WRITINGS(글)
-
+    GET_USER_WRITINGS_LIST_SUCCESS("내가 쓴 글 목록 조회 완료"),
+    GET_USER_TODAY_WRITING_SUCCESS("오늘 내가 쓴 글 조회 완료"),
+    GET_USER_WRITING_DETAIL_SUCCESS("내가 쓴 글 상세 조회 완료"),
+    REGISTER_WRITING_SUCCESS("글 작성 완료"),
+    UPDATE_WRITING_SUCCESS("글 수정 완료"),
+    DELETE_WRITING_SUCCESS("글 삭제 완료"),
+    UPDATE_WRITING_VISIBILITY_SUCCESS("글 공개 여부 변경 완료"),
+    GET_WRITING_GOAL_LIST_SUCCESS("글쓰기 목표 목록 조회 완료"),
+    GET_WRITING_GOAL_DETAIL_SUCCESS("글쓰기 목표 상세 조회 완료"),
+    REGISTER_WRITING_GOAL_SUCCESS("글쓰기 목표 추가 완료"),
+    UPDATE_WRITING_GOAL_SUCCESS("글쓰기 목표 수정 완료"),
+    DELETE_WRITING_GOAL_SUCCESS("글쓰기 목표 삭제 완료"),
 
     // LIKES, BOOKMARKS (좋아요, 북마크)
 

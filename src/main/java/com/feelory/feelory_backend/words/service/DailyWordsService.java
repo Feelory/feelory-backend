@@ -27,10 +27,10 @@ public class DailyWordsService {
     @Transactional
     public DailyWordCreateResponse registerAndUpdateDailyWord(DailyWordCreateRequest request) {
 
-        validateDateTime(request.getTopicDate());
+        validateDateTime(request.getParsedTopicDate());
         checkDuplicateWordId(request.getWordId());
 
-        DailyWords duplicatedDailyWord = dailyWordsRepository.findByTopicDateAndIsActive(request.getTopicDate(), true)
+        DailyWords duplicatedDailyWord = dailyWordsRepository.findByTopicDateAndIsActive(request.getParsedTopicDate(), true)
                 .orElse(null);
 
         boolean isAlreadyAssigned = false;
@@ -77,7 +77,7 @@ public class DailyWordsService {
     @Transactional
     public DailyWordUpdateResponse modifyDailyWord(DailyWordUpdateRequest request) {
 
-        validateDateTime(request.getTopicDate());
+        validateDateTime(request.getParsedTopicDate());
         checkDuplicateWordId(request.getWordId());
 
         DailyWords dailyWords = dailyWordsRepository.findById(request.getId())
@@ -93,7 +93,7 @@ public class DailyWordsService {
     @Transactional
     public DailyWordDeleteResponse removeDailyWord(DailyWordDeleteRequest request) {
 
-        DailyWords entity = dailyWordsRepository.findById(request.getId())
+        DailyWords entity = dailyWordsRepository.findByIdAndIsActive(request.getId(), true)
                 .orElseThrow(DailyWordNotFoundException::new);
 
         DailyWords updated = entity.toBuilder()
@@ -101,9 +101,11 @@ public class DailyWordsService {
                 .build();
 
         dailyWordsRepository.save(updated);
-        dailyWordsRepository.flush();
 
-        DailyWordDto dailyWord = DailyWordDto.fromEntity(updated);
+        DailyWords loaded = dailyWordsRepository.findByIdAndIsActive(updated.getId(), false)
+                .orElseThrow(DailyWordNotFoundException::new);
+
+        DailyWordDto dailyWord = DailyWordDto.fromEntity(loaded);
 
         return DailyWordDeleteResponse.builder()
                 .dailyWord(dailyWord)
@@ -132,7 +134,6 @@ public class DailyWordsService {
         DailyWords saved;
 
         saved = dailyWordsRepository.save(newDailyWord);
-        dailyWordsRepository.flush();
 
         DailyWords loaded = dailyWordsRepository.findByIdAndIsActive(saved.getId(), true)
                 .orElseThrow(DailyWordNotFoundException::new);
@@ -150,11 +151,10 @@ public class DailyWordsService {
         DailyWords.DailyWordsBuilder builder = existing.toBuilder();
 
         if (word != null) builder.word(word);
-        if (request.getTopicDate() != null) builder.topicDate(request.getTopicDate());
+        if (request.getTopicDate() != null) builder.topicDate(request.getParsedTopicDate());
         if (request.getDescription() != null) builder.description(request.getDescription());
 
         DailyWords updated = dailyWordsRepository.save(builder.build());
-        dailyWordsRepository.flush();
 
         DailyWords loaded = dailyWordsRepository.findByIdAndIsActive(updated.getId(), true)
                 .orElseThrow(DailyWordNotFoundException::new);

@@ -19,22 +19,29 @@ public enum ErrorCode {
     // E2XX : WORDS(단어)
     WORD_NOT_FOUND(HttpStatus.NOT_FOUND, "E200", "단어를 찾을 수 없습니다."),
     DUPLICATE_CATEGORY_NAME(HttpStatus.CONFLICT, "E201", "중복된 카테고리 이름입니다."),
-    CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND, "E202", "활성화 된 카테고리를 찾지 못했습니다"),
+    CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND, "E202", "활성화 된 카테고리를 찾지 못했습니다."),
     DUPLICATE_WORD_NAME(HttpStatus.CONFLICT, "E203", "중복된 단어 이름입니다."),
     DAILY_WORD_NOT_FOUND(HttpStatus.NOT_FOUND, "E204", "오늘의 단어를 찾을 수 없습니다."),
     INVALID_TOPIC_DATE(HttpStatus.BAD_REQUEST, "E205", "현재 날짜 이전의 날짜를 지정할 수 없습니다."),
-    INVALID_DATE_FORMAT(HttpStatus.BAD_REQUEST, "E206", "잘못된 날짜 형식입니다."),
-    WORD_ALREADY_USED(HttpStatus.BAD_REQUEST, "E207", "이미 등록된 단어입니다."),
+    WORD_ALREADY_USED(HttpStatus.BAD_REQUEST, "E206", "이미 등록된 단어입니다."),
 
     // E3XX : WRITINGS(글)
+    WRITING_NOT_FOUND(HttpStatus.NOT_FOUND, "E300", "글을 찾지 못했습니다."),
+    WRITING_GOAL_NOT_FOUND(HttpStatus.NOT_FOUND, "E301", "글쓰기 목표를 찾지 못했습니다."),
+    DUPLICATE_WRITING_GOAL_NAME(HttpStatus.CONFLICT, "E302", "중복된 글쓰기 목표 이름입니다."),
+    DAILY_WORD_CONFLICT(HttpStatus.CONFLICT, "E303", "해당 단어로 오늘의 글을 이미 작성했습니다."),
+    WRITING_GOAL_CONFLICT(HttpStatus.CONFLICT, "E304", "해당 목표로 오늘의 글을 이미 작성했습니다."),
 
     // E4XX : LIKES, BOOKMARKS (좋아요, 북마크)
 
     // E5XX : FEEDBACKS(피드백)
 
     // E9XX : 기타
+    DAY_TO_FAR_IN_PAST(HttpStatus.BAD_REQUEST, "994", "날짜는 현재로부터 이전 %개월 까지만 가능합니다."),
+    DAY_TO_FAR_IN_FUTURE(HttpStatus.BAD_REQUEST, "995", "날짜는 현재로부터 최후 %개월 까지만 가능합니다."),
+    INVALID_DATE_FORMAT(HttpStatus.BAD_REQUEST, "996", "잘못된 날짜 형식입니다."),
     INVALID_INPUT_VALUE(HttpStatus.BAD_REQUEST,"E997", "입력값이 유효하지 않습니다."),
-    NOT_FOUND_END_POINT(HttpStatus.INTERNAL_SERVER_ERROR, "E998", "요청한 API가 존재하지 않습니다"),
+    NOT_FOUND_END_POINT(HttpStatus.INTERNAL_SERVER_ERROR, "E998", "요청한 API가 존재하지 않습니다."),
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "E999", "서버 내부 오류가 발생했습니다.");
 
 
@@ -46,5 +53,9 @@ public enum ErrorCode {
         this.status = status;
         this.code = code;
         this.message = message;
+    }
+
+    public String formatMessage(Object... args) {
+        return String.format(this.message, args);
     }
 }

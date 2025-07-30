@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class DailyWordDto {
     private Long id;
-    private WordDto word;
+    private WordSummaryDto word;
     private LocalDateTime topicDate;
     private String description;
     private LocalDateTime createdAt;
@@ -24,10 +24,11 @@ public class DailyWordDto {
     public static DailyWordDto fromEntity(DailyWords dailyWords) {
 
         WordDto word = WordDto.fromEntity(dailyWords.getWord());
+        WordSummaryDto summaryDto = WordSummaryDto.fromDto(word);
 
         return DailyWordDto.builder()
                 .id(dailyWords.getId())
-                .word(word)
+                .word(summaryDto)
                 .topicDate(dailyWords.getTopicDate())
                 .description(dailyWords.getDescription())
                 .createdAt(dailyWords.getCreatedAt())

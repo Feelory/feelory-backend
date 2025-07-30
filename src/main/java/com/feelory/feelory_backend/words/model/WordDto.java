@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class WordDto {
     private Long id;
-    private CategoryDto category;
+    private CategorySummaryDto category;
     private String name;
     private String description;
     private LocalDateTime createdAt;
@@ -23,10 +23,11 @@ public class WordDto {
 
     public static WordDto fromEntity(Words words) {
         CategoryDto category = CategoryDto.fromEntity(words.getCategory());
+        CategorySummaryDto summaryDto = CategorySummaryDto.fromDto(category);
 
         return WordDto.builder()
                 .id(words.getId())
-                .category(category)
+                .category(summaryDto)
                 .name(words.getName())
                 .description(words.getDescription())
                 .createdAt(words.getCreatedAt())
