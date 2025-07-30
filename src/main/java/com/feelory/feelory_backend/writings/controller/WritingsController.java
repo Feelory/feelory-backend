@@ -88,7 +88,7 @@ public class WritingsController {
     }
 
     @PatchMapping("/visibility")
-    public ApiResponse<VisibilityUpdateResponse> deleteUserWriting(@Valid VisibilityUpdateRequest request) {
+    public ApiResponse<VisibilityUpdateResponse> patchWritingVisibility(@Valid VisibilityUpdateRequest request) {
 
         VisibilityUpdateResponse response = writingsService.modifyVisibility(request);
 
