@@ -115,7 +115,7 @@ public class WritingGoalsService {
 
         writingGoalsRepository.save(updated);
 
-        WritingGoals loaded = writingGoalsRepository.findByIdAndIsActive(updated.getId(), true)
+        WritingGoals loaded = writingGoalsRepository.findByIdAndIsActive(updated.getId(), false)
                 .orElseThrow(WritingGoalNotFoundException::new);
 
         WritingGoalDto writingGoal = WritingGoalDto.fromEntity(loaded);

@@ -102,7 +102,7 @@ public class DailyWordsService {
 
         dailyWordsRepository.save(updated);
 
-        DailyWords loaded = dailyWordsRepository.findByIdAndIsActive(updated.getId(), true)
+        DailyWords loaded = dailyWordsRepository.findByIdAndIsActive(updated.getId(), false)
                 .orElseThrow(DailyWordNotFoundException::new);
 
         DailyWordDto dailyWord = DailyWordDto.fromEntity(loaded);

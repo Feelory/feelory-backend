@@ -95,7 +95,7 @@ public class WordsService {
 
         wordsRepository.save(updated);
 
-        Words loaded = wordsRepository.findByIdAndIsActive(updated.getId(), true)
+        Words loaded = wordsRepository.findByIdAndIsActive(updated.getId(), false)
                 .orElseThrow(WordNotFoundException::new);
 
         WordDto word = WordDto.fromEntity(loaded);

@@ -143,7 +143,7 @@ public class WritingsService {
 
         DailyWordWritings saved = dailyWordWritingsRepository.save(updated);
 
-        DailyWordWritings loaded = dailyWordWritingsRepository.findByIdAndIsActive(saved.getId(), true)
+        DailyWordWritings loaded = dailyWordWritingsRepository.findByIdAndIsActive(saved.getId(), false)
                 .orElseThrow(WritingNotFoundException::new);
 
         WritingDto writing = WritingDto.fromEntity(loaded);

@@ -86,7 +86,7 @@ public class CategoriesService {
 
         categoriesRepository.save(updated);
 
-        WordCategories loaded = categoriesRepository.findByIdAndIsActive(updated.getId(), true)
+        WordCategories loaded = categoriesRepository.findByIdAndIsActive(updated.getId(), false)
                 .orElseThrow(CategoryNotFoundException::new);
 
         CategoryDto category = CategoryDto.fromEntity(loaded);
