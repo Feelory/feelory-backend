@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface DailyWordWritingsRepositoryCustom {
 
-    Page<DailyWordWritings> searchWritings(Long userId, Boolean isActive, Pageable pageable);
+    Page<DailyWordWritings> searchWritings(WritingSearchDto dto, Pageable pageable);
 
     Optional<DailyWordWritings> searchWritingDetailByDto(WritingSearchDto writingSearchDto);
 }

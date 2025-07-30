@@ -32,7 +32,10 @@ public class WritingsService {
     public UserWritingListResponse getUserWritings(UserWritingListRequest request) {
 
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
-        Page<DailyWordWritings> writings = dailyWordWritingsRepository.searchWritings(request.getUserId(), true, pageable);
+
+        WritingSearchDto dto = WritingSearchDto.fromListRequest(request);
+
+        Page<DailyWordWritings> writings = dailyWordWritingsRepository.searchWritings(dto, pageable);
 
         return UserWritingListResponse.fromPage(writings);
     }

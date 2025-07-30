@@ -25,18 +25,25 @@ public class DailyWordWritingsRepositoryImpl implements DailyWordWritingsReposit
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public Page<DailyWordWritings> searchWritings(Long userId, Boolean isActive, Pageable pageable) {
+    public Page<DailyWordWritings> searchWritings(WritingSearchDto dto, Pageable pageable) {
         QDailyWordWritings qDailyWordWritings = QDailyWordWritings.dailyWordWritings;
 
         BooleanBuilder builder = new BooleanBuilder();
 
 
-        if (userId != null) {
-            builder.and(qDailyWordWritings.userId.eq(userId));
+        if(dto.getUserId() != null) {
+            builder.and(qDailyWordWritings.userId.eq(dto.getUserId()));
         }
 
-        if (isActive != null) {
-            builder.and(qDailyWordWritings.isActive.eq(isActive));
+        if(dto.getSearchDate() != null) {
+            LocalDateTime start = dto.getSearchDate().withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0).withNano(0);
+            LocalDateTime end = start.plusMonths(1).minusNanos(1);
+
+            builder.and(qDailyWordWritings.createdAt.between(start, end));
+        }
+
+        if(dto.getIsActive() != null) {
+            builder.and(qDailyWordWritings.isActive.eq(dto.getIsActive()));
         }
 
         List<DailyWordWritings> content = jpaQueryFactory
