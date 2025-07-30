@@ -41,6 +41,7 @@ public class WritingGoalCreateRequest {
                 .duration(this.duration)
                 .startDate(startDate)
                 .endDate(endDate)
+                .isActive(true)
                 .build();
     }
 }
