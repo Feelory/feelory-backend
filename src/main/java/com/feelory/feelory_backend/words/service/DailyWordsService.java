@@ -101,7 +101,6 @@ public class DailyWordsService {
                 .build();
 
         dailyWordsRepository.save(updated);
-        dailyWordsRepository.flush();
 
         DailyWords loaded = dailyWordsRepository.findByIdAndIsActive(updated.getId(), true)
                 .orElseThrow(DailyWordNotFoundException::new);
@@ -135,7 +134,6 @@ public class DailyWordsService {
         DailyWords saved;
 
         saved = dailyWordsRepository.save(newDailyWord);
-        dailyWordsRepository.flush();
 
         DailyWords loaded = dailyWordsRepository.findByIdAndIsActive(saved.getId(), true)
                 .orElseThrow(DailyWordNotFoundException::new);
@@ -157,7 +155,6 @@ public class DailyWordsService {
         if (request.getDescription() != null) builder.description(request.getDescription());
 
         DailyWords updated = dailyWordsRepository.save(builder.build());
-        dailyWordsRepository.flush();
 
         DailyWords loaded = dailyWordsRepository.findByIdAndIsActive(updated.getId(), true)
                 .orElseThrow(DailyWordNotFoundException::new);

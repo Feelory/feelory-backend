@@ -59,7 +59,6 @@ public class WritingGoalsService {
 
         WritingGoals entity = request.toEntity();
         WritingGoals createdWritingGoal = writingGoalsRepository.save(entity);
-        writingGoalsRepository.flush();
 
         WritingGoalDto writingGoal = WritingGoalDto.fromEntity(createdWritingGoal);
 
@@ -94,7 +93,6 @@ public class WritingGoalsService {
 
         WritingGoals updatedWritingGoals = builder.build();
         WritingGoals saved = writingGoalsRepository.save(updatedWritingGoals);
-        writingGoalsRepository.flush();
 
         WritingGoals loaded = writingGoalsRepository.findByIdAndIsActive(saved.getId(), true)
                 .orElseThrow(WritingGoalNotFoundException::new);
@@ -116,7 +114,6 @@ public class WritingGoalsService {
                 .build();
 
         writingGoalsRepository.save(updated);
-        writingGoalsRepository.flush();
 
         WritingGoals loaded = writingGoalsRepository.findByIdAndIsActive(updated.getId(), true)
                 .orElseThrow(WritingGoalNotFoundException::new);

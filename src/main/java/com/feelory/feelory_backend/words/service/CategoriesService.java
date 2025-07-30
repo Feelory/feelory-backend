@@ -35,7 +35,6 @@ public class CategoriesService {
 
         WordCategories entity = request.toEntity();
         WordCategories createdCategory = categoriesRepository.save(entity);
-        categoriesRepository.flush();
 
 
         CategoryDto category = CategoryDto.fromEntity(createdCategory);
@@ -66,7 +65,6 @@ public class CategoriesService {
 
         WordCategories updatedCategory = builder.build();
         WordCategories updatedEntity = categoriesRepository.save(updatedCategory);
-        categoriesRepository.flush();
 
 
         CategoryDto category = CategoryDto.fromEntity(updatedEntity);
@@ -87,7 +85,6 @@ public class CategoriesService {
                 .build();
 
         categoriesRepository.save(updated);
-        categoriesRepository.flush();
 
         WordCategories loaded = categoriesRepository.findByIdAndIsActive(updated.getId(), true)
                 .orElseThrow(CategoryNotFoundException::new);

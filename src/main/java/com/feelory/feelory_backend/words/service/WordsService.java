@@ -41,7 +41,6 @@ public class WordsService {
 
         Words entity = request.toEntity(category);
         Words createdWord = wordsRepository.save(entity);
-        wordsRepository.flush();
 
         WordDto word = WordDto.fromEntity(createdWord);
 
@@ -74,7 +73,6 @@ public class WordsService {
 
         Words updatedWord = builder.build();
         Words saved = wordsRepository.save(updatedWord);
-        wordsRepository.flush();
 
         Words loaded = wordsRepository.findByIdAndIsActive(saved.getId(), true)
                 .orElseThrow(WordNotFoundException::new);
@@ -96,7 +94,6 @@ public class WordsService {
                 .build();
 
         wordsRepository.save(updated);
-        wordsRepository.flush();
 
         Words loaded = wordsRepository.findByIdAndIsActive(updated.getId(), true)
                 .orElseThrow(WordNotFoundException::new);

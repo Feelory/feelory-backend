@@ -76,7 +76,6 @@ public class WritingsService {
         DailyWordWritings entity = request.toEntity(dailyWord, writingGoal);
 
         DailyWordWritings created = dailyWordWritingsRepository.save(entity);
-        dailyWordWritingsRepository.flush();
 
         WritingDto writing = WritingDto.fromEntity(created);
 
@@ -122,7 +121,6 @@ public class WritingsService {
 
         DailyWordWritings updated = builder.build();
         DailyWordWritings saved = dailyWordWritingsRepository.save(updated);
-        dailyWordWritingsRepository.flush();
 
         DailyWordWritings loaded = dailyWordWritingsRepository.findByIdAndIsActive(saved.getId(), true)
                 .orElseThrow(WritingNotFoundException::new);
@@ -144,7 +142,6 @@ public class WritingsService {
                 .build();
 
         DailyWordWritings saved = dailyWordWritingsRepository.save(updated);
-        dailyWordWritingsRepository.flush();
 
         DailyWordWritings loaded = dailyWordWritingsRepository.findByIdAndIsActive(saved.getId(), true)
                 .orElseThrow(WritingNotFoundException::new);
@@ -166,7 +163,6 @@ public class WritingsService {
                 .build();
 
         DailyWordWritings saved = dailyWordWritingsRepository.save(updated);
-        dailyWordWritingsRepository.flush();
 
         DailyWordWritings loaded = dailyWordWritingsRepository.findByIdAndIsActive(saved.getId(), true)
                 .orElseThrow(WritingNotFoundException::new);
