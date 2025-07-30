@@ -20,8 +20,6 @@ import lombok.NoArgsConstructor;
 public class UserWritingCreateRequest {
     @NotNull(message = "유저 ID는 필수입니다.")
     private Long userId;
-    @NotBlank(message = "제목은 필수입니다.")
-    private String title;
     @NotBlank(message = "내용은 필수입니다.")
     private String content;
     @NotNull(message = "오늘의 단어 ID는 필수입니다.")
@@ -36,7 +34,6 @@ public class UserWritingCreateRequest {
                 .dailyWord(dailyWord)
                 .userId(this.userId)
                 .writingGoal(writingGoal)
-                .title(this.title)
                 .content(this.content)
                 .visibility(this.visibility)
                 .isActive(true)

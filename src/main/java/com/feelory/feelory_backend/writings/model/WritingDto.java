@@ -17,7 +17,6 @@ import java.time.LocalDateTime;
 public class WritingDto {
     private Long id;
     private Long userId;
-    private String title;
     private String content;
     private DailyWordSummaryDto dailyWord;
     private WritingGoalSummaryDto writingGoal;
@@ -40,7 +39,6 @@ public class WritingDto {
         return WritingDto.builder()
                 .id(writings.getId())
                 .userId(writingGoal.getUserId())
-                .title(writings.getTitle())
                 .content(writings.getContent())
                 .dailyWord(dailyWordSummary)
                 .writingGoal(goalSummary)

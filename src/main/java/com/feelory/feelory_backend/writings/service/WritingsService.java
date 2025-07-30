@@ -64,8 +64,6 @@ public class WritingsService {
     @Transactional
     public UserWritingCreateResponse registerUserWriting(UserWritingCreateRequest request) {
 
-        checkDuplicateTitle(request.getUserId(), request.getTitle());
-
         DailyWords dailyWord = dailyWordsRepository.findByIdAndIsActive(request.getDailyWordId(), true)
                 .orElseThrow(DailyWordNotFoundException::new);
         WritingGoals writingGoal = writingGoalsRepository.findByIdAndIsActive(request.getWritingGoalId(), true)
@@ -90,12 +88,6 @@ public class WritingsService {
                 .orElseThrow(WritingNotFoundException::new);
 
         DailyWordWritings.DailyWordWritingsBuilder builder = entity.toBuilder();
-
-        // TODO. [TR-YOO] 로그인 기능 완성 후 userId 교체하기
-        if (validationUtil.hasText(request.getTitle())) {
-            checkDuplicateTitle(entity.getUserId(), request.getTitle());
-            builder.title(request.getTitle());
-        }
 
         if (validationUtil.hasText(request.getContent())) {
             builder.content(request.getContent());
@@ -175,13 +167,5 @@ public class WritingsService {
         return VisibilityUpdateResponse.builder()
                 .writing(writing)
                 .build();
-    }
-
-    private void checkDuplicateTitle(Long userId, String name) {
-        boolean isExist = dailyWordWritingsRepository.existsByUserIdAndTitle(userId, name);
-
-        if(isExist) {
-            throw new DuplicateWritingGoalNameException();
-        }
     }
 }

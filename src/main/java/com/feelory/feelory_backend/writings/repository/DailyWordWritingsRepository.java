@@ -8,8 +8,6 @@ import java.util.Optional;
 
 public interface DailyWordWritingsRepository extends JpaRepository<DailyWordWritings, Long>, DailyWordWritingsRepositoryCustom {
 
-    Boolean existsByUserIdAndTitle(Long userId, String title);
-
     @EntityGraph(attributePaths = {
             "dailyWord",
             "writingGoal"
