@@ -25,6 +25,8 @@ public enum ErrorCode {
     WRITING_NOT_FOUND(HttpStatus.NOT_FOUND, "E300", "글을 찾지 못했습니다."),
     WRITING_GOAL_NOT_FOUND(HttpStatus.NOT_FOUND, "E301", "글쓰기 목표를 찾지 못했습니다."),
     DUPLICATE_WRITING_GOAL_NAME(HttpStatus.CONFLICT, "E302", "중복된 글쓰기 목표 이름입니다."),
+    DAILY_WORD_CONFLICT(HttpStatus.CONFLICT, "E303", "해당 단어로 오늘의 글을 이미 작성했습니다."),
+    WRITING_GOAL_CONFLICT(HttpStatus.CONFLICT, "E304", "해당 목표로 오늘의 글을 이미 작성했습니다."),
 
     // E4XX : LIKES, BOOKMARKS (좋아요, 북마크)
 

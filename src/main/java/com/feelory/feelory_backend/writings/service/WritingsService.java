@@ -1,7 +1,8 @@
 package com.feelory.feelory_backend.writings.service;
 
+import com.feelory.feelory_backend.global.exception.exceptions.writings.DailyWordConflictException;
+import com.feelory.feelory_backend.global.exception.exceptions.writings.WritingGoalConflictException;
 import com.feelory.feelory_backend.global.exception.exceptions.words.DailyWordNotFoundException;
-import com.feelory.feelory_backend.global.exception.exceptions.words.DuplicateWritingGoalNameException;
 import com.feelory.feelory_backend.global.exception.exceptions.writings.WritingNotFoundException;
 import com.feelory.feelory_backend.global.util.ValidationUtil;
 import com.feelory.feelory_backend.words.entity.DailyWords;
@@ -69,6 +70,9 @@ public class WritingsService {
         WritingGoals writingGoal = writingGoalsRepository.findByIdAndIsActive(request.getWritingGoalId(), true)
                 .orElseThrow(WritingNotFoundException::new);
 
+        checkDuplicateDailyWord(request.getUserId(), dailyWord);
+        checkDuplicateWritingGoal(request.getUserId(), writingGoal);
+
         DailyWordWritings entity = request.toEntity(dailyWord, writingGoal);
 
         DailyWordWritings created = dailyWordWritingsRepository.save(entity);
@@ -87,6 +91,9 @@ public class WritingsService {
         DailyWordWritings entity = dailyWordWritingsRepository.findByIdAndIsActive(request.getId(), true)
                 .orElseThrow(WritingNotFoundException::new);
 
+        // TODO. [TR-YOO] 로그인 기능 반영 후 제거하기
+        Long userId = entity.getUserId();
+
         DailyWordWritings.DailyWordWritingsBuilder builder = entity.toBuilder();
 
         if (validationUtil.hasText(request.getContent())) {
@@ -103,6 +110,8 @@ public class WritingsService {
         if(request.getWritingGoalId() != null) {
             WritingGoals writingGoal = writingGoalsRepository.findByIdAndIsActive(request.getWritingGoalId(), true)
                     .orElseThrow(WritingNotFoundException::new);
+
+            checkDuplicateWritingGoal(userId, writingGoal);
 
             builder.writingGoal(writingGoal);
         }
@@ -167,5 +176,21 @@ public class WritingsService {
         return VisibilityUpdateResponse.builder()
                 .writing(writing)
                 .build();
+    }
+
+    private void checkDuplicateDailyWord(Long userId, DailyWords dailyWord) {
+        boolean isExist = dailyWordWritingsRepository.existsByUserIdAndDailyWord(userId, dailyWord);
+
+        if(isExist) {
+            throw new DailyWordConflictException();
+        }
+    }
+
+    private void checkDuplicateWritingGoal(Long userId, WritingGoals writingGoal) {
+        boolean isExist = dailyWordWritingsRepository.existsByUserIdAndWritingGoal(userId, writingGoal);
+
+        if(isExist) {
+            throw new WritingGoalConflictException();
+        }
     }
 }
