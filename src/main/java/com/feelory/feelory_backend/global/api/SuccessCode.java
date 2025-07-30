@@ -35,6 +35,7 @@ public enum SuccessCode {
     REGISTER_WRITING_SUCCESS("글 작성 완료"),
     UPDATE_WRITING_SUCCESS("글 수정 완료"),
     DELETE_WRITING_SUCCESS("글 삭제 완료"),
+    UPDATE_WRITING_VISIBILITY_SUCCESS("글 공개 여부 변경 완료"),
     GET_WRITING_GOAL_LIST_SUCCESS("글쓰기 목표 목록 조회 완료"),
     GET_WRITING_GOAL_DETAIL_SUCCESS("글쓰기 목표 상세 조회 완료"),
     REGISTER_WRITING_GOAL_SUCCESS("글쓰기 목표 추가 완료"),

@@ -88,10 +88,10 @@ public class WritingsController {
     }
 
     @PatchMapping("/visibility")
-    public ApiResponse<VisibilityUpdateResponse> patchWritingVisibility(@Valid VisibilityUpdateRequest request) {
+    public ApiResponse<VisibilityUpdateResponse> patchWritingVisibility(@Valid @RequestBody VisibilityUpdateRequest request) {
 
         VisibilityUpdateResponse response = writingsService.modifyVisibility(request);
 
-        return ApiResponse.success(response, SuccessCode.DELETE_WRITING_SUCCESS);
+        return ApiResponse.success(response, SuccessCode.UPDATE_WRITING_VISIBILITY_SUCCESS);
     }
 }
