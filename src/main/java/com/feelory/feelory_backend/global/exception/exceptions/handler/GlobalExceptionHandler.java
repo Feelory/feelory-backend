@@ -119,32 +119,4 @@ public class GlobalExceptionHandler {
                 .status(errorCode.getStatus())
                 .body(apiResponse);
     }
-
-    /*
-        메서드 보안 전역 처리
-    */
-
-    @ExceptionHandler(AuthenticationException.class)
-    public ResponseEntity<ApiResponse<Void>> handleAuthenticationException(AuthenticationException exception) {
-
-        ErrorCode errorCode = ErrorCode.AUTHENTICATION_FAILED;
-        ApiResponse<Void> apiResponse = ApiResponse.error(errorCode);
-
-        log.warn("AuthenticationException: {}", exception.getMessage());
-        return ResponseEntity
-                .status(errorCode.getStatus())
-                .body(apiResponse);
-    }
-
-    @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity<ApiResponse<Void>> handleAccessDeniedException(AccessDeniedException exception) {
-
-        ErrorCode errorCode = ErrorCode.ACCESS_DENIED;
-        ApiResponse<Void> apiResponse = ApiResponse.error(errorCode);
-
-        log.warn("AccessDeniedException: {}", exception.getMessage());
-        return ResponseEntity
-                .status(errorCode.getStatus())
-                .body(apiResponse);
-    }
 }
