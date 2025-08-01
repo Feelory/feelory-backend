@@ -31,4 +31,8 @@ public class UserService {
                 .isActive(true)
                 .build();
     }
+
+    public boolean isActiveUser(Long userId) {
+        return usersRepository.existsByIdAndIsActiveTrue(userId);
+    }
 }
