@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +30,7 @@ public class AuthController {
             security = {@SecurityRequirement(name = "JWT")}
     )
     @PostMapping("/refresh-token")
+    @PreAuthorize("hasRole('USER')")
     public ApiResponse<RefreshTokenResponse> reissueToken(@RequestBody RefreshTokenRequest request) {
 
         RefreshTokenResponse refreshTokenResponse = authService.reissueToken(request);
@@ -42,6 +44,7 @@ public class AuthController {
             security = {@SecurityRequirement(name = "JWT")}
     )
     @PostMapping("/logout")
+    @PreAuthorize("hasRole('USER')")
     public ApiResponse<Void> logout(@RequestBody LogoutRequest request) {
 
         authService.logout(request);
