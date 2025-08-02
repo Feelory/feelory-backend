@@ -1,6 +1,7 @@
 package com.feelory.feelory_backend.global.security.auth.jwt;
 
 import com.feelory.feelory_backend.users.model.UserRole;
+import com.feelory.feelory_backend.users.service.UserService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -19,6 +20,7 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class JwtTokenProvider {
     private final JwtProperties jwtProperties;
+    private final UserService userService;
 
     private Key getSigningKey() {
         byte[] keyBytes = Decoders.BASE64.decode(jwtProperties.getSecret());
@@ -50,7 +52,8 @@ public class JwtTokenProvider {
                     .setSigningKey(getSigningKey())
                     .build()
                     .parseClaimsJws(token);
-            return true;
+            Long userId = getUserIdFromToken(token);
+            return userService.isActiveUser(userId);
         } catch (JwtException | IllegalArgumentException e) {
             return false;
         }
