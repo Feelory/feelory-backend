@@ -1,5 +1,6 @@
 package com.feelory.feelory_backend.users.service;
 
+import com.feelory.feelory_backend.global.util.NicknameGenerator;
 import com.feelory.feelory_backend.users.entity.Users;
 import com.feelory.feelory_backend.users.model.AuthProvider;
 import com.feelory.feelory_backend.users.model.UserRole;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
     private final UsersRepository usersRepository;
+    private final NicknameGenerator nicknameGenerator;
 
     public Users findOrCreateUser(String name, String phoneNumber, AuthProvider authProvider, Long providerUserId) {
         return usersRepository.findByPhoneNumberAndIsActive(phoneNumber, true)
@@ -23,7 +25,7 @@ public class UserService {
     private Users createUsers(String userName, String phoneNumber, AuthProvider authProvider, Long providerUserId) {
         return Users.builder()
                 .name(userName)
-                .nickname("임시닉네임" + (int) (Math.random() * 10000))
+                .nickname(nicknameGenerator.generate())
                 .phoneNumber(phoneNumber)
                 .role(UserRole.USER)
                 .authProvider(authProvider)
