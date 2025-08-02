@@ -1,6 +1,7 @@
 package com.feelory.feelory_backend.global.security.auth.service;
 
 import com.feelory.feelory_backend.global.exception.exceptions.users.InvalidPhoneNumberException;
+import com.feelory.feelory_backend.global.security.auth.dto.request.LogoutRequest;
 import com.feelory.feelory_backend.global.security.auth.dto.response.LoginResponse;
 import com.feelory.feelory_backend.global.security.auth.jwt.JwtTokenProvider;
 import com.feelory.feelory_backend.users.entity.UserTokens;
@@ -74,6 +75,13 @@ public class AuthService {
                 .refreshToken(newRefreshToken)
                 .refreshTokenExpireAt(newRefreshTokenExp)
                 .build();
+    }
+
+    @Transactional
+    public void logout(LogoutRequest request) {
+        UserTokens currentUserToken= userTokenService.findRefreshToken(request.getRefreshToken());
+
+        userTokenService.deactivateRefreshToken(currentUserToken);
     }
 
     private String formatPhoneNumber(String phoneNumber) {

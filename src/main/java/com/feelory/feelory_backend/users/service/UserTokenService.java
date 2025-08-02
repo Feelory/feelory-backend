@@ -52,4 +52,8 @@
 
             userTokensRepository.save(newToken);
         }
+
+        public void deactivateRefreshToken(UserTokens refreshToken) {
+            refreshToken.deactivate();
+        }
     }

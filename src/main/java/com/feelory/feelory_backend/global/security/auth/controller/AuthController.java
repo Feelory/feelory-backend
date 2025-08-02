@@ -2,6 +2,7 @@ package com.feelory.feelory_backend.global.security.auth.controller;
 
 import com.feelory.feelory_backend.global.api.ApiResponse;
 import com.feelory.feelory_backend.global.api.SuccessCode;
+import com.feelory.feelory_backend.global.security.auth.dto.request.LogoutRequest;
 import com.feelory.feelory_backend.global.security.auth.service.AuthService;
 import com.feelory.feelory_backend.users.model.request.RefreshTokenRequest;
 import com.feelory.feelory_backend.users.model.response.RefreshTokenResponse;
@@ -33,5 +34,17 @@ public class AuthController {
         RefreshTokenResponse refreshTokenResponse = authService.reissueToken(request);
 
         return ApiResponse.success(refreshTokenResponse, SuccessCode.REISSUE_TOKENS_SUCCESS);
+    }
+
+    @Operation(
+            summary = "로그아웃 API",
+            description = "해당 요청시 DB의 RefreshToken을 폐기합니다.",
+            security = {@SecurityRequirement(name = "JWT")}
+    )
+    @PostMapping("/logout")
+    public ApiResponse<Void> logout(@RequestBody LogoutRequest request) {
+
+        authService.logout(request);
+        return ApiResponse.success(null, SuccessCode.LOGOUT_SUCCESS);
     }
 }
