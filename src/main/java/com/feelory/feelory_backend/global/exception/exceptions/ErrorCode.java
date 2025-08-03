@@ -11,6 +11,9 @@ public enum ErrorCode {
     ACCESS_DENIED(HttpStatus.FORBIDDEN, "E001", "접근 권한이 없습니다."),
     REFRESH_TOKEN_NOT_FOUND(HttpStatus.NOT_FOUND, "E002", "리프레시 토큰이 존재하지 않습니다."),
     EXPIRED_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "E003", "리프레시 토큰이 만료되었습니다."),
+    INVALID_TOKEN(HttpStatus.NOT_FOUND, "E004", "토큰 정보가 유효하지 않습니다."),
+    ADMIN_ACCESS_DENIED(HttpStatus.NOT_FOUND, "E005", "Admin 권한이 없습니다."),
+    ILLEGAL_USER_TYPE(HttpStatus.NOT_FOUND, "E006", "잘못된 유저 타입입니다."),
 
     // E1XX : USERS(사용자)
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "E100", "해당 유저를 찾을 수 없습니다."),

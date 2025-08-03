@@ -1,5 +1,8 @@
 package com.feelory.feelory_backend.global.security.auth.jwt;
 
+import com.feelory.feelory_backend.global.exception.exceptions.auth.AdminAccessDeniedException;
+import com.feelory.feelory_backend.global.exception.exceptions.auth.IllegalUserTypeException;
+import com.feelory.feelory_backend.global.exception.exceptions.auth.InvalidTokenException;
 import com.feelory.feelory_backend.users.model.UserRole;
 import com.feelory.feelory_backend.users.service.UserService;
 import io.jsonwebtoken.Claims;
@@ -8,13 +11,20 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -74,6 +84,51 @@ public class JwtTokenProvider {
         return expiration.toInstant()
                 .atZone(ZoneId.systemDefault())
                 .toLocalDateTime();
+    }
+
+    public Authentication getAuthenticationFromContext() {
+
+        return SecurityContextHolder.getContext().getAuthentication();
+    }
+
+    public List<UserRole> getRolesFromAuthentication() {
+        Authentication authentication = getAuthenticationFromContext();
+
+        return authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .map(UserRole::valueOf)
+                .collect(Collectors.toList());
+    }
+
+    public void checkAdmin() {
+        List<UserRole> roles = getRolesFromAuthentication();
+
+        boolean isAdmin = roles.stream()
+                .anyMatch(hasRole -> hasRole.equals(UserRole.ADMIN));
+
+        if(!isAdmin) {
+            throw new AdminAccessDeniedException();
+        }
+    }
+
+    public UserDetails getUserDetailsFromAuthentication() {
+        Authentication authentication = getAuthenticationFromContext();
+
+        Object principal = authentication.getPrincipal();
+
+        if (principal instanceof UserDetails) {
+            return (UserDetails) principal;
+        } else {
+            throw new IllegalUserTypeException();
+        }
+    }
+
+    public Long getUserIdFromUserDetails() {
+        UserDetails userDetails = getUserDetailsFromAuthentication();
+
+        String userId = userDetails.getUsername();
+
+        return Long.parseLong(userId);
     }
 
     private Claims parseClaims(String token) {
