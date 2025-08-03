@@ -45,9 +45,6 @@ public class DailyWordsController {
         return ApiResponse.success(response, SuccessCode.GET_TODAY_DAILY_WORD_SUCCESS);
     }
 
-    /*
-        TODO. [TR-YOO] Admin 검증 로직 추가 필요
-    */
     @Operation(
             summary = "오늘의 단어 추가",
             description = DailyWordsDocs.POST_DAILY_WORD_DESCRIPTION
@@ -65,9 +62,6 @@ public class DailyWordsController {
         return ApiResponse.success(response, code);
     }
 
-    /*
-        TODO. [TR-YOO] Admin 검증 로직 추가 필요
-    */
     @PatchMapping("")
     public ApiResponse<DailyWordUpdateResponse> patchDailyWord(@Valid @RequestBody DailyWordUpdateRequest request) {
 
@@ -76,9 +70,6 @@ public class DailyWordsController {
         return ApiResponse.success(response, SuccessCode.UPDATE_DAILY_WORD_SUCCESS);
     }
 
-    /*
-        TODO. [TR-YOO] Admin 검증 로직 추가 필요
-    */
     @DeleteMapping("")
     public ApiResponse<DailyWordDeleteResponse> deleteDailyWord(@Valid DailyWordDeleteRequest request) {
 

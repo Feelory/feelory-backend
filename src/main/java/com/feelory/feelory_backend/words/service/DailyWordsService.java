@@ -3,6 +3,7 @@ package com.feelory.feelory_backend.words.service;
 import com.feelory.feelory_backend.global.exception.exceptions.words.DailyWordNotFoundException;
 import com.feelory.feelory_backend.global.exception.exceptions.words.InvalidTopicDateException;
 import com.feelory.feelory_backend.global.exception.exceptions.words.WordAlreadyUsedException;
+import com.feelory.feelory_backend.global.security.auth.jwt.JwtTokenProvider;
 import com.feelory.feelory_backend.words.entity.DailyWords;
 import com.feelory.feelory_backend.words.entity.Words;
 import com.feelory.feelory_backend.words.model.*;
@@ -22,11 +23,12 @@ public class DailyWordsService {
 
     private final DailyWordsRepository dailyWordsRepository;
     private final WordsRepository wordsRepository;
-
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Transactional
     public DailyWordCreateResponse registerAndUpdateDailyWord(DailyWordCreateRequest request) {
 
+        jwtTokenProvider.checkAdmin();
         validateDateTime(request.getParsedTopicDate());
         checkDuplicateWordId(request.getWordId());
 
@@ -77,6 +79,7 @@ public class DailyWordsService {
     @Transactional
     public DailyWordUpdateResponse modifyDailyWord(DailyWordUpdateRequest request) {
 
+        jwtTokenProvider.checkAdmin();
         validateDateTime(request.getParsedTopicDate());
         checkDuplicateWordId(request.getWordId());
 
@@ -92,6 +95,8 @@ public class DailyWordsService {
 
     @Transactional
     public DailyWordDeleteResponse removeDailyWord(DailyWordDeleteRequest request) {
+
+        jwtTokenProvider.checkAdmin();
 
         DailyWords entity = dailyWordsRepository.findByIdAndIsActive(request.getId(), true)
                 .orElseThrow(DailyWordNotFoundException::new);
