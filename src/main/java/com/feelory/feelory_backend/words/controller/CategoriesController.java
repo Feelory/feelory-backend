@@ -6,6 +6,7 @@ import com.feelory.feelory_backend.words.model.*;
 import com.feelory.feelory_backend.words.service.CategoriesService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
@@ -31,9 +32,6 @@ public class CategoriesController {
         return ApiResponse.success(response, SuccessCode.GET_CATEGORY_LIST_SUCCESS);
     }
 
-    /*
-        TODO. [TR-YOO] Admin 검증 로직 추가 필요
-    */
     @Operation(
             summary = "카테고리 추가",
             description = "단어 카테고리 추가 API"
@@ -45,9 +43,6 @@ public class CategoriesController {
         return ApiResponse.success(response, SuccessCode.REGISTER_CATEGORY_SUCCESS);
     }
 
-    /*
-        TODO. [TR-YOO] Admin 검증 로직 추가 필요
-    */
     @Operation(
             summary = "카테고리 수정",
             description = "단어 카테고리 수정 API"
@@ -59,9 +54,6 @@ public class CategoriesController {
         return ApiResponse.success(response, SuccessCode.UPDATE_CATEGORY_SUCCESS);
     }
 
-    /*
-        TODO. [TR-YOO] Admin 검증 로직 추가 필요
-    */
     @Operation(
             summary = "카테고리 제거",
             description = "단어 카테고리 제거(비활성화) API"

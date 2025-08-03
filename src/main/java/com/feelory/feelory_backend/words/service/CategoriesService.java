@@ -2,6 +2,7 @@ package com.feelory.feelory_backend.words.service;
 
 import com.feelory.feelory_backend.global.exception.exceptions.words.CategoryNotFoundException;
 import com.feelory.feelory_backend.global.exception.exceptions.words.DuplicateCategoryNameException;
+import com.feelory.feelory_backend.global.security.auth.jwt.JwtTokenProvider;
 import com.feelory.feelory_backend.global.util.ValidationUtil;
 import com.feelory.feelory_backend.words.entity.WordCategories;
 import com.feelory.feelory_backend.words.model.*;
@@ -19,6 +20,7 @@ public class CategoriesService {
 
     private final CategoriesRepository categoriesRepository;
     private final ValidationUtil validationUtil;
+    private final JwtTokenProvider jwtTokenProvider;
 
     public CategoryListResponse getCategories(CategoryListRequest request) {
 
@@ -31,6 +33,7 @@ public class CategoriesService {
     @Transactional
     public CategoryCreateResponse registerCategory(CategoryCreateRequest request) {
 
+        jwtTokenProvider.checkAdmin();
         checkDuplicateName(request.getName());
 
         WordCategories entity = request.toEntity();
@@ -46,6 +49,8 @@ public class CategoriesService {
 
     @Transactional
     public CategoryUpdateResponse modifyCategory(CategoryUpdateRequest request) {
+
+        jwtTokenProvider.checkAdmin();
 
         WordCategories entity = categoriesRepository.findByIdAndIsActive(request.getId(), true)
                 .orElseThrow(CategoryNotFoundException::new);
@@ -76,6 +81,8 @@ public class CategoriesService {
 
     @Transactional
     public CategoryDeleteResponse removeCategory(CategoryDeleteRequest request) {
+
+        jwtTokenProvider.checkAdmin();
 
         WordCategories entity = categoriesRepository.findByIdAndIsActive(request.getId(), true)
                 .orElseThrow(CategoryNotFoundException::new);
