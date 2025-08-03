@@ -14,6 +14,7 @@ public enum ErrorCode {
     INVALID_TOKEN(HttpStatus.NOT_FOUND, "E004", "토큰 정보가 유효하지 않습니다."),
     ADMIN_ACCESS_DENIED(HttpStatus.NOT_FOUND, "E005", "Admin 권한이 없습니다."),
     ILLEGAL_USER_TYPE(HttpStatus.NOT_FOUND, "E006", "잘못된 유저 타입입니다."),
+    USER_ID_NOT_FOUND(HttpStatus.NOT_FOUND, "E007", "로그인한 유저의 아이디 추출 시 오류가 발생했습니다."),
 
     // E1XX : USERS(사용자)
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "E100", "해당 유저를 찾을 수 없습니다."),

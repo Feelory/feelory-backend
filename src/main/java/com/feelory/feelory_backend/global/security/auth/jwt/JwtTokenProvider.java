@@ -3,6 +3,7 @@ package com.feelory.feelory_backend.global.security.auth.jwt;
 import com.feelory.feelory_backend.global.exception.exceptions.auth.AdminAccessDeniedException;
 import com.feelory.feelory_backend.global.exception.exceptions.auth.IllegalUserTypeException;
 import com.feelory.feelory_backend.global.exception.exceptions.auth.InvalidTokenException;
+import com.feelory.feelory_backend.global.exception.exceptions.auth.UserIdNotFoundException;
 import com.feelory.feelory_backend.users.model.UserRole;
 import com.feelory.feelory_backend.users.service.UserService;
 import io.jsonwebtoken.Claims;
@@ -127,6 +128,10 @@ public class JwtTokenProvider {
         UserDetails userDetails = getUserDetailsFromAuthentication();
 
         String userId = userDetails.getUsername();
+
+        if(userId == null) {
+            throw new UserIdNotFoundException();
+        }
 
         return Long.parseLong(userId);
     }
