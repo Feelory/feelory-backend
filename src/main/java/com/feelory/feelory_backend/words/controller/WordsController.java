@@ -31,9 +31,6 @@ public class WordsController {
         return ApiResponse.success(response, SuccessCode.GET_WORD_LIST_SUCCESS);
     }
 
-    /*
-        TODO. [TR-YOO] Admin 검증 로직 추가 필요
-    */
     @Operation(
             summary = "단어 추가",
             description = "단어 추가 API"
@@ -45,9 +42,6 @@ public class WordsController {
         return ApiResponse.success(response, SuccessCode.REGISTER_WORD_SUCCESS);
     }
 
-    /*
-        TODO. [TR-YOO] Admin 검증 로직 추가 필요
-    */
     @Operation(
             summary = "단어 수정",
             description = "단어 수정 API"
@@ -59,9 +53,6 @@ public class WordsController {
         return ApiResponse.success(response, SuccessCode.UPDATE_WORD_SUCCESS);
     }
 
-    /*
-        TODO. [TR-YOO] Admin 검증 로직 추가 필요
-    */
     @Operation(
             summary = "단어 삭제",
             description = "단어 삭제 API"
