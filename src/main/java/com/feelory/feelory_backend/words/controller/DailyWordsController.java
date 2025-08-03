@@ -3,6 +3,7 @@ package com.feelory.feelory_backend.words.controller;
 import com.feelory.feelory_backend.global.api.ApiResponse;
 import com.feelory.feelory_backend.global.api.SuccessCode;
 import com.feelory.feelory_backend.global.exception.exceptions.common.InvalidDateFormatException;
+import com.feelory.feelory_backend.global.security.auth.jwt.JwtTokenProvider;
 import com.feelory.feelory_backend.words.docs.DailyWordsDocs;
 import com.feelory.feelory_backend.words.model.*;
 import com.feelory.feelory_backend.words.service.DailyWordsService;
@@ -22,6 +23,7 @@ import java.time.format.DateTimeParseException;
 public class DailyWordsController {
 
     private final DailyWordsService dailyWordsService;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @GetMapping("/{topicDate}")
     public ApiResponse<DailyWordDetailResponse> getDailyWord(@PathVariable String topicDate) {
@@ -51,6 +53,8 @@ public class DailyWordsController {
     )
     @PostMapping("")
     public ApiResponse<DailyWordCreateResponse> postDailyWord(@Valid @RequestBody DailyWordCreateRequest request) {
+        jwtTokenProvider.checkAdmin();
+
         DailyWordCreateResponse response = dailyWordsService.registerAndUpdateDailyWord(request);
 
         boolean isAlreadyAssigned = response.getIsAlreadyAssigned();
@@ -65,6 +69,8 @@ public class DailyWordsController {
     @PatchMapping("")
     public ApiResponse<DailyWordUpdateResponse> patchDailyWord(@Valid @RequestBody DailyWordUpdateRequest request) {
 
+        jwtTokenProvider.checkAdmin();
+
         DailyWordUpdateResponse response = dailyWordsService.modifyDailyWord(request);
 
         return ApiResponse.success(response, SuccessCode.UPDATE_DAILY_WORD_SUCCESS);
@@ -72,6 +78,8 @@ public class DailyWordsController {
 
     @DeleteMapping("")
     public ApiResponse<DailyWordDeleteResponse> deleteDailyWord(@Valid DailyWordDeleteRequest request) {
+
+        jwtTokenProvider.checkAdmin();
 
         DailyWordDeleteResponse response = dailyWordsService.removeDailyWord(request);
 
