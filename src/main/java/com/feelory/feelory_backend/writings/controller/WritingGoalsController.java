@@ -19,9 +19,6 @@ public class WritingGoalsController {
 
     private final WritingGoalsService writingGoalsService;
 
-    /*
-        TODO. [TR-YOO] 로그인 유저 검증 로직 필요
-    */
     @Operation(
             summary = "글쓰기 목표 목록 조회",
             description = "글쓰기 목표 목록 조회 API"
@@ -34,9 +31,6 @@ public class WritingGoalsController {
         return ApiResponse.success(response, SuccessCode.GET_WRITING_GOAL_LIST_SUCCESS);
     }
 
-    /*
-        TODO. [TR-YOO] 로그인 유저 검증 로직 필요
-    */
     @Operation(
             summary = "글쓰기 목표 상세 조회",
             description = "글쓰기 목표 상세 조회 API"
@@ -49,9 +43,6 @@ public class WritingGoalsController {
         return ApiResponse.success(response, SuccessCode.GET_WRITING_GOAL_DETAIL_SUCCESS);
     }
 
-    /*
-        TODO. [TR-YOO] 로그인 유저 검증 로직 필요
-    */
     @Operation(
             summary = "글쓰기 목표 추가",
             description = "글쓰기 목표 추가 API"
@@ -64,9 +55,6 @@ public class WritingGoalsController {
         return ApiResponse.success(response, SuccessCode.REGISTER_WRITING_GOAL_SUCCESS);
     }
 
-    /*
-        TODO. [TR-YOO] 로그인 유저 검증 로직 필요
-    */
     @Operation(
             summary = "글쓰기 목표 수정",
             description = "글쓰기 목표 수정 API"
@@ -79,9 +67,7 @@ public class WritingGoalsController {
         return ApiResponse.success(response, SuccessCode.UPDATE_WRITING_GOAL_SUCCESS);
     }
 
-    /*
-        TODO. [TR-YOO] 로그인 유저 검증 로직 필요
-    */
+
     @Operation(
             summary = "글쓰기 목표 삭제",
             description = "글쓰기 목표 삭제 API"

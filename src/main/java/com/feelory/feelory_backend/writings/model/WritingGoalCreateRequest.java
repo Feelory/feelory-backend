@@ -19,8 +19,6 @@ import java.time.format.DateTimeParseException;
 @AllArgsConstructor
 @NoArgsConstructor
 public class WritingGoalCreateRequest {
-    @NotNull(message = "유저 ID는 필수입니다.")
-    private Long userId;
     @NotBlank(message = "단어 이름은 필수입니다.")
     private String name;
     private String description;
@@ -35,7 +33,6 @@ public class WritingGoalCreateRequest {
                 .withHour(23).withMinute(59).withSecond(59);
 
         return WritingGoals.builder()
-                .userId(this.userId)
                 .name(this.name)
                 .description(this.description)
                 .duration(this.duration)
