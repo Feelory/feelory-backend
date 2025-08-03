@@ -1,5 +1,6 @@
 package com.feelory.feelory_backend.writings.repository;
 
+import com.feelory.feelory_backend.users.entity.QUsers;
 import com.feelory.feelory_backend.words.entity.QDailyWords;
 import com.feelory.feelory_backend.words.entity.QWordCategories;
 import com.feelory.feelory_backend.words.entity.QWords;
@@ -30,6 +31,7 @@ public class DailyWordWritingsRepositoryImpl implements DailyWordWritingsReposit
     public Page<DailyWordWritings> searchWritings(WritingSearchDto dto, Pageable pageable) {
         QDailyWordWritings qDailyWordWritings = QDailyWordWritings.dailyWordWritings;
         QDailyWords qDailyWords = QDailyWords.dailyWords;
+        QUsers qUsers = QUsers.users;
         QWords qWords = QWords.words;
         QWordCategories qWordCategories = QWordCategories.wordCategories;
         QWritingGoals qWritingGoals = QWritingGoals.writingGoals;
@@ -38,7 +40,7 @@ public class DailyWordWritingsRepositoryImpl implements DailyWordWritingsReposit
 
 
         if(dto.getUserId() != null) {
-            builder.and(qDailyWordWritings.userId.eq(dto.getUserId()));
+            builder.and(qDailyWordWritings.user.id.eq(dto.getUserId()));
         }
 
         if(dto.getSearchDate() != null) {
@@ -55,6 +57,7 @@ public class DailyWordWritingsRepositoryImpl implements DailyWordWritingsReposit
         List<DailyWordWritings> content = jpaQueryFactory
                 .selectFrom(qDailyWordWritings)
                 .join(qDailyWordWritings.dailyWord, qDailyWords).fetchJoin()
+                .join(qDailyWordWritings.user, qUsers).fetchJoin()
                 .join(qDailyWords.word, qWords).fetchJoin()
                 .join(qWords.category, qWordCategories).fetchJoin()
                 .join(qDailyWordWritings.writingGoal, qWritingGoals).fetchJoin()
@@ -78,6 +81,7 @@ public class DailyWordWritingsRepositoryImpl implements DailyWordWritingsReposit
     public Optional<DailyWordWritings> searchWritingDetailByDto(WritingSearchDto writingSearchDto) {
         QDailyWordWritings qDailyWordWritings = QDailyWordWritings.dailyWordWritings;
         QDailyWords qDailyWords = QDailyWords.dailyWords;
+        QUsers qUsers = QUsers.users;
         QWords qWords = QWords.words;
         QWordCategories qWordCategories = QWordCategories.wordCategories;
         QWritingGoals qWritingGoals = QWritingGoals.writingGoals;
@@ -89,11 +93,12 @@ public class DailyWordWritingsRepositoryImpl implements DailyWordWritingsReposit
         DailyWordWritings content = jpaQueryFactory
                 .selectFrom(qDailyWordWritings)
                 .join(qDailyWordWritings.dailyWord, qDailyWords).fetchJoin()
+                .join(qDailyWordWritings.user, qUsers).fetchJoin()
                 .join(qDailyWords.word, qWords).fetchJoin()
                 .join(qWords.category, qWordCategories).fetchJoin()
                 .join(qDailyWordWritings.writingGoal, qWritingGoals).fetchJoin()
                 .where(
-                    qDailyWordWritings.userId.eq(writingSearchDto.getUserId()),
+                    qDailyWordWritings.user.id.eq(writingSearchDto.getUserId()),
                     qDailyWordWritings.createdAt.between(start, end),
                     qDailyWordWritings.isActive.eq(writingSearchDto.getIsActive())
                 )

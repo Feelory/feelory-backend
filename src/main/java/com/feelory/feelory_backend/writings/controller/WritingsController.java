@@ -35,9 +35,9 @@ public class WritingsController {
             description = "오늘 내가 쓴 글 조회 API"
     )
     @GetMapping("/me/today")
-    public ApiResponse<UserTodayWritingResponse> getUserTodayWriting(UserTodayWritingRequest request) {
+    public ApiResponse<UserTodayWritingResponse> getUserTodayWriting() {
 
-        UserTodayWritingResponse response = writingsService.getUserTodayWriting(request);
+        UserTodayWritingResponse response = writingsService.getUserTodayWriting();
 
         return ApiResponse.success(response, SuccessCode.GET_USER_TODAY_WRITING_SUCCESS);
     }
