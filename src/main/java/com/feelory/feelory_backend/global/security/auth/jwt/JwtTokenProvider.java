@@ -2,7 +2,6 @@ package com.feelory.feelory_backend.global.security.auth.jwt;
 
 import com.feelory.feelory_backend.global.exception.exceptions.auth.AdminAccessDeniedException;
 import com.feelory.feelory_backend.global.exception.exceptions.auth.IllegalUserTypeException;
-import com.feelory.feelory_backend.global.exception.exceptions.auth.InvalidTokenException;
 import com.feelory.feelory_backend.global.exception.exceptions.auth.UserIdNotFoundException;
 import com.feelory.feelory_backend.users.model.UserRole;
 import com.feelory.feelory_backend.users.service.UserService;
@@ -12,7 +11,6 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -126,6 +124,7 @@ public class JwtTokenProvider {
     }
 
     public Long getUserIdFromUserDetails() {
+
         UserDetails userDetails = getUserDetailsFromAuthentication();
 
         String userId = userDetails.getUsername();
@@ -136,6 +135,15 @@ public class JwtTokenProvider {
 
         return Long.parseLong(userId);
     }
+
+    public Long getUserIdFromAuthentication() {
+        Authentication authentication = getAuthenticationFromContext();
+
+        Object principal = authentication.getPrincipal();
+
+        return (Long) principal;
+    }
+
 
     private Claims parseClaims(String token) {
         return Jwts.parserBuilder()

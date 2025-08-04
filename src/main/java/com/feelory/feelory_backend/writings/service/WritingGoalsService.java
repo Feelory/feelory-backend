@@ -29,7 +29,7 @@ public class WritingGoalsService {
 
     public WritingGoalListResponse getWritingGoals(WritingGoalListRequest request) {
 
-        Long userId = jwtTokenProvider.getUserIdFromUserDetails();
+        Long userId = jwtTokenProvider.getUserIdFromAuthentication();
 
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
 
@@ -46,7 +46,7 @@ public class WritingGoalsService {
 
     public WritingGoalDetailResponse getWritingGoalDetail(Long id) {
 
-        Long userId = jwtTokenProvider.getUserIdFromUserDetails();
+        Long userId = jwtTokenProvider.getUserIdFromAuthentication();
 
         WritingGoals entity = writingGoalsRepository.findByIdAndUserId(id, userId)
                 .orElseThrow(WritingGoalNotFoundException::new);
@@ -61,7 +61,7 @@ public class WritingGoalsService {
     @Transactional
     public WritingGoalCreateResponse registerWritingGoal(WritingGoalCreateRequest request) {
 
-        Long userId = jwtTokenProvider.getUserIdFromUserDetails();
+        Long userId = jwtTokenProvider.getUserIdFromAuthentication();
         checkDuplicateName(userId, request.getName());
 
         WritingGoals entity = request.toEntity();
@@ -77,7 +77,7 @@ public class WritingGoalsService {
     @Transactional
     public WritingGoalUpdateResponse modifyWritingGoal(WritingGoalUpdateRequest request) {
 
-        Long userId = jwtTokenProvider.getUserIdFromUserDetails();
+        Long userId = jwtTokenProvider.getUserIdFromAuthentication();
 
         WritingGoals entity = writingGoalsRepository.findByIdAndUserIdAndIsActive(request.getId(), userId, true)
                 .orElseThrow(WritingGoalNotFoundException::new);
@@ -115,7 +115,7 @@ public class WritingGoalsService {
 
     @Transactional
     public WritingGoalDeleteResponse removeWritingGoal(WritingGoalDeleteRequest request) {
-        Long userId = jwtTokenProvider.getUserIdFromUserDetails();
+        Long userId = jwtTokenProvider.getUserIdFromAuthentication();
         WritingGoals entity = writingGoalsRepository.findByIdAndUserIdAndIsActive(request.getId(), userId, true)
                 .orElseThrow(WritingGoalNotFoundException::new);
 
