@@ -3,6 +3,7 @@ package com.feelory.feelory_backend.words.service;
 import com.feelory.feelory_backend.global.exception.exceptions.words.CategoryNotFoundException;
 import com.feelory.feelory_backend.global.exception.exceptions.words.DuplicateWordNameException;
 import com.feelory.feelory_backend.global.exception.exceptions.words.WordNotFoundException;
+import com.feelory.feelory_backend.global.security.auth.jwt.JwtTokenProvider;
 import com.feelory.feelory_backend.global.util.ValidationUtil;
 import com.feelory.feelory_backend.words.entity.WordCategories;
 import com.feelory.feelory_backend.words.entity.Words;
@@ -34,7 +35,6 @@ public class WordsService {
 
     @Transactional
     public WordCreateResponse registerWord(WordCreateRequest request) {
-
         checkDuplicateName(request.getName());
 
         WordCategories category = getCategory(request.getCategoryId());
@@ -86,6 +86,7 @@ public class WordsService {
 
     @Transactional
     public WordDeleteResponse removeWord(WordDeleteRequest request) {
+
         Words entity = wordsRepository.findByIdAndIsActive(request.getId(), true)
                 .orElseThrow(WordNotFoundException::new);
 

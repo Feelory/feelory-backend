@@ -33,7 +33,7 @@ public class WritingGoalDto {
 
         return WritingGoalDto.builder()
                 .id(writingGoals.getId())
-                .userId(writingGoals.getUserId())
+                .userId(writingGoals.getUser().getId())
                 .name(writingGoals.getName())
                 .duration(writingGoals.getDuration())
                 .description(writingGoals.getDescription())

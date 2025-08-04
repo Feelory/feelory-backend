@@ -1,5 +1,6 @@
 package com.feelory.feelory_backend.writings.model;
 
+import com.feelory.feelory_backend.users.entity.Users;
 import com.feelory.feelory_backend.words.entity.DailyWords;
 import com.feelory.feelory_backend.writings.entity.DailyWordWritings;
 import com.feelory.feelory_backend.writings.entity.WritingGoals;
@@ -18,8 +19,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserWritingCreateRequest {
-    @NotNull(message = "유저 ID는 필수입니다.")
-    private Long userId;
     @NotBlank(message = "내용은 필수입니다.")
     private String content;
     @NotNull(message = "오늘의 단어 ID는 필수입니다.")
@@ -28,11 +27,11 @@ public class UserWritingCreateRequest {
     private Long writingGoalId;
     private Boolean visibility = true;
 
-    public DailyWordWritings toEntity(DailyWords dailyWord, WritingGoals writingGoal) {
+    public DailyWordWritings toEntity(Users user, DailyWords dailyWord, WritingGoals writingGoal) {
 
         return DailyWordWritings.builder()
+                .user(user)
                 .dailyWord(dailyWord)
-                .userId(this.userId)
                 .writingGoal(writingGoal)
                 .content(this.content)
                 .visibility(this.visibility)

@@ -15,8 +15,9 @@ public interface DailyWordWritingsRepository extends JpaRepository<DailyWordWrit
     Boolean existsByUserIdAndWritingGoal(Long userId, WritingGoals writingGoal);
 
     @EntityGraph(attributePaths = {
+            "user",
             "dailyWord",
             "writingGoal"
     })
-    Optional<DailyWordWritings> findByIdAndIsActive(Long id, Boolean isActive);
+    Optional<DailyWordWritings> findByIdAndUserIdAndIsActive(Long id, Long userId, Boolean isActive);
 }

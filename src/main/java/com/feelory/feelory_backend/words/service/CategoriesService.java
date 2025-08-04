@@ -2,6 +2,7 @@ package com.feelory.feelory_backend.words.service;
 
 import com.feelory.feelory_backend.global.exception.exceptions.words.CategoryNotFoundException;
 import com.feelory.feelory_backend.global.exception.exceptions.words.DuplicateCategoryNameException;
+import com.feelory.feelory_backend.global.security.auth.jwt.JwtTokenProvider;
 import com.feelory.feelory_backend.global.util.ValidationUtil;
 import com.feelory.feelory_backend.words.entity.WordCategories;
 import com.feelory.feelory_backend.words.model.*;
@@ -30,7 +31,6 @@ public class CategoriesService {
 
     @Transactional
     public CategoryCreateResponse registerCategory(CategoryCreateRequest request) {
-
         checkDuplicateName(request.getName());
 
         WordCategories entity = request.toEntity();

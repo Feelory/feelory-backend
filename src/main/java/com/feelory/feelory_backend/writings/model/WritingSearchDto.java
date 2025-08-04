@@ -16,21 +16,21 @@ public class WritingSearchDto {
     private LocalDateTime searchDate;
     private Boolean isActive;
 
-    public static WritingSearchDto fromListRequest(UserWritingListRequest request) {
+    public static WritingSearchDto fromListRequest(UserWritingListRequest request, Long userId) {
 
         return WritingSearchDto.builder()
-                .userId(request.getUserId())
+                .userId(userId)
                 .searchDate(request.getSearchDate())
                 .isActive(true)
                 .build();
     }
 
-    public static WritingSearchDto fromTodayRequest(UserTodayWritingRequest request) {
+    public static WritingSearchDto fromUserId(Long userId) {
 
         LocalDateTime today = LocalDateTime.now();
 
         return WritingSearchDto.builder()
-                .userId(request.getUserId())
+                .userId(userId)
                 .searchDate(today)
                 .isActive(true)
                 .build();

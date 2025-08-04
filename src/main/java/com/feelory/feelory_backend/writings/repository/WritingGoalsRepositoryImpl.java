@@ -27,7 +27,7 @@ public class WritingGoalsRepositoryImpl implements WritingGoalsRepositoryCustom 
 
         BooleanBuilder builder = new BooleanBuilder();
 
-        builder.and(qWritingGoals.userId.eq(searchDto.getUserId()));
+        builder.and(qWritingGoals.user.id.eq(searchDto.getUserId()));
 
         LocalDateTime today = LocalDate.now().atStartOfDay();
 

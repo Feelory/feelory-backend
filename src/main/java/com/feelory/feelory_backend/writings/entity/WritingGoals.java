@@ -1,6 +1,7 @@
 package com.feelory.feelory_backend.writings.entity;
 
 import com.feelory.feelory_backend.global.BaseEntity;
+import com.feelory.feelory_backend.users.entity.Users;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -26,11 +27,12 @@ public class WritingGoals extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name="user_id", nullable = false)
-    private Long userId;
-
     @Column(name="name", nullable = false)
     private String name;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private Users user;
 
     @Column(name="duration", nullable = false)
     private int duration;

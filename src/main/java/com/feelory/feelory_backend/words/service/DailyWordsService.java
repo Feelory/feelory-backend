@@ -23,7 +23,6 @@ public class DailyWordsService {
     private final DailyWordsRepository dailyWordsRepository;
     private final WordsRepository wordsRepository;
 
-
     @Transactional
     public DailyWordCreateResponse registerAndUpdateDailyWord(DailyWordCreateRequest request) {
 

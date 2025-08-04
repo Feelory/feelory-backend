@@ -10,6 +10,9 @@ public interface WritingGoalsRepository extends JpaRepository<WritingGoals, Long
 
     Boolean existsByUserIdAndName(Long userId, String name);
 
-//    @EntityGraph(attributePaths = "user")
-    Optional<WritingGoals> findByIdAndIsActive(Long id, Boolean isActive);
+    @EntityGraph(attributePaths = "user")
+    Optional<WritingGoals> findByIdAndUserIdAndIsActive(Long id, Long userId, Boolean isActive);
+
+    @EntityGraph(attributePaths = "user")
+    Optional<WritingGoals> findByIdAndUserId(Long id, Long userId);
 }

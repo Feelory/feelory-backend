@@ -3,6 +3,7 @@ package com.feelory.feelory_backend.words.controller;
 
 import com.feelory.feelory_backend.global.api.ApiResponse;
 import com.feelory.feelory_backend.global.api.SuccessCode;
+import com.feelory.feelory_backend.global.security.auth.jwt.JwtTokenProvider;
 import com.feelory.feelory_backend.words.model.*;
 import com.feelory.feelory_backend.words.service.WordsService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 public class WordsController {
 
     private final WordsService wordsService;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Operation(
             summary = "모든 단어 목록",
@@ -31,43 +33,40 @@ public class WordsController {
         return ApiResponse.success(response, SuccessCode.GET_WORD_LIST_SUCCESS);
     }
 
-    /*
-        TODO. [TR-YOO] Admin 검증 로직 추가 필요
-    */
     @Operation(
             summary = "단어 추가",
             description = "단어 추가 API"
     )
     @PostMapping("")
     public ApiResponse<WordCreateResponse> registerWord(@Valid @RequestBody WordCreateRequest request) {
+        jwtTokenProvider.checkAdmin();
+
         WordCreateResponse response = wordsService.registerWord(request);
 
         return ApiResponse.success(response, SuccessCode.REGISTER_WORD_SUCCESS);
     }
 
-    /*
-        TODO. [TR-YOO] Admin 검증 로직 추가 필요
-    */
     @Operation(
             summary = "단어 수정",
             description = "단어 수정 API"
     )
     @PatchMapping("")
     public ApiResponse<WordUpdateResponse> patchWord(@Valid @RequestBody WordUpdateRequest request) {
+        jwtTokenProvider.checkAdmin();
+
         WordUpdateResponse response = wordsService.modifyWord(request);
 
         return ApiResponse.success(response, SuccessCode.UPDATE_WORD_SUCCESS);
     }
 
-    /*
-        TODO. [TR-YOO] Admin 검증 로직 추가 필요
-    */
     @Operation(
             summary = "단어 삭제",
             description = "단어 삭제 API"
     )
     @DeleteMapping("")
     public ApiResponse<WordDeleteResponse> deleteWord(@Valid WordDeleteRequest request) {
+        jwtTokenProvider.checkAdmin();
+
         WordDeleteResponse response = wordsService.removeWord(request);
 
         return ApiResponse.success(response, SuccessCode.DELETE_WORD_SUCCESS);

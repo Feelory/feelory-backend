@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserWritingListRequest {
-    private Long userId;
     private Integer year;
     private Integer month;
     private int page = 0 ;
