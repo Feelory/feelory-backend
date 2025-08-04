@@ -1,4 +1,4 @@
-package com.feelory.feelory_backend.writings.model;
+package com.feelory.feelory_backend.writings.dto.model;
 
 import com.feelory.feelory_backend.words.dto.model.DailyWord;
 import com.feelory.feelory_backend.words.dto.model.DailyWordSummary;

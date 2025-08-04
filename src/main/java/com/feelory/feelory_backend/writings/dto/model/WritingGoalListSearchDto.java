@@ -1,4 +1,4 @@
-package com.feelory.feelory_backend.writings.model;
+package com.feelory.feelory_backend.writings.dto.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

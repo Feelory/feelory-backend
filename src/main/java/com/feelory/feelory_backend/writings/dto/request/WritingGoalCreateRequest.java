@@ -1,4 +1,4 @@
-package com.feelory.feelory_backend.writings.model;
+package com.feelory.feelory_backend.writings.dto.request;
 
 import com.feelory.feelory_backend.users.entity.Users;
 import com.feelory.feelory_backend.writings.entity.WritingGoals;
@@ -11,8 +11,6 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 
 @Getter
 @Builder

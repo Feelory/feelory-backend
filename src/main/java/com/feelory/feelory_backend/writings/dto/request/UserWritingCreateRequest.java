@@ -1,4 +1,4 @@
-package com.feelory.feelory_backend.writings.model;
+package com.feelory.feelory_backend.writings.dto.request;
 
 import com.feelory.feelory_backend.users.entity.Users;
 import com.feelory.feelory_backend.words.entity.DailyWords;

@@ -1,6 +1,6 @@
 package com.feelory.feelory_backend.writings.repository;
 
-import com.feelory.feelory_backend.writings.model.WritingSearchDto;
+import com.feelory.feelory_backend.writings.dto.model.WritingSearchDto;
 import com.feelory.feelory_backend.writings.entity.DailyWordWritings;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

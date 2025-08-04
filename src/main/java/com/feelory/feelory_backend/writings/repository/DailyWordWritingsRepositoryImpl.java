@@ -4,7 +4,7 @@ import com.feelory.feelory_backend.users.entity.QUsers;
 import com.feelory.feelory_backend.words.entity.QDailyWords;
 import com.feelory.feelory_backend.words.entity.QWordCategories;
 import com.feelory.feelory_backend.words.entity.QWords;
-import com.feelory.feelory_backend.writings.model.WritingSearchDto;
+import com.feelory.feelory_backend.writings.dto.model.WritingSearchDto;
 import com.feelory.feelory_backend.writings.entity.DailyWordWritings;
 import com.feelory.feelory_backend.writings.entity.QDailyWordWritings;
 import com.feelory.feelory_backend.writings.entity.QWritingGoals;

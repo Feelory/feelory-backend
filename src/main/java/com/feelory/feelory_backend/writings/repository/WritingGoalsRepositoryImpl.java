@@ -2,7 +2,7 @@ package com.feelory.feelory_backend.writings.repository;
 
 import com.feelory.feelory_backend.writings.entity.QWritingGoals;
 import com.feelory.feelory_backend.writings.entity.WritingGoals;
-import com.feelory.feelory_backend.writings.model.WritingGoalListSearchDto;
+import com.feelory.feelory_backend.writings.dto.model.WritingGoalListSearchDto;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;

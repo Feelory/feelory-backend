@@ -1,4 +1,4 @@
-package com.feelory.feelory_backend.writings.model;
+package com.feelory.feelory_backend.writings.dto.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.feelory.feelory_backend.writings.entity.WritingGoals;

@@ -1,4 +1,4 @@
-package com.feelory.feelory_backend.writings.model;
+package com.feelory.feelory_backend.writings.dto.request;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -10,9 +10,11 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class VisibilityUpdateRequest {
+public class UserWritingUpdateRequest {
     @NotNull(message = "id 값은 필수입니다")
     private Long id;
-    @NotNull(message = "visibility 값은 필수입니다")
+    private String content;
+    private Long dailyWordId;
+    private Long writingGoalId;
     private Boolean visibility;
 }

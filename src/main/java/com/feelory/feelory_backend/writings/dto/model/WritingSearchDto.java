@@ -1,5 +1,6 @@
-package com.feelory.feelory_backend.writings.model;
+package com.feelory.feelory_backend.writings.dto.model;
 
+import com.feelory.feelory_backend.writings.dto.request.UserWritingListRequest;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
