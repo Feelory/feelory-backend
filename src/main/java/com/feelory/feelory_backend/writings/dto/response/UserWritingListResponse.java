@@ -23,7 +23,7 @@ public class UserWritingListResponse {
 
     public static UserWritingListResponse fromPage(Page<DailyWordWritings> page) {
         List<Writing> writingList = page.getContent().stream()
-                .map(com.feelory.feelory_backend.writings.dto.model.Writing::fromEntity)
+                .map(Writing::fromEntity)
                 .toList();
 
         return UserWritingListResponse.builder()

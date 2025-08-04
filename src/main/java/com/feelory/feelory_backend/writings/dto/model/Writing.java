@@ -36,7 +36,7 @@ public class Writing {
         WritingGoal writingGoal = WritingGoal.fromEntity(writings.getWritingGoal());
         WritingGoalSummary goalSummary = WritingGoalSummary.fromDto(writingGoal);
 
-        return com.feelory.feelory_backend.writings.dto.model.Writing.builder()
+        return Writing.builder()
                 .id(writings.getId())
                 .userId(writingGoal.getUserId())
                 .content(writings.getContent())

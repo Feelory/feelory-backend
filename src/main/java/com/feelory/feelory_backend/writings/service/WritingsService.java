@@ -57,7 +57,7 @@ public class WritingsService {
         DailyWordWritings entity = dailyWordWritingsRepository.searchWritingDetailByDto(dto)
                 .orElseThrow(WritingNotFoundException::new);
 
-        Writing writing = com.feelory.feelory_backend.writings.dto.model.Writing.fromEntity(entity);
+        Writing writing = Writing.fromEntity(entity);
 
         return UserTodayWritingResponse.builder()
                 .writing(writing)
@@ -70,7 +70,7 @@ public class WritingsService {
         DailyWordWritings entity = dailyWordWritingsRepository.findByIdAndUserIdAndIsActive(id, userId, true)
                 .orElseThrow(WritingNotFoundException::new);
 
-        Writing writing = com.feelory.feelory_backend.writings.dto.model.Writing.fromEntity(entity);
+        Writing writing = Writing.fromEntity(entity);
 
         return UserWritingDetailResponse.builder()
                 .writing(writing)
