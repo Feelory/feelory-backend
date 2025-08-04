@@ -3,9 +3,16 @@ package com.feelory.feelory_backend.words.service;
 import com.feelory.feelory_backend.global.exception.exceptions.words.DailyWordNotFoundException;
 import com.feelory.feelory_backend.global.exception.exceptions.words.InvalidTopicDateException;
 import com.feelory.feelory_backend.global.exception.exceptions.words.WordAlreadyUsedException;
+import com.feelory.feelory_backend.words.dto.model.DailyWordDto;
+import com.feelory.feelory_backend.words.dto.request.DailyWordCreateRequest;
+import com.feelory.feelory_backend.words.dto.request.DailyWordDeleteRequest;
+import com.feelory.feelory_backend.words.dto.request.DailyWordUpdateRequest;
+import com.feelory.feelory_backend.words.dto.response.DailyWordCreateResponse;
+import com.feelory.feelory_backend.words.dto.response.DailyWordDeleteResponse;
+import com.feelory.feelory_backend.words.dto.response.DailyWordDetailResponse;
+import com.feelory.feelory_backend.words.dto.response.DailyWordUpdateResponse;
 import com.feelory.feelory_backend.words.entity.DailyWords;
 import com.feelory.feelory_backend.words.entity.Words;
-import com.feelory.feelory_backend.words.model.*;
 import com.feelory.feelory_backend.words.repository.DailyWordsRepository;
 import com.feelory.feelory_backend.words.repository.WordsRepository;
 

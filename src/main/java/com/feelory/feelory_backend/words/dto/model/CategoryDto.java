@@ -1,4 +1,4 @@
-package com.feelory.feelory_backend.words.model;
+package com.feelory.feelory_backend.words.dto.model;
 
 import com.feelory.feelory_backend.words.entity.WordCategories;
 import lombok.AllArgsConstructor;

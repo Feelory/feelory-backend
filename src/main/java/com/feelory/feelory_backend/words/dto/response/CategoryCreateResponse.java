@@ -1,5 +1,6 @@
-package com.feelory.feelory_backend.words.model;
+package com.feelory.feelory_backend.words.dto.response;
 
+import com.feelory.feelory_backend.words.dto.model.CategoryDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

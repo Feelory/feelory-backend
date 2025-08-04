@@ -1,7 +1,7 @@
 package com.feelory.feelory_backend.writings.model;
 
-import com.feelory.feelory_backend.words.model.DailyWordDto;
-import com.feelory.feelory_backend.words.model.DailyWordSummaryDto;
+import com.feelory.feelory_backend.words.dto.model.DailyWordDto;
+import com.feelory.feelory_backend.words.dto.model.DailyWordSummaryDto;
 import com.feelory.feelory_backend.writings.entity.DailyWordWritings;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

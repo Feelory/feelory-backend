@@ -1,5 +1,6 @@
-package com.feelory.feelory_backend.words.model;
+package com.feelory.feelory_backend.words.dto.response;
 
+import com.feelory.feelory_backend.words.dto.model.DailyWordDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,6 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class DailyWordUpdateResponse {
+public class DailyWordCreateResponse {
+    private Boolean isAlreadyAssigned;
     private DailyWordDto dailyWord;
 }

@@ -1,4 +1,4 @@
-package com.feelory.feelory_backend.words.model;
+package com.feelory.feelory_backend.words.dto.request;
 
 import com.feelory.feelory_backend.global.exception.exceptions.common.InvalidDateFormatException;
 import jakarta.validation.constraints.NotNull;

@@ -1,4 +1,4 @@
-package com.feelory.feelory_backend.words.model;
+package com.feelory.feelory_backend.words.dto.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,15 +9,17 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CategorySummaryDto {
+public class WordSummaryDto {
     private Long id;
+    private CategorySummaryDto category;
     private String name;
     private String description;
 
-    public static CategorySummaryDto fromDto(CategoryDto dto) {
+    public static WordSummaryDto fromDto(WordDto dto) {
 
-        return CategorySummaryDto.builder()
+        return WordSummaryDto.builder()
                 .id(dto.getId())
+                .category(dto.getCategory())
                 .name(dto.getName())
                 .description(dto.getDescription())
                 .build();
