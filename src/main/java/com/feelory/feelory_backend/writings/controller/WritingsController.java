@@ -78,30 +78,30 @@ public class WritingsController {
             description = "글 수정 API"
     )
     @PatchMapping("")
-    public ApiResponse<UserWritingUpdateResponse> patchUserWriting(@Valid @RequestBody UserWritingUpdateRequest request) {
+    public ApiResponse<Void> patchUserWriting(@Valid @RequestBody UserWritingUpdateRequest request) {
         jwtTokenProvider.checkUserOrAdmin();
 
-        UserWritingUpdateResponse response = writingsService.modifyUserWriting(request);
+        writingsService.modifyUserWriting(request);
 
-        return ApiResponse.success(response, SuccessCode.UPDATE_WRITING_SUCCESS);
+        return ApiResponse.success(SuccessCode.UPDATE_WRITING_SUCCESS);
     }
 
 
     @DeleteMapping("")
-    public ApiResponse<UserWritingDeleteResponse> deleteUserWriting(@Valid UserWritingDeleteRequest request) {
+    public ApiResponse<Void> deleteUserWriting(@Valid UserWritingDeleteRequest request) {
         jwtTokenProvider.checkUserOrAdmin();
 
-        UserWritingDeleteResponse response = writingsService.removeUserWriting(request);
+        writingsService.removeUserWriting(request);
 
-        return ApiResponse.success(response, SuccessCode.DELETE_WRITING_SUCCESS);
+        return ApiResponse.success(SuccessCode.DELETE_WRITING_SUCCESS);
     }
 
     @PatchMapping("/visibility")
-    public ApiResponse<VisibilityUpdateResponse> patchWritingVisibility(@Valid @RequestBody VisibilityUpdateRequest request) {
+    public ApiResponse<Void> patchWritingVisibility(@Valid @RequestBody VisibilityUpdateRequest request) {
         jwtTokenProvider.checkUserOrAdmin();
 
-        VisibilityUpdateResponse response = writingsService.modifyVisibility(request);
+        writingsService.modifyVisibility(request);
 
-        return ApiResponse.success(response, SuccessCode.UPDATE_WRITING_VISIBILITY_SUCCESS);
+        return ApiResponse.success(SuccessCode.UPDATE_WRITING_VISIBILITY_SUCCESS);
     }
 }

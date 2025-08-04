@@ -69,12 +69,12 @@ public class WritingGoalsController {
             description = "글쓰기 목표 수정 API"
     )
     @PatchMapping("")
-    public ApiResponse<WritingGoalUpdateResponse> patchWritingGoal(@Valid @RequestBody WritingGoalUpdateRequest request) {
+    public ApiResponse<Void> patchWritingGoal(@Valid @RequestBody WritingGoalUpdateRequest request) {
         jwtTokenProvider.checkUserOrAdmin();
 
-        WritingGoalUpdateResponse response = writingGoalsService.modifyWritingGoal(request);
+        writingGoalsService.modifyWritingGoal(request);
 
-        return ApiResponse.success(response, SuccessCode.UPDATE_WRITING_GOAL_SUCCESS);
+        return ApiResponse.success(SuccessCode.UPDATE_WRITING_GOAL_SUCCESS);
     }
 
 
@@ -83,11 +83,11 @@ public class WritingGoalsController {
             description = "글쓰기 목표 삭제 API"
     )
     @DeleteMapping("")
-    public ApiResponse<WritingGoalDeleteResponse> deleteWritingGoal(@Valid WritingGoalDeleteRequest request) {
+    public ApiResponse<Void> deleteWritingGoal(@Valid WritingGoalDeleteRequest request) {
         jwtTokenProvider.checkUserOrAdmin();
 
-        WritingGoalDeleteResponse response = writingGoalsService.removeWritingGoal(request);
+        writingGoalsService.removeWritingGoal(request);
 
-        return ApiResponse.success(response, SuccessCode.DELETE_WRITING_GOAL_SUCCESS);
+        return ApiResponse.success(SuccessCode.DELETE_WRITING_GOAL_SUCCESS);
     }
 }

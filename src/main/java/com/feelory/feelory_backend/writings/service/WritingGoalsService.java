@@ -88,7 +88,7 @@ public class WritingGoalsService {
     }
 
     @Transactional
-    public WritingGoalUpdateResponse modifyWritingGoal(WritingGoalUpdateRequest request) {
+    public void modifyWritingGoal(WritingGoalUpdateRequest request) {
 
         Long userId = jwtTokenProvider.getUserIdFromAuthentication();
 
@@ -114,20 +114,11 @@ public class WritingGoalsService {
         }
 
         WritingGoals updatedWritingGoals = builder.build();
-        WritingGoals saved = writingGoalsRepository.save(updatedWritingGoals);
-
-        WritingGoals loaded = writingGoalsRepository.findByIdAndUserIdAndIsActive(saved.getId(), userId, true)
-                .orElseThrow(WritingGoalNotFoundException::new);
-
-        WritingGoal writingGoal = WritingGoal.fromEntity(loaded);
-
-        return WritingGoalUpdateResponse.builder()
-                .writingGoal(writingGoal)
-                .build();
+        writingGoalsRepository.save(updatedWritingGoals);
     }
 
     @Transactional
-    public WritingGoalDeleteResponse removeWritingGoal(WritingGoalDeleteRequest request) {
+    public void removeWritingGoal(WritingGoalDeleteRequest request) {
         Long userId = jwtTokenProvider.getUserIdFromAuthentication();
         WritingGoals entity = writingGoalsRepository.findByIdAndUserIdAndIsActive(request.getId(), userId, true)
                 .orElseThrow(WritingGoalNotFoundException::new);
@@ -137,15 +128,6 @@ public class WritingGoalsService {
                 .build();
 
         writingGoalsRepository.save(updated);
-
-        WritingGoals loaded = writingGoalsRepository.findByIdAndUserIdAndIsActive(updated.getId(), userId,false)
-                .orElseThrow(WritingGoalNotFoundException::new);
-
-        WritingGoal writingGoal = WritingGoal.fromEntity(loaded);
-
-        return WritingGoalDeleteResponse.builder()
-                .writingGoal(writingGoal)
-                .build();
     }
 
     private void checkDuplicateName(Long userId, String name) {

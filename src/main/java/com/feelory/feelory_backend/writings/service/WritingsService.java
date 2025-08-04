@@ -96,7 +96,7 @@ public class WritingsService {
 
         DailyWordWritings created = dailyWordWritingsRepository.save(entity);
 
-        Writing writing = com.feelory.feelory_backend.writings.dto.model.Writing.fromEntity(created);
+        Writing writing = Writing.fromEntity(created);
 
         return UserWritingCreateResponse.builder()
                 .writing(writing)
@@ -104,7 +104,7 @@ public class WritingsService {
     }
 
     @Transactional
-    public UserWritingUpdateResponse modifyUserWriting(UserWritingUpdateRequest request) {
+    public void modifyUserWriting(UserWritingUpdateRequest request) {
 
         Long userId = jwtTokenProvider.getUserIdFromAuthentication();
         DailyWordWritings entity = dailyWordWritingsRepository.findByIdAndUserIdAndIsActive(request.getId(), userId, true)
@@ -137,20 +137,11 @@ public class WritingsService {
         }
 
         DailyWordWritings updated = builder.build();
-        DailyWordWritings saved = dailyWordWritingsRepository.save(updated);
-
-        DailyWordWritings loaded = dailyWordWritingsRepository.findByIdAndUserIdAndIsActive(saved.getId(), userId, true)
-                .orElseThrow(WritingNotFoundException::new);
-
-        Writing writing = com.feelory.feelory_backend.writings.dto.model.Writing.fromEntity(loaded);
-
-        return UserWritingUpdateResponse.builder()
-                .writing(writing)
-                .build();
+        dailyWordWritingsRepository.save(updated);
     }
 
     @Transactional
-    public UserWritingDeleteResponse removeUserWriting(UserWritingDeleteRequest request) {
+    public void removeUserWriting(UserWritingDeleteRequest request) {
 
         Long userId = jwtTokenProvider.getUserIdFromAuthentication();
 
@@ -161,20 +152,11 @@ public class WritingsService {
                 .isActive(false)
                 .build();
 
-        DailyWordWritings saved = dailyWordWritingsRepository.save(updated);
-
-        DailyWordWritings loaded = dailyWordWritingsRepository.findByIdAndUserIdAndIsActive(saved.getId(), userId, false)
-                .orElseThrow(WritingNotFoundException::new);
-
-        Writing writing = Writing.fromEntity(loaded);
-
-        return UserWritingDeleteResponse.builder()
-                .writing(writing)
-                .build();
+        dailyWordWritingsRepository.save(updated);
     }
 
     @Transactional
-    public VisibilityUpdateResponse modifyVisibility(VisibilityUpdateRequest request) {
+    public void modifyVisibility(VisibilityUpdateRequest request) {
 
         Long userId = jwtTokenProvider.getUserIdFromAuthentication();
 
@@ -185,16 +167,7 @@ public class WritingsService {
                 .visibility(request.getVisibility())
                 .build();
 
-        DailyWordWritings saved = dailyWordWritingsRepository.save(updated);
-
-        DailyWordWritings loaded = dailyWordWritingsRepository.findByIdAndUserIdAndIsActive(saved.getId(), userId, true)
-                .orElseThrow(WritingNotFoundException::new);
-
-        Writing writing = com.feelory.feelory_backend.writings.dto.model.Writing.fromEntity(loaded);
-
-        return VisibilityUpdateResponse.builder()
-                .writing(writing)
-                .build();
+        dailyWordWritingsRepository.save(updated);
     }
 
     private void checkDuplicateDailyWord(Long userId, DailyWords dailyWord) {
