@@ -105,7 +105,7 @@ public class JwtTokenProvider {
         List<UserRole> roles = getRolesFromAuthentication();
 
         boolean isUser = roles.stream()
-                .anyMatch(role -> role == UserRole.ADMIN || role == UserRole.USER);
+                .anyMatch(hasRole -> UserRole.USER.getLevel() <= hasRole.getLevel());
 
         if(!isUser) {
             throw new UserAccessDeniedException();
@@ -116,7 +116,7 @@ public class JwtTokenProvider {
         List<UserRole> roles = getRolesFromAuthentication();
 
         boolean isAdmin = roles.stream()
-                .anyMatch(hasRole -> hasRole.equals(UserRole.ADMIN));
+                .anyMatch(hasRole -> UserRole.ADMIN.getLevel() <= hasRole.getLevel());
 
         if(!isAdmin) {
             throw new AdminAccessDeniedException();
@@ -155,7 +155,6 @@ public class JwtTokenProvider {
 
         return (Long) principal;
     }
-
 
     private Claims parseClaims(String token) {
         return Jwts.parserBuilder()
