@@ -24,7 +24,6 @@ public class WordsService {
     private final WordsRepository wordsRepository;
     private final CategoriesRepository categoriesRepository;
     private final ValidationUtil validationUtil;
-    private final JwtTokenProvider jwtTokenProvider;
 
     public WordListResponse getWords(WordListRequest request) {
 
@@ -36,8 +35,6 @@ public class WordsService {
 
     @Transactional
     public WordCreateResponse registerWord(WordCreateRequest request) {
-
-        jwtTokenProvider.checkAdmin();
         checkDuplicateName(request.getName());
 
         WordCategories category = getCategory(request.getCategoryId());
@@ -54,8 +51,6 @@ public class WordsService {
 
     @Transactional
     public WordUpdateResponse modifyWord(WordUpdateRequest request) {
-
-        jwtTokenProvider.checkAdmin();
 
         Words entity = wordsRepository.findByIdAndIsActive(request.getId(), true)
                 .orElseThrow(WordNotFoundException::new);
@@ -91,8 +86,6 @@ public class WordsService {
 
     @Transactional
     public WordDeleteResponse removeWord(WordDeleteRequest request) {
-
-        jwtTokenProvider.checkAdmin();
 
         Words entity = wordsRepository.findByIdAndIsActive(request.getId(), true)
                 .orElseThrow(WordNotFoundException::new);
