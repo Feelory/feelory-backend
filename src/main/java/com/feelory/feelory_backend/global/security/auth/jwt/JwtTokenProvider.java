@@ -97,6 +97,7 @@ public class JwtTokenProvider {
 
         return authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
+                .map(role -> role.replace("ROLE_", "")) // 접두사 제거
                 .map(UserRole::valueOf)
                 .collect(Collectors.toList());
     }
