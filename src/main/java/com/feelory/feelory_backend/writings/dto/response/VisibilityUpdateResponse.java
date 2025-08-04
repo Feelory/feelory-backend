@@ -1,6 +1,6 @@
 package com.feelory.feelory_backend.writings.dto.response;
 
-import com.feelory.feelory_backend.writings.dto.model.WritingDto;
+import com.feelory.feelory_backend.writings.dto.model.Writing;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class VisibilityUpdateResponse {
-    private WritingDto writing;
+    private Writing writing;
 }

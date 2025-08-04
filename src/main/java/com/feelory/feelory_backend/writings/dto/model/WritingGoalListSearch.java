@@ -10,7 +10,7 @@ import org.springframework.data.domain.Pageable;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class WritingGoalListSearchDto {
+public class WritingGoalListSearch {
 
     private Long userId;
     private Pageable pageable;

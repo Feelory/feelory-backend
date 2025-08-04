@@ -14,12 +14,12 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class WritingDto {
+public class Writing {
     private Long id;
     private Long userId;
     private String content;
     private DailyWordSummary dailyWord;
-    private WritingGoalSummaryDto writingGoal;
+    private WritingGoalSummary writingGoal;
     private Boolean visibility;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
@@ -30,13 +30,13 @@ public class WritingDto {
     /*
         TODO. [TR-YOO] 북마크 / 좋아요 기능 구현 후 likes, bookmarks 수정하기
     */
-    public static WritingDto fromEntity(DailyWordWritings writings) {
+    public static Writing fromEntity(DailyWordWritings writings) {
         DailyWord dailyWord = DailyWord.fromEntity(writings.getDailyWord());
         DailyWordSummary dailyWordSummary = DailyWordSummary.fromDto(dailyWord);
-        WritingGoalDto writingGoal = WritingGoalDto.fromEntity(writings.getWritingGoal());
-        WritingGoalSummaryDto goalSummary = WritingGoalSummaryDto.fromDto(writingGoal);
+        WritingGoal writingGoal = WritingGoal.fromEntity(writings.getWritingGoal());
+        WritingGoalSummary goalSummary = WritingGoalSummary.fromDto(writingGoal);
 
-        return WritingDto.builder()
+        return com.feelory.feelory_backend.writings.dto.model.Writing.builder()
                 .id(writings.getId())
                 .userId(writingGoal.getUserId())
                 .content(writings.getContent())

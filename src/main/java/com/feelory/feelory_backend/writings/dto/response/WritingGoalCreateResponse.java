@@ -1,6 +1,6 @@
 package com.feelory.feelory_backend.writings.dto.response;
 
-import com.feelory.feelory_backend.writings.dto.model.WritingGoalDto;
+import com.feelory.feelory_backend.writings.dto.model.WritingGoal;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class WritingGoalCreateResponse {
-    private WritingGoalDto writingGoal;
+    private WritingGoal writingGoal;
 }

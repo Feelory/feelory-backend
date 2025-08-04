@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class WritingGoalDto {
+public class WritingGoal {
 
     private Long id;
     private Long userId;
@@ -29,9 +29,9 @@ public class WritingGoalDto {
     private LocalDateTime updatedAt;
     private Boolean isActive;
 
-    public static WritingGoalDto fromEntity(WritingGoals writingGoals) {
+    public static WritingGoal fromEntity(WritingGoals writingGoals) {
 
-        return WritingGoalDto.builder()
+        return WritingGoal.builder()
                 .id(writingGoals.getId())
                 .userId(writingGoals.getUser().getId())
                 .name(writingGoals.getName())

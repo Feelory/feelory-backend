@@ -11,11 +11,11 @@ import com.feelory.feelory_backend.users.entity.Users;
 import com.feelory.feelory_backend.users.repository.UsersRepository;
 import com.feelory.feelory_backend.words.entity.DailyWords;
 import com.feelory.feelory_backend.words.repository.DailyWordsRepository;
-import com.feelory.feelory_backend.writings.dto.model.WritingDto;
+import com.feelory.feelory_backend.writings.dto.model.Writing;
 import com.feelory.feelory_backend.writings.dto.request.*;
 import com.feelory.feelory_backend.writings.dto.response.*;
 import com.feelory.feelory_backend.writings.entity.WritingGoals;
-import com.feelory.feelory_backend.writings.dto.model.WritingSearchDto;
+import com.feelory.feelory_backend.writings.dto.model.WritingSearch;
 import com.feelory.feelory_backend.writings.entity.DailyWordWritings;
 import com.feelory.feelory_backend.writings.repository.DailyWordWritingsRepository;
 import com.feelory.feelory_backend.writings.repository.WritingGoalsRepository;
@@ -43,7 +43,7 @@ public class WritingsService {
 
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
 
-        WritingSearchDto dto = WritingSearchDto.fromListRequest(request, userId);
+        WritingSearch dto = WritingSearch.fromListRequest(request, userId);
 
         Page<DailyWordWritings> writings = dailyWordWritingsRepository.searchWritings(dto, pageable);
 
@@ -53,11 +53,11 @@ public class WritingsService {
     public UserTodayWritingResponse getUserTodayWriting() {
 
         Long userId = jwtTokenProvider.getUserIdFromAuthentication();
-        WritingSearchDto dto = WritingSearchDto.fromUserId(userId);
+        WritingSearch dto = WritingSearch.fromUserId(userId);
         DailyWordWritings entity = dailyWordWritingsRepository.searchWritingDetailByDto(dto)
                 .orElseThrow(WritingNotFoundException::new);
 
-        WritingDto writing = WritingDto.fromEntity(entity);
+        Writing writing = com.feelory.feelory_backend.writings.dto.model.Writing.fromEntity(entity);
 
         return UserTodayWritingResponse.builder()
                 .writing(writing)
@@ -70,7 +70,7 @@ public class WritingsService {
         DailyWordWritings entity = dailyWordWritingsRepository.findByIdAndUserIdAndIsActive(id, userId, true)
                 .orElseThrow(WritingNotFoundException::new);
 
-        WritingDto writing = WritingDto.fromEntity(entity);
+        Writing writing = com.feelory.feelory_backend.writings.dto.model.Writing.fromEntity(entity);
 
         return UserWritingDetailResponse.builder()
                 .writing(writing)
@@ -96,7 +96,7 @@ public class WritingsService {
 
         DailyWordWritings created = dailyWordWritingsRepository.save(entity);
 
-        WritingDto writing = WritingDto.fromEntity(created);
+        Writing writing = com.feelory.feelory_backend.writings.dto.model.Writing.fromEntity(created);
 
         return UserWritingCreateResponse.builder()
                 .writing(writing)
@@ -142,7 +142,7 @@ public class WritingsService {
         DailyWordWritings loaded = dailyWordWritingsRepository.findByIdAndUserIdAndIsActive(saved.getId(), userId, true)
                 .orElseThrow(WritingNotFoundException::new);
 
-        WritingDto writing = WritingDto.fromEntity(loaded);
+        Writing writing = com.feelory.feelory_backend.writings.dto.model.Writing.fromEntity(loaded);
 
         return UserWritingUpdateResponse.builder()
                 .writing(writing)
@@ -166,7 +166,7 @@ public class WritingsService {
         DailyWordWritings loaded = dailyWordWritingsRepository.findByIdAndUserIdAndIsActive(saved.getId(), userId, false)
                 .orElseThrow(WritingNotFoundException::new);
 
-        WritingDto writing = WritingDto.fromEntity(loaded);
+        Writing writing = Writing.fromEntity(loaded);
 
         return UserWritingDeleteResponse.builder()
                 .writing(writing)
@@ -190,7 +190,7 @@ public class WritingsService {
         DailyWordWritings loaded = dailyWordWritingsRepository.findByIdAndUserIdAndIsActive(saved.getId(), userId, true)
                 .orElseThrow(WritingNotFoundException::new);
 
-        WritingDto writing = WritingDto.fromEntity(loaded);
+        Writing writing = com.feelory.feelory_backend.writings.dto.model.Writing.fromEntity(loaded);
 
         return VisibilityUpdateResponse.builder()
                 .writing(writing)

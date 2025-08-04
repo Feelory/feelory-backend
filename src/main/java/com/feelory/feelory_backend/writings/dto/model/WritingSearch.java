@@ -12,25 +12,25 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class WritingSearchDto {
+public class WritingSearch {
     private Long userId;
     private LocalDateTime searchDate;
     private Boolean isActive;
 
-    public static WritingSearchDto fromListRequest(UserWritingListRequest request, Long userId) {
+    public static WritingSearch fromListRequest(UserWritingListRequest request, Long userId) {
 
-        return WritingSearchDto.builder()
+        return WritingSearch.builder()
                 .userId(userId)
                 .searchDate(request.getSearchDate())
                 .isActive(true)
                 .build();
     }
 
-    public static WritingSearchDto fromUserId(Long userId) {
+    public static WritingSearch fromUserId(Long userId) {
 
         LocalDateTime today = LocalDateTime.now();
 
-        return WritingSearchDto.builder()
+        return WritingSearch.builder()
                 .userId(userId)
                 .searchDate(today)
                 .isActive(true)

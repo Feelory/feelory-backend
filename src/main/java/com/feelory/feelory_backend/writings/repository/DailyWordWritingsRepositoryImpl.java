@@ -4,7 +4,7 @@ import com.feelory.feelory_backend.users.entity.QUsers;
 import com.feelory.feelory_backend.words.entity.QDailyWords;
 import com.feelory.feelory_backend.words.entity.QWordCategories;
 import com.feelory.feelory_backend.words.entity.QWords;
-import com.feelory.feelory_backend.writings.dto.model.WritingSearchDto;
+import com.feelory.feelory_backend.writings.dto.model.WritingSearch;
 import com.feelory.feelory_backend.writings.entity.DailyWordWritings;
 import com.feelory.feelory_backend.writings.entity.QDailyWordWritings;
 import com.feelory.feelory_backend.writings.entity.QWritingGoals;
@@ -28,7 +28,7 @@ public class DailyWordWritingsRepositoryImpl implements DailyWordWritingsReposit
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public Page<DailyWordWritings> searchWritings(WritingSearchDto dto, Pageable pageable) {
+    public Page<DailyWordWritings> searchWritings(WritingSearch dto, Pageable pageable) {
         QDailyWordWritings qDailyWordWritings = QDailyWordWritings.dailyWordWritings;
         QDailyWords qDailyWords = QDailyWords.dailyWords;
         QUsers qUsers = QUsers.users;
@@ -78,7 +78,7 @@ public class DailyWordWritingsRepositoryImpl implements DailyWordWritingsReposit
     }
 
     @Override
-    public Optional<DailyWordWritings> searchWritingDetailByDto(WritingSearchDto writingSearchDto) {
+    public Optional<DailyWordWritings> searchWritingDetailByDto(WritingSearch writingSearchDto) {
         QDailyWordWritings qDailyWordWritings = QDailyWordWritings.dailyWordWritings;
         QDailyWords qDailyWords = QDailyWords.dailyWords;
         QUsers qUsers = QUsers.users;

@@ -1,6 +1,6 @@
 package com.feelory.feelory_backend.writings.dto.response;
 
-import com.feelory.feelory_backend.writings.dto.model.WritingGoalDto;
+import com.feelory.feelory_backend.writings.dto.model.WritingGoal;
 import com.feelory.feelory_backend.writings.entity.WritingGoals;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,11 +19,11 @@ public class WritingGoalListResponse {
     private int page;
     private int size;
     private boolean hasNext;
-    private List<WritingGoalDto> writingGoals;
+    private List<WritingGoal> writingGoals;
 
     public static WritingGoalListResponse fromPage(Page<WritingGoals> page) {
-        List<WritingGoalDto> writingGoalList = page.getContent().stream()
-                .map(WritingGoalDto::fromEntity)
+        List<WritingGoal> writingGoalList = page.getContent().stream()
+                .map(WritingGoal::fromEntity)
                 .toList();
 
         return WritingGoalListResponse.builder()

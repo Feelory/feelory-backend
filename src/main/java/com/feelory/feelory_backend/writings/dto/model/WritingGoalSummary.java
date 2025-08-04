@@ -11,16 +11,16 @@ import java.time.LocalDate;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class WritingGoalSummaryDto {
+public class WritingGoalSummary {
     private Long id;
     private String name;
     private String description;
     private LocalDate startDate;
     private LocalDate endDate;
 
-    public static WritingGoalSummaryDto fromDto(WritingGoalDto dto) {
+    public static WritingGoalSummary fromDto(WritingGoal dto) {
 
-        return WritingGoalSummaryDto.builder()
+        return WritingGoalSummary.builder()
                 .id(dto.getId())
                 .name(dto.getName())
                 .description(dto.getDescription())

@@ -1,6 +1,6 @@
 package com.feelory.feelory_backend.writings.dto.response;
 
-import com.feelory.feelory_backend.writings.dto.model.WritingDto;
+import com.feelory.feelory_backend.writings.dto.model.Writing;
 import com.feelory.feelory_backend.writings.entity.DailyWordWritings;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,11 +19,11 @@ public class UserWritingListResponse {
     private int page;
     private int size;
     private boolean hasNext;
-    private List<WritingDto> writings;
+    private List<Writing> writings;
 
     public static UserWritingListResponse fromPage(Page<DailyWordWritings> page) {
-        List<WritingDto> writingList = page.getContent().stream()
-                .map(WritingDto::fromEntity)
+        List<Writing> writingList = page.getContent().stream()
+                .map(com.feelory.feelory_backend.writings.dto.model.Writing::fromEntity)
                 .toList();
 
         return UserWritingListResponse.builder()
