@@ -2,10 +2,13 @@ package com.feelory.feelory_backend.writings.service;
 
 import com.feelory.feelory_backend.global.exception.exceptions.common.DayTooFarInFutureException;
 import com.feelory.feelory_backend.global.exception.exceptions.common.DayTooFarInPastException;
+import com.feelory.feelory_backend.global.exception.exceptions.users.UserNotFoundException;
 import com.feelory.feelory_backend.global.exception.exceptions.words.DuplicateWritingGoalNameException;
 import com.feelory.feelory_backend.global.exception.exceptions.writings.WritingGoalNotFoundException;
 import com.feelory.feelory_backend.global.security.auth.jwt.JwtTokenProvider;
 import com.feelory.feelory_backend.global.util.ValidationUtil;
+import com.feelory.feelory_backend.users.entity.Users;
+import com.feelory.feelory_backend.users.repository.UsersRepository;
 import com.feelory.feelory_backend.writings.entity.WritingGoals;
 import com.feelory.feelory_backend.writings.model.*;
 import com.feelory.feelory_backend.writings.repository.WritingGoalsRepository;
@@ -26,6 +29,7 @@ public class WritingGoalsService {
     private final WritingGoalsRepository writingGoalsRepository;
     private final ValidationUtil validationUtil;
     private final JwtTokenProvider jwtTokenProvider;
+    private final UsersRepository usersRepository;
 
     public WritingGoalListResponse getWritingGoals(WritingGoalListRequest request) {
 
@@ -64,7 +68,10 @@ public class WritingGoalsService {
         Long userId = jwtTokenProvider.getUserIdFromAuthentication();
         checkDuplicateName(userId, request.getName());
 
-        WritingGoals entity = request.toEntity();
+        Users user = usersRepository.findById(userId)
+                .orElseThrow(UserNotFoundException::new);
+
+        WritingGoals entity = request.toEntity(user);
         WritingGoals createdWritingGoal = writingGoalsRepository.save(entity);
 
         WritingGoalDto writingGoal = WritingGoalDto.fromEntity(createdWritingGoal);

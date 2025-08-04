@@ -1,11 +1,14 @@
 package com.feelory.feelory_backend.writings.service;
 
+import com.feelory.feelory_backend.global.exception.exceptions.users.UserNotFoundException;
 import com.feelory.feelory_backend.global.exception.exceptions.writings.DailyWordConflictException;
 import com.feelory.feelory_backend.global.exception.exceptions.writings.WritingGoalConflictException;
 import com.feelory.feelory_backend.global.exception.exceptions.words.DailyWordNotFoundException;
 import com.feelory.feelory_backend.global.exception.exceptions.writings.WritingNotFoundException;
 import com.feelory.feelory_backend.global.security.auth.jwt.JwtTokenProvider;
 import com.feelory.feelory_backend.global.util.ValidationUtil;
+import com.feelory.feelory_backend.users.entity.Users;
+import com.feelory.feelory_backend.users.repository.UsersRepository;
 import com.feelory.feelory_backend.words.entity.DailyWords;
 import com.feelory.feelory_backend.words.repository.DailyWordsRepository;
 import com.feelory.feelory_backend.writings.entity.WritingGoals;
@@ -25,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class WritingsService {
 
+    private final UsersRepository usersRepository;
     private final DailyWordWritingsRepository dailyWordWritingsRepository;
     private final DailyWordsRepository dailyWordsRepository;
     private final WritingGoalsRepository writingGoalsRepository;
@@ -76,6 +80,8 @@ public class WritingsService {
 
         Long userId = jwtTokenProvider.getUserIdFromAuthentication();
 
+        Users user = usersRepository.findById(userId)
+                .orElseThrow(UserNotFoundException::new);
         DailyWords dailyWord = dailyWordsRepository.findByIdAndIsActive(request.getDailyWordId(), true)
                 .orElseThrow(DailyWordNotFoundException::new);
         WritingGoals writingGoal = writingGoalsRepository.findByIdAndUserIdAndIsActive(request.getWritingGoalId(), userId, true)
@@ -84,7 +90,7 @@ public class WritingsService {
         checkDuplicateDailyWord(userId, dailyWord);
         checkDuplicateWritingGoal(userId, writingGoal);
 
-        DailyWordWritings entity = request.toEntity(dailyWord, writingGoal);
+        DailyWordWritings entity = request.toEntity(user, dailyWord, writingGoal);
 
         DailyWordWritings created = dailyWordWritingsRepository.save(entity);
 

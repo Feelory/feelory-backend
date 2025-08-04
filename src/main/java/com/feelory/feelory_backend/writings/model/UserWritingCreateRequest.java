@@ -1,5 +1,6 @@
 package com.feelory.feelory_backend.writings.model;
 
+import com.feelory.feelory_backend.users.entity.Users;
 import com.feelory.feelory_backend.words.entity.DailyWords;
 import com.feelory.feelory_backend.writings.entity.DailyWordWritings;
 import com.feelory.feelory_backend.writings.entity.WritingGoals;
@@ -26,9 +27,10 @@ public class UserWritingCreateRequest {
     private Long writingGoalId;
     private Boolean visibility = true;
 
-    public DailyWordWritings toEntity(DailyWords dailyWord, WritingGoals writingGoal) {
+    public DailyWordWritings toEntity(Users user, DailyWords dailyWord, WritingGoals writingGoal) {
 
         return DailyWordWritings.builder()
+                .user(user)
                 .dailyWord(dailyWord)
                 .writingGoal(writingGoal)
                 .content(this.content)

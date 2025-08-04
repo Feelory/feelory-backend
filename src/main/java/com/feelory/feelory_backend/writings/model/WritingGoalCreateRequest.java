@@ -1,6 +1,6 @@
 package com.feelory.feelory_backend.writings.model;
 
-import com.feelory.feelory_backend.global.exception.exceptions.common.InvalidDateFormatException;
+import com.feelory.feelory_backend.users.entity.Users;
 import com.feelory.feelory_backend.writings.entity.WritingGoals;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -25,7 +25,7 @@ public class WritingGoalCreateRequest {
     @NotNull(message = "기간은 필수입니다.")
     private Integer duration;
 
-    public WritingGoals toEntity() {
+    public WritingGoals toEntity(Users user) {
         LocalDateTime startDate = LocalDate.now().atStartOfDay();
 
         LocalDateTime endDate = startDate
@@ -34,6 +34,7 @@ public class WritingGoalCreateRequest {
 
         return WritingGoals.builder()
                 .name(this.name)
+                .user(user)
                 .description(this.description)
                 .duration(this.duration)
                 .startDate(startDate)
