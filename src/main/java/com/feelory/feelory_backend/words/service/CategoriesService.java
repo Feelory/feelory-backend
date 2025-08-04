@@ -20,7 +20,6 @@ public class CategoriesService {
 
     private final CategoriesRepository categoriesRepository;
     private final ValidationUtil validationUtil;
-    private final JwtTokenProvider jwtTokenProvider;
 
     public CategoryListResponse getCategories(CategoryListRequest request) {
 
@@ -32,8 +31,6 @@ public class CategoriesService {
 
     @Transactional
     public CategoryCreateResponse registerCategory(CategoryCreateRequest request) {
-
-        jwtTokenProvider.checkAdmin();
         checkDuplicateName(request.getName());
 
         WordCategories entity = request.toEntity();
@@ -49,8 +46,6 @@ public class CategoriesService {
 
     @Transactional
     public CategoryUpdateResponse modifyCategory(CategoryUpdateRequest request) {
-
-        jwtTokenProvider.checkAdmin();
 
         WordCategories entity = categoriesRepository.findByIdAndIsActive(request.getId(), true)
                 .orElseThrow(CategoryNotFoundException::new);
@@ -81,8 +76,6 @@ public class CategoriesService {
 
     @Transactional
     public CategoryDeleteResponse removeCategory(CategoryDeleteRequest request) {
-
-        jwtTokenProvider.checkAdmin();
 
         WordCategories entity = categoriesRepository.findByIdAndIsActive(request.getId(), true)
                 .orElseThrow(CategoryNotFoundException::new);
