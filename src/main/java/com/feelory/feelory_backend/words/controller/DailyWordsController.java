@@ -9,9 +9,7 @@ import com.feelory.feelory_backend.words.dto.request.DailyWordCreateRequest;
 import com.feelory.feelory_backend.words.dto.request.DailyWordDeleteRequest;
 import com.feelory.feelory_backend.words.dto.request.DailyWordUpdateRequest;
 import com.feelory.feelory_backend.words.dto.response.DailyWordCreateResponse;
-import com.feelory.feelory_backend.words.dto.response.DailyWordDeleteResponse;
 import com.feelory.feelory_backend.words.dto.response.DailyWordDetailResponse;
-import com.feelory.feelory_backend.words.dto.response.DailyWordUpdateResponse;
 import com.feelory.feelory_backend.words.service.DailyWordsService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -73,22 +71,22 @@ public class DailyWordsController {
     }
 
     @PatchMapping("")
-    public ApiResponse<DailyWordUpdateResponse> patchDailyWord(@Valid @RequestBody DailyWordUpdateRequest request) {
+    public ApiResponse<Void> patchDailyWord(@Valid @RequestBody DailyWordUpdateRequest request) {
 
         jwtTokenProvider.checkAdmin();
 
-        DailyWordUpdateResponse response = dailyWordsService.modifyDailyWord(request);
+        dailyWordsService.modifyDailyWord(request);
 
-        return ApiResponse.success(response, SuccessCode.UPDATE_DAILY_WORD_SUCCESS);
+        return ApiResponse.success(SuccessCode.UPDATE_DAILY_WORD_SUCCESS);
     }
 
     @DeleteMapping("")
-    public ApiResponse<DailyWordDeleteResponse> deleteDailyWord(@Valid DailyWordDeleteRequest request) {
+    public ApiResponse<Void> deleteDailyWord(@Valid DailyWordDeleteRequest request) {
 
         jwtTokenProvider.checkAdmin();
 
-        DailyWordDeleteResponse response = dailyWordsService.removeDailyWord(request);
+        dailyWordsService.removeDailyWord(request);
 
-        return ApiResponse.success(response, SuccessCode.DELETE_DAILY_WORD_SUCCESS);
+        return ApiResponse.success(SuccessCode.DELETE_DAILY_WORD_SUCCESS);
     }
 }

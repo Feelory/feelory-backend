@@ -9,9 +9,7 @@ import com.feelory.feelory_backend.words.dto.request.CategoryDeleteRequest;
 import com.feelory.feelory_backend.words.dto.request.CategoryListRequest;
 import com.feelory.feelory_backend.words.dto.request.CategoryUpdateRequest;
 import com.feelory.feelory_backend.words.dto.response.CategoryCreateResponse;
-import com.feelory.feelory_backend.words.dto.response.CategoryDeleteResponse;
 import com.feelory.feelory_backend.words.dto.response.CategoryListResponse;
-import com.feelory.feelory_backend.words.dto.response.CategoryUpdateResponse;
 import com.feelory.feelory_backend.words.entity.WordCategories;
 import com.feelory.feelory_backend.words.repository.CategoriesRepository;
 import lombok.RequiredArgsConstructor;
@@ -52,7 +50,7 @@ public class CategoriesService {
     }
 
     @Transactional
-    public CategoryUpdateResponse modifyCategory(CategoryUpdateRequest request) {
+    public void modifyCategory(CategoryUpdateRequest request) {
 
         WordCategories entity = categoriesRepository.findByIdAndIsActive(request.getId(), true)
                 .orElseThrow(CategoryNotFoundException::new);
@@ -71,18 +69,11 @@ public class CategoriesService {
 
 
         WordCategories updatedCategory = builder.build();
-        WordCategories updatedEntity = categoriesRepository.save(updatedCategory);
-
-
-        Category category = Category.fromEntity(updatedEntity);
-
-        return CategoryUpdateResponse.builder()
-                .category(category)
-                .build();
+        categoriesRepository.save(updatedCategory);
     }
 
     @Transactional
-    public CategoryDeleteResponse removeCategory(CategoryDeleteRequest request) {
+    public void removeCategory(CategoryDeleteRequest request) {
 
         WordCategories entity = categoriesRepository.findByIdAndIsActive(request.getId(), true)
                 .orElseThrow(CategoryNotFoundException::new);
@@ -92,15 +83,6 @@ public class CategoriesService {
                 .build();
 
         categoriesRepository.save(updated);
-
-        WordCategories loaded = categoriesRepository.findByIdAndIsActive(updated.getId(), false)
-                .orElseThrow(CategoryNotFoundException::new);
-
-        Category category = Category.fromEntity(loaded);
-
-        return CategoryDeleteResponse.builder()
-                .category(category)
-                .build();
     }
 
     private void checkDuplicateName(String name) {

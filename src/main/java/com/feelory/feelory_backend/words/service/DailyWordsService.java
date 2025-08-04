@@ -8,9 +8,7 @@ import com.feelory.feelory_backend.words.dto.request.DailyWordCreateRequest;
 import com.feelory.feelory_backend.words.dto.request.DailyWordDeleteRequest;
 import com.feelory.feelory_backend.words.dto.request.DailyWordUpdateRequest;
 import com.feelory.feelory_backend.words.dto.response.DailyWordCreateResponse;
-import com.feelory.feelory_backend.words.dto.response.DailyWordDeleteResponse;
 import com.feelory.feelory_backend.words.dto.response.DailyWordDetailResponse;
-import com.feelory.feelory_backend.words.dto.response.DailyWordUpdateResponse;
 import com.feelory.feelory_backend.words.entity.DailyWords;
 import com.feelory.feelory_backend.words.entity.Words;
 import com.feelory.feelory_backend.words.repository.DailyWordsRepository;
@@ -81,7 +79,7 @@ public class DailyWordsService {
     }
 
     @Transactional
-    public DailyWordUpdateResponse modifyDailyWord(DailyWordUpdateRequest request) {
+    public void modifyDailyWord(DailyWordUpdateRequest request) {
 
         validateDateTime(request.getParsedTopicDate());
         checkDuplicateWordId(request.getWordId());
@@ -89,15 +87,11 @@ public class DailyWordsService {
         DailyWords dailyWords = dailyWordsRepository.findById(request.getId())
                 .orElseThrow(DailyWordNotFoundException::new);
 
-        DailyWord updated = updateDailyWord(request, dailyWords);
-
-        return DailyWordUpdateResponse.builder()
-                .dailyWord(updated)
-                .build();
+        updateDailyWord(request, dailyWords);
     }
 
     @Transactional
-    public DailyWordDeleteResponse removeDailyWord(DailyWordDeleteRequest request) {
+    public void removeDailyWord(DailyWordDeleteRequest request) {
 
         DailyWords entity = dailyWordsRepository.findByIdAndIsActive(request.getId(), true)
                 .orElseThrow(DailyWordNotFoundException::new);
@@ -107,15 +101,6 @@ public class DailyWordsService {
                 .build();
 
         dailyWordsRepository.save(updated);
-
-        DailyWords loaded = dailyWordsRepository.findByIdAndIsActive(updated.getId(), false)
-                .orElseThrow(DailyWordNotFoundException::new);
-
-        DailyWord dailyWord = DailyWord.fromEntity(loaded);
-
-        return DailyWordDeleteResponse.builder()
-                .dailyWord(dailyWord)
-                .build();
     }
 
     private void validateDateTime(LocalDateTime topicDate) {

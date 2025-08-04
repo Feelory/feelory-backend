@@ -9,9 +9,7 @@ import com.feelory.feelory_backend.words.dto.request.WordDeleteRequest;
 import com.feelory.feelory_backend.words.dto.request.WordListRequest;
 import com.feelory.feelory_backend.words.dto.request.WordUpdateRequest;
 import com.feelory.feelory_backend.words.dto.response.WordCreateResponse;
-import com.feelory.feelory_backend.words.dto.response.WordDeleteResponse;
 import com.feelory.feelory_backend.words.dto.response.WordListResponse;
-import com.feelory.feelory_backend.words.dto.response.WordUpdateResponse;
 import com.feelory.feelory_backend.words.service.WordsService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -58,12 +56,12 @@ public class WordsController {
             description = "단어 수정 API"
     )
     @PatchMapping("")
-    public ApiResponse<WordUpdateResponse> patchWord(@Valid @RequestBody WordUpdateRequest request) {
+    public ApiResponse<Void> patchWord(@Valid @RequestBody WordUpdateRequest request) {
         jwtTokenProvider.checkAdmin();
 
-        WordUpdateResponse response = wordsService.modifyWord(request);
+        wordsService.modifyWord(request);
 
-        return ApiResponse.success(response, SuccessCode.UPDATE_WORD_SUCCESS);
+        return ApiResponse.success(SuccessCode.UPDATE_WORD_SUCCESS);
     }
 
     @Operation(
@@ -71,11 +69,11 @@ public class WordsController {
             description = "단어 삭제 API"
     )
     @DeleteMapping("")
-    public ApiResponse<WordDeleteResponse> deleteWord(@Valid WordDeleteRequest request) {
+    public ApiResponse<Void> deleteWord(@Valid WordDeleteRequest request) {
         jwtTokenProvider.checkAdmin();
 
-        WordDeleteResponse response = wordsService.removeWord(request);
+        wordsService.removeWord(request);
 
-        return ApiResponse.success(response, SuccessCode.DELETE_WORD_SUCCESS);
+        return ApiResponse.success(SuccessCode.DELETE_WORD_SUCCESS);
     }
 }

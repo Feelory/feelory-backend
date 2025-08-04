@@ -10,9 +10,7 @@ import com.feelory.feelory_backend.words.dto.request.WordDeleteRequest;
 import com.feelory.feelory_backend.words.dto.request.WordListRequest;
 import com.feelory.feelory_backend.words.dto.request.WordUpdateRequest;
 import com.feelory.feelory_backend.words.dto.response.WordCreateResponse;
-import com.feelory.feelory_backend.words.dto.response.WordDeleteResponse;
 import com.feelory.feelory_backend.words.dto.response.WordListResponse;
-import com.feelory.feelory_backend.words.dto.response.WordUpdateResponse;
 import com.feelory.feelory_backend.words.entity.WordCategories;
 import com.feelory.feelory_backend.words.entity.Words;
 import com.feelory.feelory_backend.words.repository.CategoriesRepository;
@@ -57,7 +55,7 @@ public class WordsService {
     }
 
     @Transactional
-    public WordUpdateResponse modifyWord(WordUpdateRequest request) {
+    public void modifyWord(WordUpdateRequest request) {
 
         Words entity = wordsRepository.findByIdAndIsActive(request.getId(), true)
                 .orElseThrow(WordNotFoundException::new);
@@ -79,20 +77,11 @@ public class WordsService {
         }
 
         Words updatedWord = builder.build();
-        Words saved = wordsRepository.save(updatedWord);
-
-        Words loaded = wordsRepository.findByIdAndIsActive(saved.getId(), true)
-                .orElseThrow(WordNotFoundException::new);
-
-        Word word = Word.fromEntity(loaded);
-
-        return WordUpdateResponse.builder()
-                .word(word)
-                .build();
+        wordsRepository.save(updatedWord);
     }
 
     @Transactional
-    public WordDeleteResponse removeWord(WordDeleteRequest request) {
+    public void removeWord(WordDeleteRequest request) {
 
         Words entity = wordsRepository.findByIdAndIsActive(request.getId(), true)
                 .orElseThrow(WordNotFoundException::new);
@@ -102,16 +91,6 @@ public class WordsService {
                 .build();
 
         wordsRepository.save(updated);
-
-        Words loaded = wordsRepository.findByIdAndIsActive(updated.getId(), false)
-                .orElseThrow(WordNotFoundException::new);
-
-        Word word = Word.fromEntity(loaded);
-
-
-        return WordDeleteResponse.builder()
-                .word(word)
-                .build();
     }
 
     private WordCategories getCategory(Long categoryId) {

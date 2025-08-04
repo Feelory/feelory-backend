@@ -8,9 +8,7 @@ import com.feelory.feelory_backend.words.dto.request.CategoryDeleteRequest;
 import com.feelory.feelory_backend.words.dto.request.CategoryListRequest;
 import com.feelory.feelory_backend.words.dto.request.CategoryUpdateRequest;
 import com.feelory.feelory_backend.words.dto.response.CategoryCreateResponse;
-import com.feelory.feelory_backend.words.dto.response.CategoryDeleteResponse;
 import com.feelory.feelory_backend.words.dto.response.CategoryListResponse;
-import com.feelory.feelory_backend.words.dto.response.CategoryUpdateResponse;
 import com.feelory.feelory_backend.words.service.CategoriesService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -58,12 +56,12 @@ public class CategoriesController {
             description = "단어 카테고리 수정 API"
     )
     @PatchMapping("")
-    public ApiResponse<CategoryUpdateResponse> patchCategory(@Valid @RequestBody CategoryUpdateRequest request) {
+    public ApiResponse<Void> patchCategory(@Valid @RequestBody CategoryUpdateRequest request) {
         jwtTokenProvider.checkAdmin();
 
-        CategoryUpdateResponse response = categoriesService.modifyCategory(request);
+        categoriesService.modifyCategory(request);
 
-        return ApiResponse.success(response, SuccessCode.UPDATE_CATEGORY_SUCCESS);
+        return ApiResponse.success(SuccessCode.UPDATE_CATEGORY_SUCCESS);
     }
 
     @Operation(
@@ -71,11 +69,11 @@ public class CategoriesController {
             description = "단어 카테고리 제거(비활성화) API"
     )
     @DeleteMapping("")
-    public ApiResponse<CategoryDeleteResponse> deleteCategory(@Valid CategoryDeleteRequest request) {
+    public ApiResponse<Void> deleteCategory(@Valid CategoryDeleteRequest request) {
         jwtTokenProvider.checkAdmin();
 
-        CategoryDeleteResponse response = categoriesService.removeCategory(request);
+         categoriesService.removeCategory(request);
 
-        return ApiResponse.success(response, SuccessCode.DELETE_CATEGORY_SUCCESS);
+        return ApiResponse.success(SuccessCode.DELETE_CATEGORY_SUCCESS);
     }
 }
