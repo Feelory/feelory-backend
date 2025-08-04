@@ -5,6 +5,6 @@ import com.feelory.feelory_backend.global.exception.exceptions.ErrorCode;
 
 public class AdminAccessDeniedException extends BaseException {
     public AdminAccessDeniedException() {
-        super(ErrorCode.INVALID_TOKEN);
+        super(ErrorCode.ADMIN_ACCESS_DENIED);
     }
 }

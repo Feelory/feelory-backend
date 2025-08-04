@@ -5,6 +5,6 @@ import com.feelory.feelory_backend.global.exception.exceptions.ErrorCode;
 
 public class IllegalUserTypeException extends BaseException {
     public IllegalUserTypeException() {
-        super(ErrorCode.INVALID_TOKEN);
+        super(ErrorCode.ILLEGAL_USER_TYPE);
     }
 }
