@@ -9,14 +9,14 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CategorySummaryDto {
+public class CategorySummary {
     private Long id;
     private String name;
     private String description;
 
-    public static CategorySummaryDto fromDto(CategoryDto dto) {
+    public static CategorySummary fromDto(Category dto) {
 
-        return CategorySummaryDto.builder()
+        return CategorySummary.builder()
                 .id(dto.getId())
                 .name(dto.getName())
                 .description(dto.getDescription())

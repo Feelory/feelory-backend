@@ -4,7 +4,7 @@ import com.feelory.feelory_backend.global.exception.exceptions.words.CategoryNot
 import com.feelory.feelory_backend.global.exception.exceptions.words.DuplicateWordNameException;
 import com.feelory.feelory_backend.global.exception.exceptions.words.WordNotFoundException;
 import com.feelory.feelory_backend.global.util.ValidationUtil;
-import com.feelory.feelory_backend.words.dto.model.WordDto;
+import com.feelory.feelory_backend.words.dto.model.Word;
 import com.feelory.feelory_backend.words.dto.request.WordCreateRequest;
 import com.feelory.feelory_backend.words.dto.request.WordDeleteRequest;
 import com.feelory.feelory_backend.words.dto.request.WordListRequest;
@@ -49,7 +49,7 @@ public class WordsService {
         Words entity = request.toEntity(category);
         Words createdWord = wordsRepository.save(entity);
 
-        WordDto word = WordDto.fromEntity(createdWord);
+        Word word = Word.fromEntity(createdWord);
 
         return WordCreateResponse.builder()
                 .word(word)
@@ -84,7 +84,7 @@ public class WordsService {
         Words loaded = wordsRepository.findByIdAndIsActive(saved.getId(), true)
                 .orElseThrow(WordNotFoundException::new);
 
-        WordDto word = WordDto.fromEntity(loaded);
+        Word word = Word.fromEntity(loaded);
 
         return WordUpdateResponse.builder()
                 .word(word)
@@ -106,7 +106,7 @@ public class WordsService {
         Words loaded = wordsRepository.findByIdAndIsActive(updated.getId(), false)
                 .orElseThrow(WordNotFoundException::new);
 
-        WordDto word = WordDto.fromEntity(loaded);
+        Word word = Word.fromEntity(loaded);
 
 
         return WordDeleteResponse.builder()

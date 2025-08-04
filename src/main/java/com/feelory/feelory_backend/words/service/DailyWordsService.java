@@ -3,7 +3,7 @@ package com.feelory.feelory_backend.words.service;
 import com.feelory.feelory_backend.global.exception.exceptions.words.DailyWordNotFoundException;
 import com.feelory.feelory_backend.global.exception.exceptions.words.InvalidTopicDateException;
 import com.feelory.feelory_backend.global.exception.exceptions.words.WordAlreadyUsedException;
-import com.feelory.feelory_backend.words.dto.model.DailyWordDto;
+import com.feelory.feelory_backend.words.dto.model.DailyWord;
 import com.feelory.feelory_backend.words.dto.request.DailyWordCreateRequest;
 import com.feelory.feelory_backend.words.dto.request.DailyWordDeleteRequest;
 import com.feelory.feelory_backend.words.dto.request.DailyWordUpdateRequest;
@@ -40,7 +40,7 @@ public class DailyWordsService {
                 .orElse(null);
 
         boolean isAlreadyAssigned = false;
-        DailyWordDto dailyWord = null;
+        DailyWord dailyWord = null;
 
         if(duplicatedDailyWord != null && !request.getIsReplaceApproved()) {
 
@@ -89,7 +89,7 @@ public class DailyWordsService {
         DailyWords dailyWords = dailyWordsRepository.findById(request.getId())
                 .orElseThrow(DailyWordNotFoundException::new);
 
-        DailyWordDto updated = updateDailyWord(request, dailyWords);
+        DailyWord updated = updateDailyWord(request, dailyWords);
 
         return DailyWordUpdateResponse.builder()
                 .dailyWord(updated)
@@ -111,7 +111,7 @@ public class DailyWordsService {
         DailyWords loaded = dailyWordsRepository.findByIdAndIsActive(updated.getId(), false)
                 .orElseThrow(DailyWordNotFoundException::new);
 
-        DailyWordDto dailyWord = DailyWordDto.fromEntity(loaded);
+        DailyWord dailyWord = DailyWord.fromEntity(loaded);
 
         return DailyWordDeleteResponse.builder()
                 .dailyWord(dailyWord)
@@ -132,7 +132,7 @@ public class DailyWordsService {
         }
     }
 
-    private DailyWordDto createDailyWord(DailyWordCreateRequest request) {
+    private DailyWord createDailyWord(DailyWordCreateRequest request) {
         Words word = wordsRepository.findById(request.getWordId())
                 .orElseThrow(DailyWordNotFoundException::new);
         DailyWords newDailyWord = request.toEntity(word);
@@ -144,10 +144,10 @@ public class DailyWordsService {
         DailyWords loaded = dailyWordsRepository.findByIdAndIsActive(saved.getId(), true)
                 .orElseThrow(DailyWordNotFoundException::new);
 
-        return DailyWordDto.fromEntity(loaded);
+        return DailyWord.fromEntity(loaded);
     }
 
-    private DailyWordDto updateDailyWord(DailyWordUpdateRequest request, DailyWords existing) {
+    private DailyWord updateDailyWord(DailyWordUpdateRequest request, DailyWords existing) {
         Words word = null;
         if (request.getWordId() != null) {
             word = wordsRepository.findById(request.getWordId())
@@ -165,7 +165,7 @@ public class DailyWordsService {
         DailyWords loaded = dailyWordsRepository.findByIdAndIsActive(updated.getId(), true)
                 .orElseThrow(DailyWordNotFoundException::new);
 
-        return DailyWordDto.fromEntity(loaded);
+        return DailyWord.fromEntity(loaded);
     }
 
     private DailyWordDetailResponse getDailyWordDetailResponse(LocalDateTime dateTime) {
@@ -173,7 +173,7 @@ public class DailyWordsService {
         DailyWords entity = dailyWordsRepository.findByTopicDateAndIsActive(dateTime, true)
                 .orElseThrow(DailyWordNotFoundException::new);
 
-        DailyWordDto dailyWord = DailyWordDto.fromEntity(entity);
+        DailyWord dailyWord = DailyWord.fromEntity(entity);
 
         return DailyWordDetailResponse.builder()
                 .dailyWord(dailyWord)

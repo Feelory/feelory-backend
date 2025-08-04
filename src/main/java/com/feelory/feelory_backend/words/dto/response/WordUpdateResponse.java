@@ -1,6 +1,6 @@
 package com.feelory.feelory_backend.words.dto.response;
 
-import com.feelory.feelory_backend.words.dto.model.WordDto;
+import com.feelory.feelory_backend.words.dto.model.Word;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class WordUpdateResponse {
-    private WordDto word;
+    private Word word;
 }

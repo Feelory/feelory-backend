@@ -1,6 +1,6 @@
 package com.feelory.feelory_backend.words.dto.response;
 
-import com.feelory.feelory_backend.words.dto.model.WordDto;
+import com.feelory.feelory_backend.words.dto.model.Word;
 import com.feelory.feelory_backend.words.entity.Words;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,11 +19,11 @@ public class WordListResponse {
     private int page;
     private int size;
     private boolean hasNext;
-    private List<WordDto> words;
+    private List<Word> words;
 
     public static WordListResponse fromPage(Page<Words> page) {
-        List<WordDto> wordList = page.getContent().stream()
-                .map(WordDto::fromEntity)
+        List<Word> wordList = page.getContent().stream()
+                .map(Word::fromEntity)
                 .toList();
 
         return WordListResponse.builder()

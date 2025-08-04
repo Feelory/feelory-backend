@@ -9,17 +9,17 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class DailyWordSummaryDto {
+public class DailyWordSummary {
     private Long id;
     private String category;
     private String word;
     private String description;
 
-    public static DailyWordSummaryDto fromDto(DailyWordDto dto) {
-        WordSummaryDto word = dto.getWord();
-        CategorySummaryDto category = word.getCategory();
+    public static DailyWordSummary fromDto(DailyWord dto) {
+        WordSummary word = dto.getWord();
+        CategorySummary category = word.getCategory();
 
-        return DailyWordSummaryDto.builder()
+        return DailyWordSummary.builder()
                 .id(dto.getId())
                 .category(category.getName())
                 .word(word.getName())

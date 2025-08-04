@@ -12,21 +12,21 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class DailyWordDto {
+public class DailyWord {
     private Long id;
-    private WordSummaryDto word;
+    private WordSummary word;
     private LocalDateTime topicDate;
     private String description;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private Boolean isActive;
 
-    public static DailyWordDto fromEntity(DailyWords dailyWords) {
+    public static DailyWord fromEntity(DailyWords dailyWords) {
 
-        WordDto word = WordDto.fromEntity(dailyWords.getWord());
-        WordSummaryDto summaryDto = WordSummaryDto.fromDto(word);
+        Word word = Word.fromEntity(dailyWords.getWord());
+        WordSummary summaryDto = WordSummary.fromDto(word);
 
-        return DailyWordDto.builder()
+        return DailyWord.builder()
                 .id(dailyWords.getId())
                 .word(summaryDto)
                 .topicDate(dailyWords.getTopicDate())

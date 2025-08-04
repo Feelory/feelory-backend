@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CategoryDto {
+public class Category {
     private Long id;
     private String name;
     private String description;
@@ -20,9 +20,9 @@ public class CategoryDto {
     private LocalDateTime updatedAt;
     private Boolean isActive;
 
-    public static CategoryDto fromEntity(WordCategories wordCategories){
+    public static Category fromEntity(WordCategories wordCategories){
 
-        return CategoryDto.builder()
+        return Category.builder()
                 .id(wordCategories.getId())
                 .name(wordCategories.getName())
                 .description(wordCategories.getDescription())

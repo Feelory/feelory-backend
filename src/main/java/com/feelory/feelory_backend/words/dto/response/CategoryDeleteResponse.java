@@ -1,6 +1,6 @@
 package com.feelory.feelory_backend.words.dto.response;
 
-import com.feelory.feelory_backend.words.dto.model.CategoryDto;
+import com.feelory.feelory_backend.words.dto.model.Category;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CategoryDeleteResponse {
-    private CategoryDto category;
+    private Category category;
 }

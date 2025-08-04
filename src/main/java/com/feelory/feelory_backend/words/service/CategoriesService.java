@@ -3,7 +3,7 @@ package com.feelory.feelory_backend.words.service;
 import com.feelory.feelory_backend.global.exception.exceptions.words.CategoryNotFoundException;
 import com.feelory.feelory_backend.global.exception.exceptions.words.DuplicateCategoryNameException;
 import com.feelory.feelory_backend.global.util.ValidationUtil;
-import com.feelory.feelory_backend.words.dto.model.CategoryDto;
+import com.feelory.feelory_backend.words.dto.model.Category;
 import com.feelory.feelory_backend.words.dto.request.CategoryCreateRequest;
 import com.feelory.feelory_backend.words.dto.request.CategoryDeleteRequest;
 import com.feelory.feelory_backend.words.dto.request.CategoryListRequest;
@@ -44,7 +44,7 @@ public class CategoriesService {
         WordCategories createdCategory = categoriesRepository.save(entity);
 
 
-        CategoryDto category = CategoryDto.fromEntity(createdCategory);
+        Category category = Category.fromEntity(createdCategory);
 
         return CategoryCreateResponse.builder()
                 .category(category)
@@ -74,7 +74,7 @@ public class CategoriesService {
         WordCategories updatedEntity = categoriesRepository.save(updatedCategory);
 
 
-        CategoryDto category = CategoryDto.fromEntity(updatedEntity);
+        Category category = Category.fromEntity(updatedEntity);
 
         return CategoryUpdateResponse.builder()
                 .category(category)
@@ -96,7 +96,7 @@ public class CategoriesService {
         WordCategories loaded = categoriesRepository.findByIdAndIsActive(updated.getId(), false)
                 .orElseThrow(CategoryNotFoundException::new);
 
-        CategoryDto category = CategoryDto.fromEntity(loaded);
+        Category category = Category.fromEntity(loaded);
 
         return CategoryDeleteResponse.builder()
                 .category(category)

@@ -1,6 +1,6 @@
 package com.feelory.feelory_backend.words.dto.response;
 
-import com.feelory.feelory_backend.words.dto.model.CategoryDto;
+import com.feelory.feelory_backend.words.dto.model.Category;
 import com.feelory.feelory_backend.words.entity.WordCategories;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,11 +20,11 @@ public class CategoryListResponse {
     private int page;
     private int size;
     private boolean hasNext;
-    private List<CategoryDto> categories;
+    private List<Category> categories;
 
     public static CategoryListResponse fromPage(Page<WordCategories> page) {
-        List<CategoryDto> categoryList = page.getContent().stream()
-                .map(CategoryDto::fromEntity)
+        List<Category> categoryList = page.getContent().stream()
+                .map(Category::fromEntity)
                 .toList();
 
         return CategoryListResponse.builder()

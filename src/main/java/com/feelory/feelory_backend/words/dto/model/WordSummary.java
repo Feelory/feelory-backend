@@ -9,15 +9,15 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class WordSummaryDto {
+public class WordSummary {
     private Long id;
-    private CategorySummaryDto category;
+    private CategorySummary category;
     private String name;
     private String description;
 
-    public static WordSummaryDto fromDto(WordDto dto) {
+    public static WordSummary fromDto(Word dto) {
 
-        return WordSummaryDto.builder()
+        return WordSummary.builder()
                 .id(dto.getId())
                 .category(dto.getCategory())
                 .name(dto.getName())
