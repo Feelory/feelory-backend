@@ -2,6 +2,7 @@ package com.feelory.feelory_backend.writings.controller;
 
 import com.feelory.feelory_backend.global.api.ApiResponse;
 import com.feelory.feelory_backend.global.api.SuccessCode;
+import com.feelory.feelory_backend.global.security.auth.jwt.JwtTokenProvider;
 import com.feelory.feelory_backend.writings.model.*;
 import com.feelory.feelory_backend.writings.service.WritingsService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 public class WritingsController {
 
     private final WritingsService writingsService;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Operation(
             summary = "내가 쓴 글 목록",
@@ -24,6 +26,7 @@ public class WritingsController {
     )
     @GetMapping("/me")
     public ApiResponse<UserWritingListResponse> getUserWritings(UserWritingListRequest request) {
+        jwtTokenProvider.checkUserOrAdmin();
 
         UserWritingListResponse response = writingsService.getUserWritings(request);
 
@@ -36,6 +39,7 @@ public class WritingsController {
     )
     @GetMapping("/me/today")
     public ApiResponse<UserTodayWritingResponse> getUserTodayWriting() {
+        jwtTokenProvider.checkUserOrAdmin();
 
         UserTodayWritingResponse response = writingsService.getUserTodayWriting();
 
@@ -48,6 +52,7 @@ public class WritingsController {
     )
     @GetMapping("/me/{id}")
     public ApiResponse<UserWritingDetailResponse> getUserWritingDetail(@PathVariable Long id) {
+        jwtTokenProvider.checkUserOrAdmin();
 
         UserWritingDetailResponse response = writingsService.getUserWritingDetail(id);
 
@@ -60,6 +65,7 @@ public class WritingsController {
     )
     @PostMapping("")
     public ApiResponse<UserWritingCreateResponse> postUserWriting(@Valid @RequestBody UserWritingCreateRequest request) {
+        jwtTokenProvider.checkUserOrAdmin();
 
         UserWritingCreateResponse response = writingsService.registerUserWriting(request);
 
@@ -72,6 +78,7 @@ public class WritingsController {
     )
     @PatchMapping("")
     public ApiResponse<UserWritingUpdateResponse> patchUserWriting(@Valid @RequestBody UserWritingUpdateRequest request) {
+        jwtTokenProvider.checkUserOrAdmin();
 
         UserWritingUpdateResponse response = writingsService.modifyUserWriting(request);
 
@@ -81,6 +88,7 @@ public class WritingsController {
 
     @DeleteMapping("")
     public ApiResponse<UserWritingDeleteResponse> deleteUserWriting(@Valid UserWritingDeleteRequest request) {
+        jwtTokenProvider.checkUserOrAdmin();
 
         UserWritingDeleteResponse response = writingsService.removeUserWriting(request);
 
@@ -89,6 +97,7 @@ public class WritingsController {
 
     @PatchMapping("/visibility")
     public ApiResponse<VisibilityUpdateResponse> patchWritingVisibility(@Valid @RequestBody VisibilityUpdateRequest request) {
+        jwtTokenProvider.checkUserOrAdmin();
 
         VisibilityUpdateResponse response = writingsService.modifyVisibility(request);
 

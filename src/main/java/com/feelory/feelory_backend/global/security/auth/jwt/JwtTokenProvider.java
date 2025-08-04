@@ -2,6 +2,7 @@ package com.feelory.feelory_backend.global.security.auth.jwt;
 
 import com.feelory.feelory_backend.global.exception.exceptions.auth.AdminAccessDeniedException;
 import com.feelory.feelory_backend.global.exception.exceptions.auth.IllegalUserTypeException;
+import com.feelory.feelory_backend.global.exception.exceptions.auth.UserAccessDeniedException;
 import com.feelory.feelory_backend.global.exception.exceptions.auth.UserIdNotFoundException;
 import com.feelory.feelory_backend.users.model.UserRole;
 import com.feelory.feelory_backend.users.service.UserService;
@@ -98,6 +99,17 @@ public class JwtTokenProvider {
                 .map(role -> role.replace("ROLE_", "")) // 접두사 제거
                 .map(UserRole::valueOf)
                 .collect(Collectors.toList());
+    }
+
+    public void checkUserOrAdmin() {
+        List<UserRole> roles = getRolesFromAuthentication();
+
+        boolean isUser = roles.stream()
+                .anyMatch(role -> role == UserRole.ADMIN || role == UserRole.USER);
+
+        if(!isUser) {
+            throw new UserAccessDeniedException();
+        }
     }
 
     public void checkAdmin() {
