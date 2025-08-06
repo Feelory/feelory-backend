@@ -3,7 +3,11 @@ package com.feelory.feelory_backend.writings.controller;
 import com.feelory.feelory_backend.global.api.ApiResponse;
 import com.feelory.feelory_backend.global.api.SuccessCode;
 import com.feelory.feelory_backend.global.security.auth.jwt.JwtTokenProvider;
-import com.feelory.feelory_backend.writings.model.*;
+import com.feelory.feelory_backend.writings.dto.request.WritingGoalCreateRequest;
+import com.feelory.feelory_backend.writings.dto.request.WritingGoalDeleteRequest;
+import com.feelory.feelory_backend.writings.dto.request.WritingGoalListRequest;
+import com.feelory.feelory_backend.writings.dto.request.WritingGoalUpdateRequest;
+import com.feelory.feelory_backend.writings.dto.response.*;
 import com.feelory.feelory_backend.writings.service.WritingGoalsService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -65,12 +69,12 @@ public class WritingGoalsController {
             description = "글쓰기 목표 수정 API"
     )
     @PatchMapping("")
-    public ApiResponse<WritingGoalUpdateResponse> patchWritingGoal(@Valid @RequestBody WritingGoalUpdateRequest request) {
+    public ApiResponse<Void> patchWritingGoal(@Valid @RequestBody WritingGoalUpdateRequest request) {
         jwtTokenProvider.checkUserOrAdmin();
 
-        WritingGoalUpdateResponse response = writingGoalsService.modifyWritingGoal(request);
+        writingGoalsService.modifyWritingGoal(request);
 
-        return ApiResponse.success(response, SuccessCode.UPDATE_WRITING_GOAL_SUCCESS);
+        return ApiResponse.success(SuccessCode.UPDATE_WRITING_GOAL_SUCCESS);
     }
 
 
@@ -79,11 +83,11 @@ public class WritingGoalsController {
             description = "글쓰기 목표 삭제 API"
     )
     @DeleteMapping("")
-    public ApiResponse<WritingGoalDeleteResponse> deleteWritingGoal(@Valid WritingGoalDeleteRequest request) {
+    public ApiResponse<Void> deleteWritingGoal(@Valid WritingGoalDeleteRequest request) {
         jwtTokenProvider.checkUserOrAdmin();
 
-        WritingGoalDeleteResponse response = writingGoalsService.removeWritingGoal(request);
+        writingGoalsService.removeWritingGoal(request);
 
-        return ApiResponse.success(response, SuccessCode.DELETE_WRITING_GOAL_SUCCESS);
+        return ApiResponse.success(SuccessCode.DELETE_WRITING_GOAL_SUCCESS);
     }
 }

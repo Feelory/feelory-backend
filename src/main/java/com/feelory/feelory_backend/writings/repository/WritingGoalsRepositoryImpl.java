@@ -2,7 +2,7 @@ package com.feelory.feelory_backend.writings.repository;
 
 import com.feelory.feelory_backend.writings.entity.QWritingGoals;
 import com.feelory.feelory_backend.writings.entity.WritingGoals;
-import com.feelory.feelory_backend.writings.model.WritingGoalListSearchDto;
+import com.feelory.feelory_backend.writings.dto.model.WritingGoalListSearch;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +22,7 @@ public class WritingGoalsRepositoryImpl implements WritingGoalsRepositoryCustom 
 
 
     @Override
-    public Page<WritingGoals> searchWritingGoalsByDto(WritingGoalListSearchDto searchDto) {
+    public Page<WritingGoals> searchWritingGoalsByDto(WritingGoalListSearch searchDto) {
         QWritingGoals qWritingGoals = QWritingGoals.writingGoals;
 
         BooleanBuilder builder = new BooleanBuilder();

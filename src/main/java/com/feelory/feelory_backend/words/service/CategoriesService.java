@@ -2,10 +2,15 @@ package com.feelory.feelory_backend.words.service;
 
 import com.feelory.feelory_backend.global.exception.exceptions.words.CategoryNotFoundException;
 import com.feelory.feelory_backend.global.exception.exceptions.words.DuplicateCategoryNameException;
-import com.feelory.feelory_backend.global.security.auth.jwt.JwtTokenProvider;
 import com.feelory.feelory_backend.global.util.ValidationUtil;
+import com.feelory.feelory_backend.words.dto.model.Category;
+import com.feelory.feelory_backend.words.dto.request.CategoryCreateRequest;
+import com.feelory.feelory_backend.words.dto.request.CategoryDeleteRequest;
+import com.feelory.feelory_backend.words.dto.request.CategoryListRequest;
+import com.feelory.feelory_backend.words.dto.request.CategoryUpdateRequest;
+import com.feelory.feelory_backend.words.dto.response.CategoryCreateResponse;
+import com.feelory.feelory_backend.words.dto.response.CategoryListResponse;
 import com.feelory.feelory_backend.words.entity.WordCategories;
-import com.feelory.feelory_backend.words.model.*;
 import com.feelory.feelory_backend.words.repository.CategoriesRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -37,7 +42,7 @@ public class CategoriesService {
         WordCategories createdCategory = categoriesRepository.save(entity);
 
 
-        CategoryDto category = CategoryDto.fromEntity(createdCategory);
+        Category category = Category.fromEntity(createdCategory);
 
         return CategoryCreateResponse.builder()
                 .category(category)
@@ -45,7 +50,7 @@ public class CategoriesService {
     }
 
     @Transactional
-    public CategoryUpdateResponse modifyCategory(CategoryUpdateRequest request) {
+    public void modifyCategory(CategoryUpdateRequest request) {
 
         WordCategories entity = categoriesRepository.findByIdAndIsActive(request.getId(), true)
                 .orElseThrow(CategoryNotFoundException::new);
@@ -64,18 +69,11 @@ public class CategoriesService {
 
 
         WordCategories updatedCategory = builder.build();
-        WordCategories updatedEntity = categoriesRepository.save(updatedCategory);
-
-
-        CategoryDto category = CategoryDto.fromEntity(updatedEntity);
-
-        return CategoryUpdateResponse.builder()
-                .category(category)
-                .build();
+        categoriesRepository.save(updatedCategory);
     }
 
     @Transactional
-    public CategoryDeleteResponse removeCategory(CategoryDeleteRequest request) {
+    public void removeCategory(CategoryDeleteRequest request) {
 
         WordCategories entity = categoriesRepository.findByIdAndIsActive(request.getId(), true)
                 .orElseThrow(CategoryNotFoundException::new);
@@ -85,15 +83,6 @@ public class CategoriesService {
                 .build();
 
         categoriesRepository.save(updated);
-
-        WordCategories loaded = categoriesRepository.findByIdAndIsActive(updated.getId(), false)
-                .orElseThrow(CategoryNotFoundException::new);
-
-        CategoryDto category = CategoryDto.fromEntity(loaded);
-
-        return CategoryDeleteResponse.builder()
-                .category(category)
-                .build();
     }
 
     private void checkDuplicateName(String name) {

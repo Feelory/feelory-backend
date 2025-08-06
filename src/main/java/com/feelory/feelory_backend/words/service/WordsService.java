@@ -3,11 +3,16 @@ package com.feelory.feelory_backend.words.service;
 import com.feelory.feelory_backend.global.exception.exceptions.words.CategoryNotFoundException;
 import com.feelory.feelory_backend.global.exception.exceptions.words.DuplicateWordNameException;
 import com.feelory.feelory_backend.global.exception.exceptions.words.WordNotFoundException;
-import com.feelory.feelory_backend.global.security.auth.jwt.JwtTokenProvider;
 import com.feelory.feelory_backend.global.util.ValidationUtil;
+import com.feelory.feelory_backend.words.dto.model.Word;
+import com.feelory.feelory_backend.words.dto.request.WordCreateRequest;
+import com.feelory.feelory_backend.words.dto.request.WordDeleteRequest;
+import com.feelory.feelory_backend.words.dto.request.WordListRequest;
+import com.feelory.feelory_backend.words.dto.request.WordUpdateRequest;
+import com.feelory.feelory_backend.words.dto.response.WordCreateResponse;
+import com.feelory.feelory_backend.words.dto.response.WordListResponse;
 import com.feelory.feelory_backend.words.entity.WordCategories;
 import com.feelory.feelory_backend.words.entity.Words;
-import com.feelory.feelory_backend.words.model.*;
 import com.feelory.feelory_backend.words.repository.CategoriesRepository;
 import com.feelory.feelory_backend.words.repository.WordsRepository;
 import lombok.RequiredArgsConstructor;
@@ -42,7 +47,7 @@ public class WordsService {
         Words entity = request.toEntity(category);
         Words createdWord = wordsRepository.save(entity);
 
-        WordDto word = WordDto.fromEntity(createdWord);
+        Word word = Word.fromEntity(createdWord);
 
         return WordCreateResponse.builder()
                 .word(word)
@@ -50,7 +55,7 @@ public class WordsService {
     }
 
     @Transactional
-    public WordUpdateResponse modifyWord(WordUpdateRequest request) {
+    public void modifyWord(WordUpdateRequest request) {
 
         Words entity = wordsRepository.findByIdAndIsActive(request.getId(), true)
                 .orElseThrow(WordNotFoundException::new);
@@ -72,20 +77,11 @@ public class WordsService {
         }
 
         Words updatedWord = builder.build();
-        Words saved = wordsRepository.save(updatedWord);
-
-        Words loaded = wordsRepository.findByIdAndIsActive(saved.getId(), true)
-                .orElseThrow(WordNotFoundException::new);
-
-        WordDto word = WordDto.fromEntity(loaded);
-
-        return WordUpdateResponse.builder()
-                .word(word)
-                .build();
+        wordsRepository.save(updatedWord);
     }
 
     @Transactional
-    public WordDeleteResponse removeWord(WordDeleteRequest request) {
+    public void removeWord(WordDeleteRequest request) {
 
         Words entity = wordsRepository.findByIdAndIsActive(request.getId(), true)
                 .orElseThrow(WordNotFoundException::new);
@@ -95,16 +91,6 @@ public class WordsService {
                 .build();
 
         wordsRepository.save(updated);
-
-        Words loaded = wordsRepository.findByIdAndIsActive(updated.getId(), false)
-                .orElseThrow(WordNotFoundException::new);
-
-        WordDto word = WordDto.fromEntity(loaded);
-
-
-        return WordDeleteResponse.builder()
-                .word(word)
-                .build();
     }
 
     private WordCategories getCategory(Long categoryId) {

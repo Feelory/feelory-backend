@@ -9,8 +9,14 @@ import com.feelory.feelory_backend.global.security.auth.jwt.JwtTokenProvider;
 import com.feelory.feelory_backend.global.util.ValidationUtil;
 import com.feelory.feelory_backend.users.entity.Users;
 import com.feelory.feelory_backend.users.repository.UsersRepository;
+import com.feelory.feelory_backend.writings.dto.model.WritingGoal;
+import com.feelory.feelory_backend.writings.dto.model.WritingGoalListSearch;
+import com.feelory.feelory_backend.writings.dto.request.WritingGoalCreateRequest;
+import com.feelory.feelory_backend.writings.dto.request.WritingGoalDeleteRequest;
+import com.feelory.feelory_backend.writings.dto.request.WritingGoalListRequest;
+import com.feelory.feelory_backend.writings.dto.request.WritingGoalUpdateRequest;
+import com.feelory.feelory_backend.writings.dto.response.*;
 import com.feelory.feelory_backend.writings.entity.WritingGoals;
-import com.feelory.feelory_backend.writings.model.*;
 import com.feelory.feelory_backend.writings.repository.WritingGoalsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -37,7 +43,7 @@ public class WritingGoalsService {
 
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
 
-        WritingGoalListSearchDto searchDto = WritingGoalListSearchDto.builder()
+        WritingGoalListSearch searchDto = WritingGoalListSearch.builder()
                 .userId(userId)
                 .pageable(pageable)
                 .isValidDate(request.getIsValidDate())
@@ -55,7 +61,7 @@ public class WritingGoalsService {
         WritingGoals entity = writingGoalsRepository.findByIdAndUserId(id, userId)
                 .orElseThrow(WritingGoalNotFoundException::new);
 
-        WritingGoalDto writingGoal = WritingGoalDto.fromEntity(entity);
+        WritingGoal writingGoal = WritingGoal.fromEntity(entity);
 
         return WritingGoalDetailResponse.builder()
                 .writingGoal(writingGoal)
@@ -74,7 +80,7 @@ public class WritingGoalsService {
         WritingGoals entity = request.toEntity(user);
         WritingGoals createdWritingGoal = writingGoalsRepository.save(entity);
 
-        WritingGoalDto writingGoal = WritingGoalDto.fromEntity(createdWritingGoal);
+        WritingGoal writingGoal = WritingGoal.fromEntity(createdWritingGoal);
 
         return WritingGoalCreateResponse.builder()
                 .writingGoal(writingGoal)
@@ -82,7 +88,7 @@ public class WritingGoalsService {
     }
 
     @Transactional
-    public WritingGoalUpdateResponse modifyWritingGoal(WritingGoalUpdateRequest request) {
+    public void modifyWritingGoal(WritingGoalUpdateRequest request) {
 
         Long userId = jwtTokenProvider.getUserIdFromAuthentication();
 
@@ -108,20 +114,11 @@ public class WritingGoalsService {
         }
 
         WritingGoals updatedWritingGoals = builder.build();
-        WritingGoals saved = writingGoalsRepository.save(updatedWritingGoals);
-
-        WritingGoals loaded = writingGoalsRepository.findByIdAndUserIdAndIsActive(saved.getId(), userId, true)
-                .orElseThrow(WritingGoalNotFoundException::new);
-
-        WritingGoalDto writingGoal = WritingGoalDto.fromEntity(loaded);
-
-        return WritingGoalUpdateResponse.builder()
-                .writingGoal(writingGoal)
-                .build();
+        writingGoalsRepository.save(updatedWritingGoals);
     }
 
     @Transactional
-    public WritingGoalDeleteResponse removeWritingGoal(WritingGoalDeleteRequest request) {
+    public void removeWritingGoal(WritingGoalDeleteRequest request) {
         Long userId = jwtTokenProvider.getUserIdFromAuthentication();
         WritingGoals entity = writingGoalsRepository.findByIdAndUserIdAndIsActive(request.getId(), userId, true)
                 .orElseThrow(WritingGoalNotFoundException::new);
@@ -131,15 +128,6 @@ public class WritingGoalsService {
                 .build();
 
         writingGoalsRepository.save(updated);
-
-        WritingGoals loaded = writingGoalsRepository.findByIdAndUserIdAndIsActive(updated.getId(), userId,false)
-                .orElseThrow(WritingGoalNotFoundException::new);
-
-        WritingGoalDto writingGoal = WritingGoalDto.fromEntity(loaded);
-
-        return WritingGoalDeleteResponse.builder()
-                .writingGoal(writingGoal)
-                .build();
     }
 
     private void checkDuplicateName(Long userId, String name) {
