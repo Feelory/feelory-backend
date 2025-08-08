@@ -4,6 +4,7 @@ import com.feelory.feelory_backend.global.api.ApiResponse;
 import com.feelory.feelory_backend.global.api.SuccessCode;
 import com.feelory.feelory_backend.global.security.auth.jwt.JwtTokenProvider;
 import com.feelory.feelory_backend.users.model.response.UserProfileImageResponse;
+import com.feelory.feelory_backend.users.model.response.UserProfileResponse;
 import com.feelory.feelory_backend.users.service.UserProfileService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -37,5 +38,19 @@ public class UserProfileController {
         UserProfileImageResponse response = userProfileService.updateProfileImage(image);
 
         return ApiResponse.success(response, SuccessCode.REGISTER_USER_PROFILE_IMAGE_SUCCESS);
+    }
+
+    @Operation(
+            summary = "내 프로필 조회",
+            description = "글 관련 정보 추후 추가 예정",
+            security = {@SecurityRequirement(name = "JWT")}
+    )
+    @GetMapping(value = "/me")
+    public ApiResponse<UserProfileResponse> updateProfileImage() {
+        jwtTokenProvider.checkUserOrAdmin();
+
+        UserProfileResponse response = userProfileService.readUserProfile();
+
+        return ApiResponse.success(response, SuccessCode.READ_USER_PROFILE_SUCCESS);
     }
 }

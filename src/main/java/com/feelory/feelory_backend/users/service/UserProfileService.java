@@ -7,6 +7,7 @@ import com.feelory.feelory_backend.global.security.auth.jwt.JwtTokenProvider;
 import com.feelory.feelory_backend.users.entity.UserProfileImages;
 import com.feelory.feelory_backend.users.entity.Users;
 import com.feelory.feelory_backend.users.model.response.UserProfileImageResponse;
+import com.feelory.feelory_backend.users.model.response.UserProfileResponse;
 import com.feelory.feelory_backend.users.repository.UserProfileImagesRepository;
 import com.feelory.feelory_backend.users.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
@@ -42,9 +43,45 @@ public class UserProfileService {
 
         userProfileImagesRepository.save(profileImage);
 
-        String imageFileUrl = imageFile.getImageFileUrl(prefix);
+        String imageFileUrl = getProfileImageUrl(profileImage);
 
         return new UserProfileImageResponse(imageFileUrl);
+    }
+
+    @Transactional(readOnly = true)
+    public UserProfileResponse readUserProfile() {
+
+        Long userId = jwtTokenProvider.getUserIdFromAuthentication();
+
+        Users user = getUsers(userId);
+
+        UserProfileImages activeProfileImage = getActiveProfileImageFromUser(user);
+
+        String profileImageUrl = getProfileImageUrl(activeProfileImage);
+
+        return buildUserProfileResponse(user,profileImageUrl);
+    }
+
+    private UserProfileResponse buildUserProfileResponse(Users user,String profileImageUrl) {
+        return UserProfileResponse.builder()
+                .profileImageUrl(profileImageUrl)
+                .nickname(user.getNickname())
+                .introduce(user.getIntroduce())
+                .build();
+    }
+
+    private UserProfileImages getActiveProfileImageFromUser(Users user) {
+        return user.getUserProfileImages().stream()
+                .filter(UserProfileImages::isActive)
+                .findFirst()
+                .orElse(null);
+    }
+
+    private String getProfileImageUrl(UserProfileImages profileImage) {
+        if (profileImage == null) {
+            return null;
+        }
+        return prefix + "/" + profileImage.getImageName() + "." + profileImage.getExtension();
     }
 
     private void deactivateCurrentProfileImages(Users user) {
