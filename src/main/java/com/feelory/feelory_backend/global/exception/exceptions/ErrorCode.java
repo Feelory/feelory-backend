@@ -19,7 +19,7 @@ public enum ErrorCode {
 
     // E1XX : USERS(사용자)
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "E100", "해당 유저를 찾을 수 없습니다."),
-    INVALID_PHONE_NUMBER(HttpStatus.BAD_REQUEST, "E001", "유효하지 않은 전화번호 형식입니다."),
+    INVALID_PHONE_NUMBER(HttpStatus.BAD_REQUEST, "E101", "유효하지 않은 전화번호 형식입니다."),
 
     // E2XX : WORDS(단어)
     WORD_NOT_FOUND(HttpStatus.NOT_FOUND, "E200", "단어를 찾을 수 없습니다."),
@@ -40,6 +40,13 @@ public enum ErrorCode {
     // E4XX : LIKES, BOOKMARKS (좋아요, 북마크)
 
     // E5XX : FEEDBACKS(피드백)
+
+    // E6XX : FILE (파일)
+    FILE_NOT_PROVIDED(HttpStatus.BAD_REQUEST, "E900", "파일이 제공되지 않았습니다."),
+    INVALID_FILE_NAME(HttpStatus.BAD_REQUEST, "E901", "유효하지 않은 파일 이름입니다."),
+    FILE_SAVE_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "E902", "파일 저장에 실패하였습니다."),
+    IMAGE_FILE_TOO_LARGE(HttpStatus.BAD_REQUEST, "E903", "이미지 파일이 15MB를 초과합니다."),
+    UNSUPPORTED_IMAGE_FORMAT(HttpStatus.BAD_REQUEST, "E904", "지원하지 않는 이미지 파일 형식입니다."),
 
     // E9XX : 기타
     DAY_TO_FAR_IN_PAST(HttpStatus.BAD_REQUEST, "994", "날짜는 현재로부터 이전 %개월 까지만 가능합니다."),
