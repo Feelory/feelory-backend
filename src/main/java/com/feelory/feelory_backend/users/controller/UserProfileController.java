@@ -25,16 +25,16 @@ public class UserProfileController {
     private final UserProfileService userProfileService;
 
     @Operation(
-            summary = "유저 프로필 이미지 등록",
-            description = "유저 프로필 이미지 등록 API",
+            summary = "유저 프로필 이미지 갱신(생성/교체)",
+            description = "기존 이미지가 없으면 생성, 있으면 교체",
             security = {@SecurityRequirement(name = "JWT")}
     )
-    @PostMapping(value = "/images", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ApiResponse<UserProfileImageResponse> registerProfileImage(@Parameter(description = "업로드할 이미지 파일", content = @Content(mediaType = MediaType.MULTIPART_FORM_DATA_VALUE)) @RequestParam("file")MultipartFile image) {
+    @PutMapping(value = "/images", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ApiResponse<UserProfileImageResponse> updateProfileImage(@Parameter(description = "업로드할 이미지 파일", content = @Content(mediaType = MediaType.MULTIPART_FORM_DATA_VALUE)) @RequestParam("file") MultipartFile image) {
 
         jwtTokenProvider.checkUserOrAdmin();
 
-        UserProfileImageResponse response = userProfileService.registerProfileImage(image);
+        UserProfileImageResponse response = userProfileService.updateProfileImage(image);
 
         return ApiResponse.success(response, SuccessCode.REGISTER_USER_PROFILE_IMAGE_SUCCESS);
     }

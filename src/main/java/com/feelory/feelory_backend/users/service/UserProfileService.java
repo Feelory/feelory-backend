@@ -1,6 +1,5 @@
 package com.feelory.feelory_backend.users.service;
 
-import com.feelory.feelory_backend.global.exception.exceptions.file.UnsupportedImageFormatException;
 import com.feelory.feelory_backend.global.exception.exceptions.users.UserNotFoundException;
 import com.feelory.feelory_backend.global.file.model.ImageFile;
 import com.feelory.feelory_backend.global.file.service.FileUploadService;
@@ -16,10 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-
 @Service
 @RequiredArgsConstructor
 public class UserProfileService {
@@ -33,7 +28,7 @@ public class UserProfileService {
     private String prefix;
 
     @Transactional
-    public UserProfileImageResponse registerProfileImage(MultipartFile requestImageFile) {
+    public UserProfileImageResponse updateProfileImage(MultipartFile requestImageFile) {
 
         Long userId = jwtTokenProvider.getUserIdFromAuthentication();
 
@@ -41,11 +36,21 @@ public class UserProfileService {
 
         Users user = getUsers(userId);
 
+        deactivateCurrentProfileImages(user);
+
         UserProfileImages profileImage = buildUserProfileImages(user, imageFile);
 
         userProfileImagesRepository.save(profileImage);
 
-        return new UserProfileImageResponse(imageFile.getImageFileUrl(prefix));
+        String imageFileUrl = imageFile.getImageFileUrl(prefix);
+
+        return new UserProfileImageResponse(imageFileUrl);
+    }
+
+    private void deactivateCurrentProfileImages(Users user) {
+        user.getUserProfileImages().stream()
+                .filter(UserProfileImages::isActive)
+                .forEach(UserProfileImages::deactivate);
     }
 
     private UserProfileImages buildUserProfileImages(Users user, ImageFile imageFile) {
