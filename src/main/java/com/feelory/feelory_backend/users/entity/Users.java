@@ -54,4 +54,13 @@ public class Users extends BaseEntity {
         userTokens.add(token);
         token.setUser(this);
     }
+
+    @Builder.Default
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserProfileImages> userProfileImages = new ArrayList<>();
+
+    public void addUserProfileImage(UserProfileImages profileImage){
+        userProfileImages.add(profileImage);
+        profileImage.setUser(this);
+    }
 }

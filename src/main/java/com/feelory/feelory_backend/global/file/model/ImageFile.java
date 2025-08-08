@@ -12,4 +12,8 @@ public class ImageFile {
     private int width;
     private int height;
     private Long fileSize;
+
+    public String getImageFileUrl(String prefix) {
+        return prefix + "/" + imageName + "." + extension;
+    }
 }

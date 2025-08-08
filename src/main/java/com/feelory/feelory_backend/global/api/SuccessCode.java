@@ -13,6 +13,7 @@ public enum SuccessCode {
     LOGOUT_SUCCESS("로그아웃 성공"),
 
     // USERS(사용자)
+    REGISTER_USER_PROFILE_IMAGE_SUCCESS("유저 프로필 이미지 등록 완료"),
 
     // WORDS(단어)
     GET_CATEGORY_LIST_SUCCESS("카테고리 목록 조회 완료"),
