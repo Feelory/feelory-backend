@@ -1,11 +1,14 @@
 package com.feelory.feelory_backend.writings.entity;
 
+import com.feelory.feelory_backend.feedbacks.entity.Feedbacks;
 import com.feelory.feelory_backend.global.BaseEntity;
 import com.feelory.feelory_backend.users.entity.Users;
 import com.feelory.feelory_backend.words.entity.DailyWords;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Builder(toBuilder = true)
@@ -39,4 +42,13 @@ public class DailyWordWritings extends BaseEntity {
 
     @Column(name="is_active", nullable = false)
     private Boolean isActive;
+
+    @Builder.Default
+    @OneToMany(mappedBy = "dailyWordWriting", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Feedbacks> feedbacks = new ArrayList<>();
+
+    public void addFeedbacks(Feedbacks feedback){
+        feedbacks.add(feedback);
+        feedback.setDailyWordWriting(this);
+    }
 }
