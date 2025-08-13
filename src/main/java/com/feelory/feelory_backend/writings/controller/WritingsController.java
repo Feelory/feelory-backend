@@ -7,6 +7,7 @@ import com.feelory.feelory_backend.writings.dto.request.*;
 import com.feelory.feelory_backend.writings.dto.response.*;
 import com.feelory.feelory_backend.writings.service.WritingsService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +24,8 @@ public class WritingsController {
 
     @Operation(
             summary = "내가 쓴 글 목록",
-            description = "내가 쓴 글 목록 조회 API"
+            description = "내가 쓴 글 목록 조회 API",
+            security = {@SecurityRequirement(name = "JWT")}
     )
     @GetMapping("/me")
     public ApiResponse<UserWritingListResponse> getUserWritings(UserWritingListRequest request) {
@@ -36,7 +38,8 @@ public class WritingsController {
 
     @Operation(
             summary = "오늘 내가 쓴 글 조회",
-            description = "오늘 내가 쓴 글 조회 API"
+            description = "오늘 내가 쓴 글 조회 API",
+            security = {@SecurityRequirement(name = "JWT")}
     )
     @GetMapping("/me/today")
     public ApiResponse<UserTodayWritingResponse> getUserTodayWriting() {
@@ -49,7 +52,8 @@ public class WritingsController {
 
     @Operation(
             summary = "내가 쓴 글 상세 조회",
-            description = "내가 쓴 글 상세 조회 API"
+            description = "내가 쓴 글 상세 조회 API",
+            security = {@SecurityRequirement(name = "JWT")}
     )
     @GetMapping("/me/{id}")
     public ApiResponse<UserWritingDetailResponse> getUserWritingDetail(@PathVariable Long id) {
@@ -62,7 +66,8 @@ public class WritingsController {
 
     @Operation(
             summary = "글 작성",
-            description = "글 작성 API"
+            description = "글 작성 API",
+            security = {@SecurityRequirement(name = "JWT")}
     )
     @PostMapping("")
     public ApiResponse<UserWritingCreateResponse> postUserWriting(@Valid @RequestBody UserWritingCreateRequest request) {
@@ -75,7 +80,8 @@ public class WritingsController {
 
     @Operation(
             summary = "글 수정",
-            description = "글 수정 API"
+            description = "글 수정 API",
+            security = {@SecurityRequirement(name = "JWT")}
     )
     @PatchMapping("")
     public ApiResponse<Void> patchUserWriting(@Valid @RequestBody UserWritingUpdateRequest request) {
@@ -86,7 +92,11 @@ public class WritingsController {
         return ApiResponse.success(SuccessCode.UPDATE_WRITING_SUCCESS);
     }
 
-
+    @Operation(
+            summary = "글 삭제",
+            description = "글 삭제 API",
+            security = {@SecurityRequirement(name = "JWT")}
+    )
     @DeleteMapping("")
     public ApiResponse<Void> deleteUserWriting(@Valid UserWritingDeleteRequest request) {
         jwtTokenProvider.checkUserOrAdmin();
@@ -96,6 +106,11 @@ public class WritingsController {
         return ApiResponse.success(SuccessCode.DELETE_WRITING_SUCCESS);
     }
 
+    @Operation(
+            summary = "글 공개 여부 변경",
+            description = "글 공개 여부 변경 API",
+            security = {@SecurityRequirement(name = "JWT")}
+    )
     @PatchMapping("/visibility")
     public ApiResponse<Void> patchWritingVisibility(@Valid @RequestBody VisibilityUpdateRequest request) {
         jwtTokenProvider.checkUserOrAdmin();

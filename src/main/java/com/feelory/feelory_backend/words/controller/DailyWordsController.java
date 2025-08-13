@@ -12,6 +12,7 @@ import com.feelory.feelory_backend.words.dto.response.DailyWordCreateResponse;
 import com.feelory.feelory_backend.words.dto.response.DailyWordDetailResponse;
 import com.feelory.feelory_backend.words.service.DailyWordsService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,12 @@ public class DailyWordsController {
     private final DailyWordsService dailyWordsService;
     private final JwtTokenProvider jwtTokenProvider;
 
+    @Operation(
+            summary = "특정 날짜의 오늘의 단어 조회",
+            description = "특정 날짜의 오늘의 단어 조회 API",
+            security = {@SecurityRequirement(name = "JWT")}
+
+    )
     @GetMapping("/{topicDate}")
     public ApiResponse<DailyWordDetailResponse> getDailyWord(@PathVariable String topicDate) {
         LocalDateTime parsed;
@@ -44,6 +51,11 @@ public class DailyWordsController {
         return ApiResponse.success(response, SuccessCode.GET_DAILY_WORD_SUCCESS);
     }
 
+    @Operation(
+            summary = "오늘의 단어 조회",
+            description = "오늘의 단어 조회 API"
+
+    )
     @GetMapping("/today")
     public ApiResponse<DailyWordDetailResponse> getDailyWordToday() {
         DailyWordDetailResponse response = dailyWordsService.getDailyWordToday();
@@ -53,7 +65,9 @@ public class DailyWordsController {
 
     @Operation(
             summary = "오늘의 단어 추가",
-            description = DailyWordsDocs.POST_DAILY_WORD_DESCRIPTION
+            description = DailyWordsDocs.POST_DAILY_WORD_DESCRIPTION,
+            security = {@SecurityRequirement(name = "JWT")}
+
     )
     @PostMapping("")
     public ApiResponse<DailyWordCreateResponse> postDailyWord(@Valid @RequestBody DailyWordCreateRequest request) {
@@ -70,6 +84,12 @@ public class DailyWordsController {
         return ApiResponse.success(response, code);
     }
 
+    @Operation(
+            summary = "오늘의 단어 수정",
+            description = "오늘의 단어 수정 API",
+            security = {@SecurityRequirement(name = "JWT")}
+
+    )
     @PatchMapping("")
     public ApiResponse<Void> patchDailyWord(@Valid @RequestBody DailyWordUpdateRequest request) {
 
@@ -80,6 +100,12 @@ public class DailyWordsController {
         return ApiResponse.success(SuccessCode.UPDATE_DAILY_WORD_SUCCESS);
     }
 
+    @Operation(
+            summary = "오늘의 단어 삭제",
+            description = "오늘의 단어 삭제 API",
+            security = {@SecurityRequirement(name = "JWT")}
+
+    )
     @DeleteMapping("")
     public ApiResponse<Void> deleteDailyWord(@Valid DailyWordDeleteRequest request) {
 

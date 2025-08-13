@@ -12,6 +12,7 @@ import com.feelory.feelory_backend.words.dto.response.WordCreateResponse;
 import com.feelory.feelory_backend.words.dto.response.WordListResponse;
 import com.feelory.feelory_backend.words.service.WordsService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -40,7 +41,8 @@ public class WordsController {
 
     @Operation(
             summary = "단어 추가",
-            description = "단어 추가 API"
+            description = "단어 추가 API",
+            security = {@SecurityRequirement(name = "JWT")}
     )
     @PostMapping("")
     public ApiResponse<WordCreateResponse> registerWord(@Valid @RequestBody WordCreateRequest request) {
@@ -53,7 +55,8 @@ public class WordsController {
 
     @Operation(
             summary = "단어 수정",
-            description = "단어 수정 API"
+            description = "단어 수정 API",
+            security = {@SecurityRequirement(name = "JWT")}
     )
     @PatchMapping("")
     public ApiResponse<Void> patchWord(@Valid @RequestBody WordUpdateRequest request) {
@@ -66,7 +69,8 @@ public class WordsController {
 
     @Operation(
             summary = "단어 삭제",
-            description = "단어 삭제 API"
+            description = "단어 삭제 API",
+            security = {@SecurityRequirement(name = "JWT")}
     )
     @DeleteMapping("")
     public ApiResponse<Void> deleteWord(@Valid WordDeleteRequest request) {

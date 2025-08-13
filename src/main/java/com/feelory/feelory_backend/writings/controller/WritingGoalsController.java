@@ -10,6 +10,7 @@ import com.feelory.feelory_backend.writings.dto.request.WritingGoalUpdateRequest
 import com.feelory.feelory_backend.writings.dto.response.*;
 import com.feelory.feelory_backend.writings.service.WritingGoalsService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +28,8 @@ public class WritingGoalsController {
 
     @Operation(
             summary = "글쓰기 목표 목록 조회",
-            description = "글쓰기 목표 목록 조회 API"
+            description = "글쓰기 목표 목록 조회 API",
+            security = {@SecurityRequirement(name = "JWT")}
     )
     @GetMapping("")
     public ApiResponse<WritingGoalListResponse> getWritingGoals(WritingGoalListRequest request) {
@@ -40,7 +42,8 @@ public class WritingGoalsController {
 
     @Operation(
             summary = "글쓰기 목표 상세 조회",
-            description = "글쓰기 목표 상세 조회 API"
+            description = "글쓰기 목표 상세 조회 API",
+            security = {@SecurityRequirement(name = "JWT")}
     )
     @GetMapping("/{id}")
     public ApiResponse<WritingGoalDetailResponse> getWritingGoalDetail(@PathVariable Long id) {
@@ -53,7 +56,8 @@ public class WritingGoalsController {
 
     @Operation(
             summary = "글쓰기 목표 추가",
-            description = "글쓰기 목표 추가 API"
+            description = "글쓰기 목표 추가 API",
+            security = {@SecurityRequirement(name = "JWT")}
     )
     @PostMapping("")
     public ApiResponse<WritingGoalCreateResponse> postWritingGoal(@Valid @RequestBody WritingGoalCreateRequest request) {
@@ -66,7 +70,8 @@ public class WritingGoalsController {
 
     @Operation(
             summary = "글쓰기 목표 수정",
-            description = "글쓰기 목표 수정 API"
+            description = "글쓰기 목표 수정 API",
+            security = {@SecurityRequirement(name = "JWT")}
     )
     @PatchMapping("")
     public ApiResponse<Void> patchWritingGoal(@Valid @RequestBody WritingGoalUpdateRequest request) {
@@ -80,7 +85,8 @@ public class WritingGoalsController {
 
     @Operation(
             summary = "글쓰기 목표 삭제",
-            description = "글쓰기 목표 삭제 API"
+            description = "글쓰기 목표 삭제 API",
+            security = {@SecurityRequirement(name = "JWT")}
     )
     @DeleteMapping("")
     public ApiResponse<Void> deleteWritingGoal(@Valid WritingGoalDeleteRequest request) {

@@ -11,6 +11,7 @@ import com.feelory.feelory_backend.words.dto.response.CategoryCreateResponse;
 import com.feelory.feelory_backend.words.dto.response.CategoryListResponse;
 import com.feelory.feelory_backend.words.service.CategoriesService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -40,7 +41,8 @@ public class CategoriesController {
 
     @Operation(
             summary = "카테고리 추가",
-            description = "단어 카테고리 추가 API"
+            description = "단어 카테고리 추가 API",
+            security = {@SecurityRequirement(name = "JWT")}
     )
     @PostMapping("")
     public ApiResponse<CategoryCreateResponse> postCategory(@Valid @RequestBody CategoryCreateRequest request) {
@@ -53,7 +55,8 @@ public class CategoriesController {
 
     @Operation(
             summary = "카테고리 수정",
-            description = "단어 카테고리 수정 API"
+            description = "단어 카테고리 수정 API",
+            security = {@SecurityRequirement(name = "JWT")}
     )
     @PatchMapping("")
     public ApiResponse<Void> patchCategory(@Valid @RequestBody CategoryUpdateRequest request) {
@@ -66,13 +69,14 @@ public class CategoriesController {
 
     @Operation(
             summary = "카테고리 제거",
-            description = "단어 카테고리 제거(비활성화) API"
+            description = "단어 카테고리 제거(비활성화) API",
+            security = {@SecurityRequirement(name = "JWT")}
     )
     @DeleteMapping("")
     public ApiResponse<Void> deleteCategory(@Valid CategoryDeleteRequest request) {
         jwtTokenProvider.checkAdmin();
 
-         categoriesService.removeCategory(request);
+        categoriesService.removeCategory(request);
 
         return ApiResponse.success(SuccessCode.DELETE_CATEGORY_SUCCESS);
     }
