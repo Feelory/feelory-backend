@@ -65,7 +65,7 @@ public class DailyWordController {
 
     @Operation(
             summary = "오늘의 단어 추가",
-            description = DailyWordsDocs.POST_DAILY_WORD_DESCRIPTION,
+            description = "오늘의 단어 추가 API",
             security = {@SecurityRequirement(name = "JWT")}
 
     )
@@ -73,15 +73,9 @@ public class DailyWordController {
     public ApiResponse<DailyWordCreateResponse> postDailyWord(@Valid @RequestBody DailyWordCreateRequest request) {
         jwtTokenProvider.checkAdmin();
 
-        DailyWordCreateResponse response = dailyWordService.registerAndUpdateDailyWord(request);
+        DailyWordCreateResponse response = dailyWordService.registerDailyWord(request);
 
-        boolean isAlreadyAssigned = response.getIsAlreadyAssigned();
-
-        SuccessCode code = isAlreadyAssigned
-                ? SuccessCode.ALREADY_ASSIGNED_DAILY_WORD
-                : SuccessCode.REGISTER_DAILY_WORD_SUCCESS;
-
-        return ApiResponse.success(response, code);
+        return ApiResponse.success(response, SuccessCode.REGISTER_DAILY_WORD_SUCCESS);
     }
 
     @Operation(

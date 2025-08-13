@@ -24,7 +24,6 @@ public class DailyWordCreateRequest {
     @NotNull(message = "날짜 지정은 필수입니다.")
     private String topicDate;
     private String description;
-    private Boolean isReplaceApproved = false;
 
     public LocalDateTime getParsedTopicDate() {
         try {

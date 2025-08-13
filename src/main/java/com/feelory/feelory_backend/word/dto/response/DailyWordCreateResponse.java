@@ -11,6 +11,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DailyWordCreateResponse {
-    private Boolean isAlreadyAssigned;
     private DailyWordDto dailyWord;
 }

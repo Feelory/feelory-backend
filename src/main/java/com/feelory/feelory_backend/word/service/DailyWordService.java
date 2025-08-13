@@ -29,39 +29,14 @@ public class DailyWordService {
     private final WordRepository wordRepository;
 
     @Transactional
-    public DailyWordCreateResponse registerAndUpdateDailyWord(DailyWordCreateRequest request) {
+    public DailyWordCreateResponse registerDailyWord(DailyWordCreateRequest request) {
 
         validateDateTime(request.getParsedTopicDate());
         checkDuplicateWordId(request.getWordId());
 
-        DailyWord duplicatedDailyWord = dailyWordRepository.findByTopicDateAndIsActive(request.getParsedTopicDate(), true)
-                .orElse(null);
-
-        boolean isAlreadyAssigned = false;
-        DailyWordDto dailyWord = null;
-
-        if(duplicatedDailyWord != null && !request.getIsReplaceApproved()) {
-
-            isAlreadyAssigned = true;
-        } else if(duplicatedDailyWord!= null) {
-
-            DailyWordUpdateRequest updateRequest = DailyWordUpdateRequest.builder()
-                    .id(duplicatedDailyWord.getId())
-                    .wordId(request.getWordId())
-                    .topicDate(request.getTopicDate())
-                    .description(request.getDescription())
-                    .build();
-
-            isAlreadyAssigned = true;
-            dailyWord = updateDailyWord(updateRequest, duplicatedDailyWord);
-        } else {
-
-            dailyWord = createDailyWord(request);
-        }
-
+        DailyWordDto dailyWord = createDailyWord(request);
 
         return DailyWordCreateResponse.builder()
-                .isAlreadyAssigned(isAlreadyAssigned)
                 .dailyWord(dailyWord)
                 .build();
     }
