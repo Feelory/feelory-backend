@@ -26,9 +26,9 @@ public class FeedbackService {
     public FeedbackResponse createFeedback(FeedbackRequest request) {
         DailyWordWritings writing = findDailyWriting(request);
 
-        GenerateContentRequest feedbackRequest = buildGeminiRequest(writing);
+        GenerateContentRequest feedbackRequest = buildGenerateContentRequest(writing);
 
-        GenerateContentResponse feedbackResponse = requestFeedbackFromModel(feedbackRequest);
+        GenerateContentResponse feedbackResponse = generateContentFromModel(feedbackRequest);
 
         String feedbackText = extractFeedbackText(feedbackResponse);
 
@@ -42,11 +42,11 @@ public class FeedbackService {
                 .orElseThrow(WritingNotFoundException::new);
     }
 
-    private GenerateContentRequest buildGeminiRequest(DailyWordWritings writings) {
+    private GenerateContentRequest buildGenerateContentRequest(DailyWordWritings writings) {
         return GenerateContentRequest.ofText(writings.getContent());
     }
 
-    private GenerateContentResponse requestFeedbackFromModel(GenerateContentRequest feedbackRequest) {
+    private GenerateContentResponse generateContentFromModel(GenerateContentRequest feedbackRequest) {
         return geminiGenerateContent.generate(feedbackRequest);
     }
 

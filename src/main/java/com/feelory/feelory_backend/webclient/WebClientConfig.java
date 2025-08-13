@@ -13,7 +13,6 @@ public class WebClientConfig {
 
     @Bean
     public WebClient geminiWebClient() {
-        System.out.println(webclientProperties.getApikey());
         return WebClient.builder()
                 .baseUrl("https://generativelanguage.googleapis.com")
                 .defaultHeader("Content-Type", "application/json")
