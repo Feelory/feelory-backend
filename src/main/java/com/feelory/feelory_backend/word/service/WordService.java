@@ -27,7 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class WordService {
 
     private final WordRepository wordRepository;
-    private final CategoryRepository categoriesRepository;
+    private final CategoryRepository categoryRepository;
     private final ValidationUtil validationUtil;
 
     public WordListResponse getWords(WordListRequest request) {
@@ -95,7 +95,7 @@ public class WordService {
 
     private WordCategory getCategory(Long categoryId) {
 
-        return categoriesRepository.findByIdAndIsActive(categoryId, true)
+        return categoryRepository.findByIdAndIsActive(categoryId, true)
                 .orElseThrow(CategoryNotFoundException::new);
     }
 

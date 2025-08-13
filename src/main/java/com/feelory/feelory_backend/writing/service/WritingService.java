@@ -31,7 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class WritingService {
 
     private final UsersRepository usersRepository;
-    private final DailyWordWritingRepository dailyWordWritingsRepository;
+    private final DailyWordWritingRepository dailyWordWritingRepository;
     private final DailyWordRepository dailyWordRepository;
     private final WritingGoalRepository writingGoalRepository;
     private final ValidationUtil validationUtil;
@@ -45,7 +45,7 @@ public class WritingService {
 
         WritingSearchDto dto = WritingSearchDto.fromListRequest(request, userId);
 
-        Page<DailyWordWriting> writings = dailyWordWritingsRepository.searchWritings(dto, pageable);
+        Page<DailyWordWriting> writings = dailyWordWritingRepository.searchWritings(dto, pageable);
 
         return UserWritingListResponse.fromPage(writings);
     }
@@ -54,7 +54,7 @@ public class WritingService {
 
         Long userId = jwtTokenProvider.getUserIdFromAuthentication();
         WritingSearchDto dto = WritingSearchDto.fromUserId(userId);
-        DailyWordWriting entity = dailyWordWritingsRepository.searchWritingDetailByDto(dto)
+        DailyWordWriting entity = dailyWordWritingRepository.searchWritingDetailByDto(dto)
                 .orElseThrow(WritingNotFoundException::new);
 
         WritingDto writing = WritingDto.fromEntity(entity);
@@ -67,7 +67,7 @@ public class WritingService {
     public UserWritingDetailResponse getUserWritingDetail(Long id) {
 
         Long userId = jwtTokenProvider.getUserIdFromAuthentication();
-        DailyWordWriting entity = dailyWordWritingsRepository.findByIdAndUserIdAndIsActive(id, userId, true)
+        DailyWordWriting entity = dailyWordWritingRepository.findByIdAndUserIdAndIsActive(id, userId, true)
                 .orElseThrow(WritingNotFoundException::new);
 
         WritingDto writing = WritingDto.fromEntity(entity);
@@ -94,7 +94,7 @@ public class WritingService {
 
         DailyWordWriting entity = request.toEntity(user, dailyWord, writingGoal);
 
-        DailyWordWriting created = dailyWordWritingsRepository.save(entity);
+        DailyWordWriting created = dailyWordWritingRepository.save(entity);
 
         WritingDto writing = WritingDto.fromEntity(created);
 
@@ -107,7 +107,7 @@ public class WritingService {
     public void modifyUserWriting(UserWritingUpdateRequest request) {
 
         Long userId = jwtTokenProvider.getUserIdFromAuthentication();
-        DailyWordWriting entity = dailyWordWritingsRepository.findByIdAndUserIdAndIsActive(request.getId(), userId, true)
+        DailyWordWriting entity = dailyWordWritingRepository.findByIdAndUserIdAndIsActive(request.getId(), userId, true)
                 .orElseThrow(WritingNotFoundException::new);
 
         DailyWordWriting.DailyWordWritingBuilder builder = entity.toBuilder();
@@ -137,7 +137,7 @@ public class WritingService {
         }
 
         DailyWordWriting updated = builder.build();
-        dailyWordWritingsRepository.save(updated);
+        dailyWordWritingRepository.save(updated);
     }
 
     @Transactional
@@ -145,14 +145,14 @@ public class WritingService {
 
         Long userId = jwtTokenProvider.getUserIdFromAuthentication();
 
-        DailyWordWriting entity = dailyWordWritingsRepository.findByIdAndUserIdAndIsActive(request.getId(), userId, true)
+        DailyWordWriting entity = dailyWordWritingRepository.findByIdAndUserIdAndIsActive(request.getId(), userId, true)
                 .orElseThrow(WritingNotFoundException::new);
 
         DailyWordWriting updated = entity.toBuilder()
                 .isActive(false)
                 .build();
 
-        dailyWordWritingsRepository.save(updated);
+        dailyWordWritingRepository.save(updated);
     }
 
     @Transactional
@@ -160,18 +160,18 @@ public class WritingService {
 
         Long userId = jwtTokenProvider.getUserIdFromAuthentication();
 
-        DailyWordWriting entity = dailyWordWritingsRepository.findByIdAndUserIdAndIsActive(request.getId(), userId, true)
+        DailyWordWriting entity = dailyWordWritingRepository.findByIdAndUserIdAndIsActive(request.getId(), userId, true)
                 .orElseThrow(WritingNotFoundException::new);
 
         DailyWordWriting updated = entity.toBuilder()
                 .visibility(request.getVisibility())
                 .build();
 
-        dailyWordWritingsRepository.save(updated);
+        dailyWordWritingRepository.save(updated);
     }
 
     private void checkDuplicateDailyWord(Long userId, DailyWord dailyWord) {
-        boolean isExist = dailyWordWritingsRepository.existsByUserIdAndDailyWord(userId, dailyWord);
+        boolean isExist = dailyWordWritingRepository.existsByUserIdAndDailyWord(userId, dailyWord);
 
         if(isExist) {
             throw new DailyWordConflictException();
@@ -179,7 +179,7 @@ public class WritingService {
     }
 
     private void checkDuplicateWritingGoal(Long userId, WritingGoal writingGoal) {
-        boolean isExist = dailyWordWritingsRepository.existsByUserIdAndWritingGoal(userId, writingGoal);
+        boolean isExist = dailyWordWritingRepository.existsByUserIdAndWritingGoal(userId, writingGoal);
 
         if(isExist) {
             throw new WritingGoalConflictException();

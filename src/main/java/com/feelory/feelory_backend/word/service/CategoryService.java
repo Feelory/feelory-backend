@@ -23,13 +23,13 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class CategoryService {
 
-    private final CategoryRepository categoriesRepository;
+    private final CategoryRepository categoryRepository;
     private final ValidationUtil validationUtil;
 
     public CategoryListResponse getCategories(CategoryListRequest request) {
 
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
-        Page<WordCategory> wordCategories = categoriesRepository.searchCategoriesByIsActive(request.isActive(), pageable);
+        Page<WordCategory> wordCategories = categoryRepository.searchCategoriesByIsActive(request.isActive(), pageable);
 
         return CategoryListResponse.fromPage(wordCategories);
     }
@@ -39,7 +39,7 @@ public class CategoryService {
         checkDuplicateName(request.getName());
 
         WordCategory entity = request.toEntity();
-        WordCategory createdCategory = categoriesRepository.save(entity);
+        WordCategory createdCategory = categoryRepository.save(entity);
 
 
         CategoryDto category = CategoryDto.fromEntity(createdCategory);
@@ -52,7 +52,7 @@ public class CategoryService {
     @Transactional
     public void modifyCategory(CategoryUpdateRequest request) {
 
-        WordCategory entity = categoriesRepository.findByIdAndIsActive(request.getId(), true)
+        WordCategory entity = categoryRepository.findByIdAndIsActive(request.getId(), true)
                 .orElseThrow(CategoryNotFoundException::new);
 
 
@@ -69,24 +69,24 @@ public class CategoryService {
 
 
         WordCategory updatedCategory = builder.build();
-        categoriesRepository.save(updatedCategory);
+        categoryRepository.save(updatedCategory);
     }
 
     @Transactional
     public void removeCategory(CategoryDeleteRequest request) {
 
-        WordCategory entity = categoriesRepository.findByIdAndIsActive(request.getId(), true)
+        WordCategory entity = categoryRepository.findByIdAndIsActive(request.getId(), true)
                 .orElseThrow(CategoryNotFoundException::new);
 
         WordCategory updated = entity.toBuilder()
                 .isActive(false)
                 .build();
 
-        categoriesRepository.save(updated);
+        categoryRepository.save(updated);
     }
 
     private void checkDuplicateName(String name) {
-        boolean isExist = categoriesRepository.existsByName(name);
+        boolean isExist = categoryRepository.existsByName(name);
 
         if(isExist) {
             throw new DuplicateCategoryNameException();
