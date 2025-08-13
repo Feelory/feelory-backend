@@ -5,6 +5,9 @@ import com.feelory.feelory_backend.feedbacks.model.request.FeedbackRequest;
 import com.feelory.feelory_backend.feedbacks.model.response.FeedbackResponse;
 import com.feelory.feelory_backend.feedbacks.repository.FeedbackRepository;
 import com.feelory.feelory_backend.global.exception.exceptions.writings.WritingNotFoundException;
+import com.feelory.feelory_backend.webclient.GenerateContent;
+import com.feelory.feelory_backend.webclient.dto.GenerateContentRequest;
+import com.feelory.feelory_backend.webclient.dto.GenerateContentResponse;
 import com.feelory.feelory_backend.writings.entity.DailyWordWritings;
 import com.feelory.feelory_backend.writings.repository.DailyWordWritingsRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,29 +20,53 @@ public class FeedbackService {
 
     private final FeedbackRepository feedbackRepository;
     private final DailyWordWritingsRepository dailyWordWritingsRepository;
+    private final GenerateContent geminiGenerateContent;
 
     @Transactional
     public FeedbackResponse createFeedback(FeedbackRequest request) {
-        DailyWordWritings dailyWordWritings = dailyWordWritingsRepository.findById(request.getDailyWritingId())
-                .orElseThrow(WritingNotFoundException::new);
+        DailyWordWritings writing = findDailyWriting(request);
 
-        // 외부 API와 연동한 클래스에 전달하고 받아오기
-        String feedbackContent = "AI 에게 받아올 피드백 내용";
+        GenerateContentRequest feedbackRequest = buildGeminiRequest(writing);
 
-        Feedbacks newFeedbacks = buildFeedbacks(feedbackContent, dailyWordWritings);
+        GenerateContentResponse feedbackResponse = requestFeedbackFromModel(feedbackRequest);
 
-        feedbackRepository.save(newFeedbacks);
+        String feedbackText = extractFeedbackText(feedbackResponse);
 
-        return new FeedbackResponse(feedbackContent);
+        saveFeedback(feedbackText, writing);
+
+        return new FeedbackResponse(feedbackText);
     }
 
-    private Feedbacks buildFeedbacks(String feedbackContent, DailyWordWritings dailyWordWritings) {
+    private DailyWordWritings findDailyWriting(FeedbackRequest request) {
+        return dailyWordWritingsRepository.findById(request.getDailyWritingId())
+                .orElseThrow(WritingNotFoundException::new);
+    }
+
+    private GenerateContentRequest buildGeminiRequest(DailyWordWritings writings) {
+        return GenerateContentRequest.ofText(writings.getContent());
+    }
+
+    private GenerateContentResponse requestFeedbackFromModel(GenerateContentRequest feedbackRequest) {
+        return geminiGenerateContent.generate(feedbackRequest);
+    }
+
+    private String extractFeedbackText(GenerateContentResponse feedbackResponse) {
+        GenerateContentResponse.Candidate candidate = feedbackResponse.candidates.get(0);
+
+        GenerateContentResponse.Candidate.Content.Part part = candidate.content.parts.get(0);
+
+        return part.text;
+    }
+
+    private void saveFeedback(String feedbackText, DailyWordWritings writing) {
         Feedbacks newFeedbacks = Feedbacks.builder()
-                .content(feedbackContent)
+                .content(feedbackText)
                 .isActive(true)
                 .build();
 
-        dailyWordWritings.addFeedbacks(newFeedbacks);
-        return newFeedbacks;
+        writing.addFeedbacks(newFeedbacks);
+
+        feedbackRepository.save(newFeedbacks);
     }
+
 }

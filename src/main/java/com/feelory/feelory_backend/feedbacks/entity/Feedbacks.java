@@ -17,7 +17,7 @@ public class Feedbacks extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "content", nullable = false, length = 100)
+    @Column(name = "content", nullable = false, length = 5000)
     private String content;
 
     @Column(name = "is_active", nullable = false)
