@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -28,7 +29,7 @@ public class WritingsController {
             security = {@SecurityRequirement(name = "JWT")}
     )
     @GetMapping("/me")
-    public ApiResponse<UserWritingListResponse> getUserWritings(UserWritingListRequest request) {
+    public ApiResponse<UserWritingListResponse> getUserWritings(@ParameterObject UserWritingListRequest request) {
         jwtTokenProvider.checkUserOrAdmin();
 
         UserWritingListResponse response = writingsService.getUserWritings(request);
