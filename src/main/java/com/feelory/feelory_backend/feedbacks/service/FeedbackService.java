@@ -1,6 +1,6 @@
 package com.feelory.feelory_backend.feedbacks.service;
 
-import com.feelory.feelory_backend.feedbacks.entity.Feedbacks;
+import com.feelory.feelory_backend.feedbacks.entity.Feedback;
 import com.feelory.feelory_backend.feedbacks.model.request.FeedbackRequest;
 import com.feelory.feelory_backend.feedbacks.model.response.FeedbackResponse;
 import com.feelory.feelory_backend.feedbacks.repository.FeedbackRepository;
@@ -8,8 +8,8 @@ import com.feelory.feelory_backend.global.exception.exceptions.writings.WritingN
 import com.feelory.feelory_backend.webclient.GenerateContent;
 import com.feelory.feelory_backend.webclient.dto.GenerateContentRequest;
 import com.feelory.feelory_backend.webclient.dto.GenerateContentResponse;
-import com.feelory.feelory_backend.writings.entity.DailyWordWritings;
-import com.feelory.feelory_backend.writings.repository.DailyWordWritingsRepository;
+import com.feelory.feelory_backend.writing.entity.DailyWordWriting;
+import com.feelory.feelory_backend.writing.repository.DailyWordWritingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,12 +19,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class FeedbackService {
 
     private final FeedbackRepository feedbackRepository;
-    private final DailyWordWritingsRepository dailyWordWritingsRepository;
+    private final DailyWordWritingRepository dailyWordWritingsRepository;
     private final GenerateContent geminiGenerateContent;
 
     @Transactional
     public FeedbackResponse createFeedback(FeedbackRequest request) {
-        DailyWordWritings writing = findDailyWriting(request);
+        DailyWordWriting writing = findDailyWriting(request);
 
         GenerateContentRequest feedbackRequest = buildGenerateContentRequest(writing);
 
@@ -37,12 +37,12 @@ public class FeedbackService {
         return new FeedbackResponse(feedbackText);
     }
 
-    private DailyWordWritings findDailyWriting(FeedbackRequest request) {
+    private DailyWordWriting findDailyWriting(FeedbackRequest request) {
         return dailyWordWritingsRepository.findById(request.getDailyWritingId())
                 .orElseThrow(WritingNotFoundException::new);
     }
 
-    private GenerateContentRequest buildGenerateContentRequest(DailyWordWritings writings) {
+    private GenerateContentRequest buildGenerateContentRequest(DailyWordWriting writings) {
         return GenerateContentRequest.ofText(writings.getContent());
     }
 
@@ -58,15 +58,15 @@ public class FeedbackService {
         return part.text;
     }
 
-    private void saveFeedback(String feedbackText, DailyWordWritings writing) {
-        Feedbacks newFeedbacks = Feedbacks.builder()
+    private void saveFeedback(String feedbackText, DailyWordWriting writing) {
+        Feedback newFeedback = Feedback.builder()
                 .content(feedbackText)
                 .isActive(true)
                 .build();
 
-        writing.addFeedbacks(newFeedbacks);
+        writing.addFeedbacks(newFeedback);
 
-        feedbackRepository.save(newFeedbacks);
+        feedbackRepository.save(newFeedback);
     }
 
 }

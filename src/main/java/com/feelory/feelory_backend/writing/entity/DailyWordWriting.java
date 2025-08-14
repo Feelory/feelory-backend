@@ -1,6 +1,6 @@
 package com.feelory.feelory_backend.writing.entity;
 
-import com.feelory.feelory_backend.feedbacks.entity.Feedbacks;
+import com.feelory.feelory_backend.feedbacks.entity.Feedback;
 import com.feelory.feelory_backend.global.BaseEntity;
 import com.feelory.feelory_backend.users.entity.Users;
 import com.feelory.feelory_backend.word.entity.DailyWord;
@@ -45,9 +45,9 @@ public class DailyWordWriting extends BaseEntity {
 
     @Builder.Default
     @OneToMany(mappedBy = "dailyWordWriting", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Feedbacks> feedbacks = new ArrayList<>();
+    private List<Feedback> feedbacks = new ArrayList<>();
 
-    public void addFeedbacks(Feedbacks feedback){
+    public void addFeedbacks(Feedback feedback){
         feedbacks.add(feedback);
         feedback.setDailyWordWriting(this);
     }

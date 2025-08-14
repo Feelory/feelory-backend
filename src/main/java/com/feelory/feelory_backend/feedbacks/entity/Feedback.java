@@ -1,8 +1,7 @@
 package com.feelory.feelory_backend.feedbacks.entity;
 
 import com.feelory.feelory_backend.global.BaseEntity;
-import com.feelory.feelory_backend.global.exception.exceptions.BaseException;
-import com.feelory.feelory_backend.writings.entity.DailyWordWritings;
+import com.feelory.feelory_backend.writing.entity.DailyWordWriting;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -12,7 +11,7 @@ import lombok.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "feedbacks")
-public class Feedbacks extends BaseEntity {
+public class Feedback extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,5 +25,5 @@ public class Feedbacks extends BaseEntity {
     @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "daily_word_writings_id", nullable = false)
-    private DailyWordWritings dailyWordWriting;
+    private DailyWordWriting dailyWordWriting;
 }
