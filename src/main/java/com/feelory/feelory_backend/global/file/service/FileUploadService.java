@@ -5,6 +5,7 @@ import com.feelory.feelory_backend.global.exception.exceptions.file.InvalidFileN
 import com.feelory.feelory_backend.global.exception.exceptions.file.FileNotProvidedException;
 import com.feelory.feelory_backend.global.exception.exceptions.file.ImageFileTooLargeException;
 import com.feelory.feelory_backend.global.exception.exceptions.file.UnsupportedImageFormatException;
+import com.feelory.feelory_backend.global.file.model.FileProperties;
 import com.feelory.feelory_backend.global.file.model.ImageFileDto;
 import com.feelory.feelory_backend.global.util.ValidationUtil;
 import lombok.RequiredArgsConstructor;
@@ -31,9 +32,7 @@ public class FileUploadService {
     private static final Set<String> ALLOWED_IMAGE_FILE_EXTENSIONS = Set.of("jpg", "jpeg", "png", "webp");
 
     private final ValidationUtil validationUtil;
-
-    @Value("${file.upload.path}")
-    private String uploadPath;
+    private final FileProperties fileProperties;
 
     public ImageFileDto uploadImageFile(MultipartFile requestImageFile) {
         try {
@@ -91,12 +90,12 @@ public class FileUploadService {
     }
 
     private void createUploadDirIfNotExists() throws IOException {
-        Path dirPath = Paths.get(uploadPath);
+        Path dirPath = Paths.get(fileProperties.getUpload().getPath());
         Files.createDirectories(dirPath);
     }
 
     private void saveFileToLocal(MultipartFile file, String newFileName, String extension) throws IOException {
-        Path targetLocation = Paths.get(uploadPath).resolve(newFileName+"."+extension);
+        Path targetLocation = Paths.get(fileProperties.getUpload().getPath()).resolve(newFileName+"."+extension);
         Files.copy(file.getInputStream(), targetLocation);
     }
 

@@ -3,6 +3,7 @@ package com.feelory.feelory_backend.domain.user.service;
 import com.feelory.feelory_backend.domain.user.entity.User;
 import com.feelory.feelory_backend.domain.user.entity.UserProfileImage;
 import com.feelory.feelory_backend.global.exception.exceptions.user.UserNotFoundException;
+import com.feelory.feelory_backend.global.file.model.FileProperties;
 import com.feelory.feelory_backend.global.file.model.ImageFileDto;
 import com.feelory.feelory_backend.global.file.service.FileUploadService;
 import com.feelory.feelory_backend.global.security.jwt.JwtProvider;
@@ -24,9 +25,7 @@ public class UserProfileService {
     private final FileUploadService fileUploadService;
     private final UserRepository userRepository;
     private final UserProfileImageRepository userProfileImageRepository;
-
-    @Value("${file.access.url.prefix}")
-    private String prefix;
+    private final FileProperties fileProperties;
 
     @Transactional
     public UserProfileImageResponse updateProfileImage(MultipartFile requestImageFile) {
@@ -81,7 +80,7 @@ public class UserProfileService {
         if (profileImage == null) {
             return null;
         }
-        return prefix + "/" + profileImage.getImageName() + "." + profileImage.getExtension();
+        return fileProperties.getAccess().getUrlPrefix() + "/" + profileImage.getImageName() + "." + profileImage.getExtension();
     }
 
     private void deactivateCurrentProfileImages(User user) {
