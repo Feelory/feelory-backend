@@ -1,6 +1,6 @@
 package com.feelory.feelory_backend.domain.writing.repository;
 
-import com.feelory.feelory_backend.domain.user.entity.QUsers;
+import com.feelory.feelory_backend.domain.user.entity.QUser;
 import com.feelory.feelory_backend.domain.word.entity.QDailyWord;
 import com.feelory.feelory_backend.domain.word.entity.QWordCategory;
 import com.feelory.feelory_backend.domain.word.entity.QWord;
@@ -31,7 +31,7 @@ public class DailyWordWritingRepositoryImpl implements DailyWordWritingRepositor
     public Page<DailyWordWriting> searchWritings(WritingSearchDto dto, Pageable pageable) {
         QDailyWordWriting qDailyWordWriting = QDailyWordWriting.dailyWordWriting;
         QDailyWord qDailyWord = QDailyWord.dailyWord;
-        QUsers qUsers = QUsers.users;
+        QUser qUsers = QUser.user;
         QWord qWord = QWord.word;
         QWordCategory qWordCategory = QWordCategory.wordCategory;
         QWritingGoal qWritingGoal = QWritingGoal.writingGoal;
@@ -81,7 +81,7 @@ public class DailyWordWritingRepositoryImpl implements DailyWordWritingRepositor
     public Optional<DailyWordWriting> searchWritingDetailByDto(WritingSearchDto writingSearchDto) {
         QDailyWordWriting qDailyWordWritings = QDailyWordWriting.dailyWordWriting;
         QDailyWord qDailyWords = QDailyWord.dailyWord;
-        QUsers qUsers = QUsers.users;
+        QUser qUsers = QUser.user;
         QWord qWords = QWord.word;
         QWordCategory qWordCategories = QWordCategory.wordCategory;
         QWritingGoal qWritingGoals = QWritingGoal.writingGoal;
