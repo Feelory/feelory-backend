@@ -1,5 +1,6 @@
 package com.feelory.feelory_backend.global.webclient;
 
+import com.feelory.feelory_backend.global.webclient.dto.model.WebclientProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

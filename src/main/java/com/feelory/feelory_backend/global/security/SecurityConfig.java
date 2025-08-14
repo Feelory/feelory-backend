@@ -1,4 +1,4 @@
-package com.feelory.feelory_backend.global.config;
+package com.feelory.feelory_backend.global.security;
 
 import com.feelory.feelory_backend.global.security.auth.handler.CustomAccessDeniedHandler;
 import com.feelory.feelory_backend.global.security.auth.handler.CustomAuthenticationEntryPoint;

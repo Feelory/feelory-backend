@@ -6,7 +6,7 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ImageFile {
+public class ImageFileDto {
     private String imageName;
     private String extension;
     private int width;

@@ -1,4 +1,4 @@
-package com.feelory.feelory_backend.global.webclient;
+package com.feelory.feelory_backend.global.webclient.dto.model;
 
 import lombok.Getter;
 import lombok.Setter;

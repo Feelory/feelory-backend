@@ -5,7 +5,7 @@ import com.feelory.feelory_backend.global.exception.exceptions.file.InvalidFileN
 import com.feelory.feelory_backend.global.exception.exceptions.file.FileNotProvidedException;
 import com.feelory.feelory_backend.global.exception.exceptions.file.ImageFileTooLargeException;
 import com.feelory.feelory_backend.global.exception.exceptions.file.UnsupportedImageFormatException;
-import com.feelory.feelory_backend.global.file.model.ImageFile;
+import com.feelory.feelory_backend.global.file.model.ImageFileDto;
 import com.feelory.feelory_backend.global.util.ValidationUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +35,7 @@ public class FileUploadService {
     @Value("${file.upload.path}")
     private String uploadPath;
 
-    public ImageFile uploadImageFile(MultipartFile requestImageFile) {
+    public ImageFileDto uploadImageFile(MultipartFile requestImageFile) {
         try {
             validateImageFile(requestImageFile);
 
@@ -108,8 +108,8 @@ public class FileUploadService {
         return new int[]{image.getWidth(), image.getHeight()};
     }
 
-    private ImageFile buildImageFile(String newFileName, String extension, long fileSize, int width, int height) {
-        return ImageFile.builder()
+    private ImageFileDto buildImageFile(String newFileName, String extension, long fileSize, int width, int height) {
+        return ImageFileDto.builder()
                 .imageName(newFileName)
                 .extension(extension)
                 .fileSize(fileSize)

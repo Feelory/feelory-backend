@@ -3,7 +3,7 @@ package com.feelory.feelory_backend.domain.user.service;
 import com.feelory.feelory_backend.domain.user.entity.User;
 import com.feelory.feelory_backend.domain.user.entity.UserProfileImage;
 import com.feelory.feelory_backend.global.exception.exceptions.user.UserNotFoundException;
-import com.feelory.feelory_backend.global.file.model.ImageFile;
+import com.feelory.feelory_backend.global.file.model.ImageFileDto;
 import com.feelory.feelory_backend.global.file.service.FileUploadService;
 import com.feelory.feelory_backend.global.security.jwt.JwtProvider;
 import com.feelory.feelory_backend.domain.user.dto.response.UserProfileImageResponse;
@@ -33,13 +33,13 @@ public class UserProfileService {
 
         Long userId = jwtProvider.getUserIdFromAuthentication();
 
-        ImageFile imageFile = fileUploadService.uploadImageFile(requestImageFile);
+        ImageFileDto imageFileDto = fileUploadService.uploadImageFile(requestImageFile);
 
         User user = getUsers(userId);
 
         deactivateCurrentProfileImages(user);
 
-        UserProfileImage profileImage = buildUserProfileImages(user, imageFile);
+        UserProfileImage profileImage = buildUserProfileImages(user, imageFileDto);
 
         userProfileImageRepository.save(profileImage);
 
@@ -90,13 +90,13 @@ public class UserProfileService {
                 .forEach(UserProfileImage::deactivate);
     }
 
-    private UserProfileImage buildUserProfileImages(User user, ImageFile imageFile) {
+    private UserProfileImage buildUserProfileImages(User user, ImageFileDto imageFileDto) {
         UserProfileImage image = UserProfileImage.builder()
-                .imageName(imageFile.getImageName())
-                .extension(imageFile.getExtension())
-                .width(imageFile.getWidth())
-                .height(imageFile.getHeight())
-                .fileSize(imageFile.getFileSize())
+                .imageName(imageFileDto.getImageName())
+                .extension(imageFileDto.getExtension())
+                .width(imageFileDto.getWidth())
+                .height(imageFileDto.getHeight())
+                .fileSize(imageFileDto.getFileSize())
                 .isActive(true)
                 .build();
         user.addUserProfileImage(image);
