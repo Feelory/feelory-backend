@@ -2,7 +2,7 @@ package com.feelory.feelory_backend.domain.user.controller;
 
 import com.feelory.feelory_backend.global.api.ApiResponse;
 import com.feelory.feelory_backend.global.api.SuccessCode;
-import com.feelory.feelory_backend.global.security.jwt.JwtTokenProvider;
+import com.feelory.feelory_backend.global.security.jwt.JwtProvider;
 import com.feelory.feelory_backend.domain.user.dto.response.UserProfileImageResponse;
 import com.feelory.feelory_backend.domain.user.dto.response.UserProfileResponse;
 import com.feelory.feelory_backend.domain.user.service.UserProfileService;
@@ -22,7 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Tag(name = "유저 프로필 (UserProfile)", description = "유저 프로필 관련 API 목록")
 public class UserProfileController {
 
-    private final JwtTokenProvider jwtTokenProvider;
+    private final JwtProvider jwtProvider;
     private final UserProfileService userProfileService;
 
     @Operation(
@@ -33,7 +33,7 @@ public class UserProfileController {
     @PutMapping(value = "/images", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ApiResponse<UserProfileImageResponse> updateProfileImage(@Parameter(description = "업로드할 이미지 파일", content = @Content(mediaType = MediaType.MULTIPART_FORM_DATA_VALUE)) @RequestParam("file") MultipartFile image) {
 
-        jwtTokenProvider.checkUserOrAdmin();
+        jwtProvider.checkUserOrAdmin();
 
         UserProfileImageResponse response = userProfileService.updateProfileImage(image);
 
@@ -47,7 +47,7 @@ public class UserProfileController {
     )
     @GetMapping(value = "/me")
     public ApiResponse<UserProfileResponse> updateProfileImage() {
-        jwtTokenProvider.checkUserOrAdmin();
+        jwtProvider.checkUserOrAdmin();
 
         UserProfileResponse response = userProfileService.readUserProfile();
 

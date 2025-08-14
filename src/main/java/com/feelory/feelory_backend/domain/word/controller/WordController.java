@@ -3,7 +3,7 @@ package com.feelory.feelory_backend.domain.word.controller;
 
 import com.feelory.feelory_backend.global.api.ApiResponse;
 import com.feelory.feelory_backend.global.api.SuccessCode;
-import com.feelory.feelory_backend.global.security.jwt.JwtTokenProvider;
+import com.feelory.feelory_backend.global.security.jwt.JwtProvider;
 import com.feelory.feelory_backend.domain.word.dto.request.WordCreateRequest;
 import com.feelory.feelory_backend.domain.word.dto.request.WordDeleteRequest;
 import com.feelory.feelory_backend.domain.word.dto.request.WordListRequest;
@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.*;
 public class WordController {
 
     private final WordService wordService;
-    private final JwtTokenProvider jwtTokenProvider;
+    private final JwtProvider jwtProvider;
 
     @Operation(
             summary = "모든 단어 목록",
@@ -46,7 +46,7 @@ public class WordController {
     )
     @PostMapping("")
     public ApiResponse<WordCreateResponse> registerWord(@Valid @RequestBody WordCreateRequest request) {
-        jwtTokenProvider.checkAdmin();
+        jwtProvider.checkAdmin();
 
         WordCreateResponse response = wordService.registerWord(request);
 
@@ -60,7 +60,7 @@ public class WordController {
     )
     @PatchMapping("")
     public ApiResponse<Void> patchWord(@Valid @RequestBody WordUpdateRequest request) {
-        jwtTokenProvider.checkAdmin();
+        jwtProvider.checkAdmin();
 
         wordService.modifyWord(request);
 
@@ -74,7 +74,7 @@ public class WordController {
     )
     @DeleteMapping("")
     public ApiResponse<Void> deleteWord(@Valid WordDeleteRequest request) {
-        jwtTokenProvider.checkAdmin();
+        jwtProvider.checkAdmin();
 
         wordService.removeWord(request);
 

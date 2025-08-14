@@ -1,10 +1,10 @@
     package com.feelory.feelory_backend.domain.user.service;
 
+    import com.feelory.feelory_backend.domain.user.entity.User;
     import com.feelory.feelory_backend.global.exception.exceptions.auth.ExpiredRefreshTokenException;
     import com.feelory.feelory_backend.global.exception.exceptions.auth.RefreshTokenNotFoundException;
-    import com.feelory.feelory_backend.domain.user.entity.UserTokens;
-    import com.feelory.feelory_backend.domain.user.entity.Users;
-    import com.feelory.feelory_backend.domain.user.repository.UserTokensRepository;
+    import com.feelory.feelory_backend.domain.user.entity.UserToken;
+    import com.feelory.feelory_backend.domain.user.repository.UserTokenRepository;
     import lombok.RequiredArgsConstructor;
     import org.springframework.stereotype.Service;
 
@@ -14,35 +14,35 @@
     @RequiredArgsConstructor
     public class UserTokenService {
 
-        private final UserTokensRepository userTokensRepository;
+        private final UserTokenRepository userTokenRepository;
 
-        public UserTokens saveUserToken(Users user, String refreshToken, LocalDateTime refreshTokenExp) {
-            UserTokens token = UserTokens.builder()
+        public UserToken saveUserToken(User user, String refreshToken, LocalDateTime refreshTokenExp) {
+            UserToken token = UserToken.builder()
                     .refreshToken(refreshToken)
                     .refreshTokenExp(refreshTokenExp)
                     .isActive(true)
                     .build();
             user.addUserToken(token);
-            return userTokensRepository.save(token);
+            return userTokenRepository.save(token);
         }
 
-        public UserTokens findRefreshToken(String oldRefreshToken) {
-            return userTokensRepository.findByRefreshTokenAndIsActive(oldRefreshToken,true)
+        public UserToken findRefreshToken(String oldRefreshToken) {
+            return userTokenRepository.findByRefreshTokenAndIsActive(oldRefreshToken,true)
                     .orElseThrow(RefreshTokenNotFoundException::new);
         }
 
-        public void rotateRefreshToken(UserTokens oldToken, String newRefreshToken, LocalDateTime newRefreshTokenExp) {
+        public void rotateRefreshToken(UserToken oldToken, String newRefreshToken, LocalDateTime newRefreshTokenExp) {
 
             if (oldToken.getRefreshTokenExp().isBefore(LocalDateTime.now())) {
                 throw new ExpiredRefreshTokenException();
             }
 
-            Users user = oldToken.getUser();
+            User user = oldToken.getUser();
 
             oldToken.deactivate();
-            userTokensRepository.save(oldToken);
+            userTokenRepository.save(oldToken);
 
-            UserTokens newToken = UserTokens.builder()
+            UserToken newToken = UserToken.builder()
                     .refreshToken(newRefreshToken)
                     .refreshTokenExp(newRefreshTokenExp)
                     .isActive(true)
@@ -50,10 +50,10 @@
 
             user.addUserToken(newToken);
 
-            userTokensRepository.save(newToken);
+            userTokenRepository.save(newToken);
         }
 
-        public void deactivateRefreshToken(UserTokens refreshToken) {
+        public void deactivateRefreshToken(UserToken refreshToken) {
             refreshToken.deactivate();
         }
     }

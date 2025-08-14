@@ -1,4 +1,4 @@
-package com.feelory.feelory_backend.global.exception.exceptions.users;
+package com.feelory.feelory_backend.global.exception.exceptions.user;
 
 import com.feelory.feelory_backend.global.exception.dto.model.ErrorCode;
 import com.feelory.feelory_backend.global.exception.exceptions.BaseException;

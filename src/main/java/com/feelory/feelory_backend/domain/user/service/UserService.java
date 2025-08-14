@@ -1,10 +1,10 @@
 package com.feelory.feelory_backend.domain.user.service;
 
+import com.feelory.feelory_backend.domain.user.entity.User;
 import com.feelory.feelory_backend.global.util.NicknameGenerator;
-import com.feelory.feelory_backend.domain.user.entity.Users;
 import com.feelory.feelory_backend.domain.user.dto.model.AuthProvider;
 import com.feelory.feelory_backend.domain.user.dto.model.UserRole;
-import com.feelory.feelory_backend.domain.user.repository.UsersRepository;
+import com.feelory.feelory_backend.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,18 +12,18 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserService {
 
-    private final UsersRepository usersRepository;
+    private final UserRepository userRepository;
     private final NicknameGenerator nicknameGenerator;
 
-    public Users findOrCreateUser(String name, String phoneNumber, AuthProvider authProvider, Long providerUserId) {
-        return usersRepository.findByPhoneNumberAndIsActive(phoneNumber, true)
-                .orElseGet(() -> usersRepository.save(
+    public User findOrCreateUser(String name, String phoneNumber, AuthProvider authProvider, Long providerUserId) {
+        return userRepository.findByPhoneNumberAndIsActive(phoneNumber, true)
+                .orElseGet(() -> userRepository.save(
                         createUsers(name, phoneNumber, authProvider, providerUserId)
                 ));
     }
 
-    private Users createUsers(String userName, String phoneNumber, AuthProvider authProvider, Long providerUserId) {
-        return Users.builder()
+    private User createUsers(String userName, String phoneNumber, AuthProvider authProvider, Long providerUserId) {
+        return User.builder()
                 .name(userName)
                 .nickname(nicknameGenerator.generate())
                 .phoneNumber(phoneNumber)
@@ -35,6 +35,6 @@ public class UserService {
     }
 
     public boolean isActiveUser(Long userId) {
-        return usersRepository.existsByIdAndIsActiveTrue(userId);
+        return userRepository.existsByIdAndIsActiveTrue(userId);
     }
 }

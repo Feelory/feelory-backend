@@ -3,7 +3,7 @@ package com.feelory.feelory_backend.domain.word.controller;
 import com.feelory.feelory_backend.global.api.ApiResponse;
 import com.feelory.feelory_backend.global.api.SuccessCode;
 import com.feelory.feelory_backend.global.exception.exceptions.common.InvalidDateFormatException;
-import com.feelory.feelory_backend.global.security.jwt.JwtTokenProvider;
+import com.feelory.feelory_backend.global.security.jwt.JwtProvider;
 import com.feelory.feelory_backend.domain.word.dto.request.DailyWordCreateRequest;
 import com.feelory.feelory_backend.domain.word.dto.request.DailyWordDeleteRequest;
 import com.feelory.feelory_backend.domain.word.dto.request.DailyWordUpdateRequest;
@@ -27,7 +27,7 @@ import java.time.format.DateTimeParseException;
 public class DailyWordController {
 
     private final DailyWordService dailyWordService;
-    private final JwtTokenProvider jwtTokenProvider;
+    private final JwtProvider jwtProvider;
 
     @Operation(
             summary = "특정 날짜의 오늘의 단어 조회",
@@ -70,7 +70,7 @@ public class DailyWordController {
     )
     @PostMapping("")
     public ApiResponse<DailyWordCreateResponse> postDailyWord(@Valid @RequestBody DailyWordCreateRequest request) {
-        jwtTokenProvider.checkAdmin();
+        jwtProvider.checkAdmin();
 
         DailyWordCreateResponse response = dailyWordService.registerDailyWord(request);
 
@@ -86,7 +86,7 @@ public class DailyWordController {
     @PatchMapping("")
     public ApiResponse<Void> patchDailyWord(@Valid @RequestBody DailyWordUpdateRequest request) {
 
-        jwtTokenProvider.checkAdmin();
+        jwtProvider.checkAdmin();
 
         dailyWordService.modifyDailyWord(request);
 
@@ -102,7 +102,7 @@ public class DailyWordController {
     @DeleteMapping("")
     public ApiResponse<Void> deleteDailyWord(@Valid DailyWordDeleteRequest request) {
 
-        jwtTokenProvider.checkAdmin();
+        jwtProvider.checkAdmin();
 
         dailyWordService.removeDailyWord(request);
 

@@ -15,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "users")
-public class Users extends BaseEntity {
+public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -48,18 +48,18 @@ public class Users extends BaseEntity {
 
     @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<UserTokens> userTokens = new ArrayList<>();
+    private List<UserToken> userTokens = new ArrayList<>();
 
-    public void addUserToken(UserTokens token) {
+    public void addUserToken(UserToken token) {
         userTokens.add(token);
         token.setUser(this);
     }
 
     @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<UserProfileImages> userProfileImages = new ArrayList<>();
+    private List<UserProfileImage> userProfileImages = new ArrayList<>();
 
-    public void addUserProfileImage(UserProfileImages profileImage){
+    public void addUserProfileImage(UserProfileImage profileImage){
         userProfileImages.add(profileImage);
         profileImage.setUser(this);
     }

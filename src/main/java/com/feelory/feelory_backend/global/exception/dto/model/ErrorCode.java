@@ -17,11 +17,11 @@ public enum ErrorCode {
     ILLEGAL_USER_TYPE(HttpStatus.NOT_FOUND, "E007", "잘못된 유저 타입입니다."),
     USER_ID_NOT_FOUND(HttpStatus.NOT_FOUND, "E008", "로그인한 유저의 아이디 추출 시 오류가 발생했습니다."),
 
-    // E1XX : USERS(사용자)
+    // E1XX : USER(사용자)
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "E100", "해당 유저를 찾을 수 없습니다."),
     INVALID_PHONE_NUMBER(HttpStatus.BAD_REQUEST, "E101", "유효하지 않은 전화번호 형식입니다."),
 
-    // E2XX : WORDS(단어)
+    // E2XX : WORD(단어)
     WORD_NOT_FOUND(HttpStatus.NOT_FOUND, "E200", "단어를 찾을 수 없습니다."),
     DUPLICATE_CATEGORY_NAME(HttpStatus.CONFLICT, "E201", "중복된 카테고리 이름입니다."),
     CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND, "E202", "활성화 된 카테고리를 찾지 못했습니다."),
@@ -30,16 +30,16 @@ public enum ErrorCode {
     INVALID_TOPIC_DATE(HttpStatus.BAD_REQUEST, "E205", "현재 날짜 이전의 날짜를 지정할 수 없습니다."),
     WORD_ALREADY_USED(HttpStatus.BAD_REQUEST, "E206", "이미 등록된 단어입니다."),
 
-    // E3XX : WRITINGS(글)
+    // E3XX : WRITING(글)
     WRITING_NOT_FOUND(HttpStatus.NOT_FOUND, "E300", "글을 찾지 못했습니다."),
     WRITING_GOAL_NOT_FOUND(HttpStatus.NOT_FOUND, "E301", "글쓰기 목표를 찾지 못했습니다."),
     DUPLICATE_WRITING_GOAL_NAME(HttpStatus.CONFLICT, "E302", "중복된 글쓰기 목표 이름입니다."),
     DAILY_WORD_CONFLICT(HttpStatus.CONFLICT, "E303", "해당 단어로 오늘의 글을 이미 작성했습니다."),
     WRITING_GOAL_CONFLICT(HttpStatus.CONFLICT, "E304", "해당 목표로 오늘의 글을 이미 작성했습니다."),
 
-    // E4XX : LIKES, BOOKMARKS (좋아요, 북마크)
+    // E4XX : LIKE, BOOKMARK (좋아요, 북마크)
 
-    // E5XX : FEEDBACKS(피드백)
+    // E5XX : FEEDBACK(피드백)
 
     // E6XX : FILE (파일)
     FILE_NOT_PROVIDED(HttpStatus.BAD_REQUEST, "E900", "파일이 제공되지 않았습니다."),

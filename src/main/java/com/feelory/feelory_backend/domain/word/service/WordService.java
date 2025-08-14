@@ -1,8 +1,8 @@
 package com.feelory.feelory_backend.domain.word.service;
 
-import com.feelory.feelory_backend.global.exception.exceptions.words.CategoryNotFoundException;
-import com.feelory.feelory_backend.global.exception.exceptions.words.DuplicateWordNameException;
-import com.feelory.feelory_backend.global.exception.exceptions.words.WordNotFoundException;
+import com.feelory.feelory_backend.global.exception.exceptions.word.CategoryNotFoundException;
+import com.feelory.feelory_backend.global.exception.exceptions.word.DuplicateWordNameException;
+import com.feelory.feelory_backend.global.exception.exceptions.word.WordNotFoundException;
 import com.feelory.feelory_backend.global.util.ValidationUtil;
 import com.feelory.feelory_backend.domain.word.dto.model.WordDto;
 import com.feelory.feelory_backend.domain.word.dto.request.WordCreateRequest;

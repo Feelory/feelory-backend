@@ -1,8 +1,8 @@
 package com.feelory.feelory_backend.domain.writing.entity;
 
 import com.feelory.feelory_backend.domain.feedback.entity.Feedback;
+import com.feelory.feelory_backend.domain.user.entity.User;
 import com.feelory.feelory_backend.global.BaseEntity;
-import com.feelory.feelory_backend.domain.user.entity.Users;
 import com.feelory.feelory_backend.domain.word.entity.DailyWord;
 import jakarta.persistence.*;
 import lombok.*;
@@ -28,7 +28,7 @@ public class DailyWordWriting extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    private Users user;
+    private User user;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "writing_goals_id", nullable = false)

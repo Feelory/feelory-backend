@@ -2,7 +2,7 @@ package com.feelory.feelory_backend.domain.word.controller;
 
 import com.feelory.feelory_backend.global.api.ApiResponse;
 import com.feelory.feelory_backend.global.api.SuccessCode;
-import com.feelory.feelory_backend.global.security.jwt.JwtTokenProvider;
+import com.feelory.feelory_backend.global.security.jwt.JwtProvider;
 import com.feelory.feelory_backend.domain.word.dto.request.CategoryCreateRequest;
 import com.feelory.feelory_backend.domain.word.dto.request.CategoryDeleteRequest;
 import com.feelory.feelory_backend.domain.word.dto.request.CategoryListRequest;
@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.*;
 public class CategoryController {
 
     private final CategoryService categoryService;
-    private final JwtTokenProvider jwtTokenProvider;
+    private final JwtProvider jwtProvider;
 
     @Operation(
             summary = "모든 카테고리 목록",
@@ -46,7 +46,7 @@ public class CategoryController {
     )
     @PostMapping("")
     public ApiResponse<CategoryCreateResponse> postCategory(@Valid @RequestBody CategoryCreateRequest request) {
-        jwtTokenProvider.checkAdmin();
+        jwtProvider.checkAdmin();
 
         CategoryCreateResponse response = categoryService.registerCategory(request);
 
@@ -60,7 +60,7 @@ public class CategoryController {
     )
     @PatchMapping("")
     public ApiResponse<Void> patchCategory(@Valid @RequestBody CategoryUpdateRequest request) {
-        jwtTokenProvider.checkAdmin();
+        jwtProvider.checkAdmin();
 
         categoryService.modifyCategory(request);
 
@@ -74,7 +74,7 @@ public class CategoryController {
     )
     @DeleteMapping("")
     public ApiResponse<Void> deleteCategory(@Valid CategoryDeleteRequest request) {
-        jwtTokenProvider.checkAdmin();
+        jwtProvider.checkAdmin();
 
         categoryService.removeCategory(request);
 

@@ -1,6 +1,6 @@
 package com.feelory.feelory_backend.domain.word.docs;
 
-public class DailyWordsDocs {
+public class DailyWordDocs {
 
     public static final String POST_DAILY_WORD_DESCRIPTION = """
             오늘을 포함한 미래 날짜 중 하루를 지정하여 오늘의 단어를 지정하는 API

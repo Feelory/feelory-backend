@@ -1,6 +1,6 @@
 package com.feelory.feelory_backend.domain.writing.dto.request;
 
-import com.feelory.feelory_backend.domain.user.entity.Users;
+import com.feelory.feelory_backend.domain.user.entity.User;
 import com.feelory.feelory_backend.domain.writing.entity.WritingGoal;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -23,7 +23,7 @@ public class WritingGoalCreateRequest {
     @NotNull(message = "기간은 필수입니다.")
     private Integer duration;
 
-    public WritingGoal toEntity(Users user) {
+    public WritingGoal toEntity(User user) {
         LocalDateTime startDate = LocalDate.now().atStartOfDay();
 
         LocalDateTime endDate = startDate

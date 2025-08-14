@@ -1,17 +1,17 @@
 package com.feelory.feelory_backend.domain.writing.service;
 
+import com.feelory.feelory_backend.domain.user.entity.User;
 import com.feelory.feelory_backend.domain.writing.dto.response.WritingGoalCreateResponse;
 import com.feelory.feelory_backend.domain.writing.dto.response.WritingGoalDetailResponse;
 import com.feelory.feelory_backend.domain.writing.dto.response.WritingGoalListResponse;
 import com.feelory.feelory_backend.global.exception.exceptions.common.DayTooFarInFutureException;
 import com.feelory.feelory_backend.global.exception.exceptions.common.DayTooFarInPastException;
-import com.feelory.feelory_backend.global.exception.exceptions.users.UserNotFoundException;
-import com.feelory.feelory_backend.global.exception.exceptions.words.DuplicateWritingGoalNameException;
-import com.feelory.feelory_backend.global.exception.exceptions.writings.WritingGoalNotFoundException;
-import com.feelory.feelory_backend.global.security.jwt.JwtTokenProvider;
+import com.feelory.feelory_backend.global.exception.exceptions.user.UserNotFoundException;
+import com.feelory.feelory_backend.global.exception.exceptions.word.DuplicateWritingGoalNameException;
+import com.feelory.feelory_backend.global.exception.exceptions.writing.WritingGoalNotFoundException;
+import com.feelory.feelory_backend.global.security.jwt.JwtProvider;
 import com.feelory.feelory_backend.global.util.ValidationUtil;
-import com.feelory.feelory_backend.domain.user.entity.Users;
-import com.feelory.feelory_backend.domain.user.repository.UsersRepository;
+import com.feelory.feelory_backend.domain.user.repository.UserRepository;
 import com.feelory.feelory_backend.domain.writing.dto.model.WritingGoalDto;
 import com.feelory.feelory_backend.domain.writing.dto.model.WritingGoalListSearchDto;
 import com.feelory.feelory_backend.domain.writing.dto.request.WritingGoalCreateRequest;
@@ -36,12 +36,12 @@ public class WritingGoalService {
 
     private final WritingGoalRepository writingGoalRepository;
     private final ValidationUtil validationUtil;
-    private final JwtTokenProvider jwtTokenProvider;
-    private final UsersRepository usersRepository;
+    private final JwtProvider jwtProvider;
+    private final UserRepository userRepository;
 
     public WritingGoalListResponse getWritingGoals(WritingGoalListRequest request) {
 
-        Long userId = jwtTokenProvider.getUserIdFromAuthentication();
+        Long userId = jwtProvider.getUserIdFromAuthentication();
 
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
 
@@ -58,7 +58,7 @@ public class WritingGoalService {
 
     public WritingGoalDetailResponse getWritingGoalDetail(Long id) {
 
-        Long userId = jwtTokenProvider.getUserIdFromAuthentication();
+        Long userId = jwtProvider.getUserIdFromAuthentication();
 
         WritingGoal entity = writingGoalRepository.findByIdAndUserId(id, userId)
                 .orElseThrow(WritingGoalNotFoundException::new);
@@ -73,10 +73,10 @@ public class WritingGoalService {
     @Transactional
     public WritingGoalCreateResponse registerWritingGoal(WritingGoalCreateRequest request) {
 
-        Long userId = jwtTokenProvider.getUserIdFromAuthentication();
+        Long userId = jwtProvider.getUserIdFromAuthentication();
         checkDuplicateName(userId, request.getName());
 
-        Users user = usersRepository.findById(userId)
+        User user = userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
 
         WritingGoal entity = request.toEntity(user);
@@ -92,7 +92,7 @@ public class WritingGoalService {
     @Transactional
     public void modifyWritingGoal(WritingGoalUpdateRequest request) {
 
-        Long userId = jwtTokenProvider.getUserIdFromAuthentication();
+        Long userId = jwtProvider.getUserIdFromAuthentication();
 
         WritingGoal entity = writingGoalRepository.findByIdAndUserIdAndIsActive(request.getId(), userId, true)
                 .orElseThrow(WritingGoalNotFoundException::new);
@@ -121,7 +121,7 @@ public class WritingGoalService {
 
     @Transactional
     public void removeWritingGoal(WritingGoalDeleteRequest request) {
-        Long userId = jwtTokenProvider.getUserIdFromAuthentication();
+        Long userId = jwtProvider.getUserIdFromAuthentication();
         WritingGoal entity = writingGoalRepository.findByIdAndUserIdAndIsActive(request.getId(), userId, true)
                 .orElseThrow(WritingGoalNotFoundException::new);
 

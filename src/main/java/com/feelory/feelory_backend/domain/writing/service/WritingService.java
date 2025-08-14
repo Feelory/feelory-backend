@@ -1,19 +1,19 @@
 package com.feelory.feelory_backend.domain.writing.service;
 
+import com.feelory.feelory_backend.domain.user.entity.User;
 import com.feelory.feelory_backend.domain.writing.dto.request.*;
 import com.feelory.feelory_backend.domain.writing.dto.response.UserTodayWritingResponse;
 import com.feelory.feelory_backend.domain.writing.dto.response.UserWritingCreateResponse;
 import com.feelory.feelory_backend.domain.writing.dto.response.UserWritingDetailResponse;
 import com.feelory.feelory_backend.domain.writing.dto.response.UserWritingListResponse;
-import com.feelory.feelory_backend.global.exception.exceptions.users.UserNotFoundException;
-import com.feelory.feelory_backend.global.exception.exceptions.writings.DailyWordConflictException;
-import com.feelory.feelory_backend.global.exception.exceptions.writings.WritingGoalConflictException;
-import com.feelory.feelory_backend.global.exception.exceptions.words.DailyWordNotFoundException;
-import com.feelory.feelory_backend.global.exception.exceptions.writings.WritingNotFoundException;
-import com.feelory.feelory_backend.global.security.jwt.JwtTokenProvider;
+import com.feelory.feelory_backend.global.exception.exceptions.user.UserNotFoundException;
+import com.feelory.feelory_backend.global.exception.exceptions.writing.DailyWordConflictException;
+import com.feelory.feelory_backend.global.exception.exceptions.writing.WritingGoalConflictException;
+import com.feelory.feelory_backend.global.exception.exceptions.word.DailyWordNotFoundException;
+import com.feelory.feelory_backend.global.exception.exceptions.writing.WritingNotFoundException;
+import com.feelory.feelory_backend.global.security.jwt.JwtProvider;
 import com.feelory.feelory_backend.global.util.ValidationUtil;
-import com.feelory.feelory_backend.domain.user.entity.Users;
-import com.feelory.feelory_backend.domain.user.repository.UsersRepository;
+import com.feelory.feelory_backend.domain.user.repository.UserRepository;
 import com.feelory.feelory_backend.domain.word.entity.DailyWord;
 import com.feelory.feelory_backend.domain.word.repository.DailyWordRepository;
 import com.feelory.feelory_backend.domain.writing.dto.model.WritingDto;
@@ -33,16 +33,16 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class WritingService {
 
-    private final UsersRepository usersRepository;
+    private final UserRepository userRepository;
     private final DailyWordWritingRepository dailyWordWritingRepository;
     private final DailyWordRepository dailyWordRepository;
     private final WritingGoalRepository writingGoalRepository;
     private final ValidationUtil validationUtil;
-    private final JwtTokenProvider jwtTokenProvider;
+    private final JwtProvider jwtProvider;
 
     public UserWritingListResponse getUserWritings(UserWritingListRequest request) {
 
-        Long userId = jwtTokenProvider.getUserIdFromAuthentication();
+        Long userId = jwtProvider.getUserIdFromAuthentication();
 
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
 
@@ -55,7 +55,7 @@ public class WritingService {
 
     public UserTodayWritingResponse getUserTodayWriting() {
 
-        Long userId = jwtTokenProvider.getUserIdFromAuthentication();
+        Long userId = jwtProvider.getUserIdFromAuthentication();
         WritingSearchDto dto = WritingSearchDto.fromUserId(userId);
         DailyWordWriting entity = dailyWordWritingRepository.searchWritingDetailByDto(dto)
                 .orElseThrow(WritingNotFoundException::new);
@@ -69,7 +69,7 @@ public class WritingService {
 
     public UserWritingDetailResponse getUserWritingDetail(Long id) {
 
-        Long userId = jwtTokenProvider.getUserIdFromAuthentication();
+        Long userId = jwtProvider.getUserIdFromAuthentication();
         DailyWordWriting entity = dailyWordWritingRepository.findByIdAndUserIdAndIsActive(id, userId, true)
                 .orElseThrow(WritingNotFoundException::new);
 
@@ -83,9 +83,9 @@ public class WritingService {
     @Transactional
     public UserWritingCreateResponse registerUserWriting(UserWritingCreateRequest request) {
 
-        Long userId = jwtTokenProvider.getUserIdFromAuthentication();
+        Long userId = jwtProvider.getUserIdFromAuthentication();
 
-        Users user = usersRepository.findById(userId)
+        User user = userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
         DailyWord dailyWord = dailyWordRepository.findByIdAndIsActive(request.getDailyWordId(), true)
                 .orElseThrow(DailyWordNotFoundException::new);
@@ -109,7 +109,7 @@ public class WritingService {
     @Transactional
     public void modifyUserWriting(UserWritingUpdateRequest request) {
 
-        Long userId = jwtTokenProvider.getUserIdFromAuthentication();
+        Long userId = jwtProvider.getUserIdFromAuthentication();
         DailyWordWriting entity = dailyWordWritingRepository.findByIdAndUserIdAndIsActive(request.getId(), userId, true)
                 .orElseThrow(WritingNotFoundException::new);
 
@@ -146,7 +146,7 @@ public class WritingService {
     @Transactional
     public void removeUserWriting(UserWritingDeleteRequest request) {
 
-        Long userId = jwtTokenProvider.getUserIdFromAuthentication();
+        Long userId = jwtProvider.getUserIdFromAuthentication();
 
         DailyWordWriting entity = dailyWordWritingRepository.findByIdAndUserIdAndIsActive(request.getId(), userId, true)
                 .orElseThrow(WritingNotFoundException::new);
@@ -161,7 +161,7 @@ public class WritingService {
     @Transactional
     public void modifyVisibility(VisibilityUpdateRequest request) {
 
-        Long userId = jwtTokenProvider.getUserIdFromAuthentication();
+        Long userId = jwtProvider.getUserIdFromAuthentication();
 
         DailyWordWriting entity = dailyWordWritingRepository.findByIdAndUserIdAndIsActive(request.getId(), userId, true)
                 .orElseThrow(WritingNotFoundException::new);

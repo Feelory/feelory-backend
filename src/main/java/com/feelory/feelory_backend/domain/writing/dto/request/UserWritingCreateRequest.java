@@ -1,6 +1,6 @@
 package com.feelory.feelory_backend.domain.writing.dto.request;
 
-import com.feelory.feelory_backend.domain.user.entity.Users;
+import com.feelory.feelory_backend.domain.user.entity.User;
 import com.feelory.feelory_backend.domain.word.entity.DailyWord;
 import com.feelory.feelory_backend.domain.writing.entity.DailyWordWriting;
 import com.feelory.feelory_backend.domain.writing.entity.WritingGoal;
@@ -27,7 +27,7 @@ public class UserWritingCreateRequest {
     private Long writingGoalId;
     private Boolean visibility = true;
 
-    public DailyWordWriting toEntity(Users user, DailyWord dailyWord, WritingGoal writingGoal) {
+    public DailyWordWriting toEntity(User user, DailyWord dailyWord, WritingGoal writingGoal) {
 
         return DailyWordWriting.builder()
                 .user(user)

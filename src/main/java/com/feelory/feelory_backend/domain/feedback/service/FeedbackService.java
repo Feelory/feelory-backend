@@ -4,7 +4,7 @@ import com.feelory.feelory_backend.domain.feedback.entity.Feedback;
 import com.feelory.feelory_backend.domain.feedback.model.request.FeedbackRequest;
 import com.feelory.feelory_backend.domain.feedback.model.response.FeedbackResponse;
 import com.feelory.feelory_backend.domain.feedback.repository.FeedbackRepository;
-import com.feelory.feelory_backend.global.exception.exceptions.writings.WritingNotFoundException;
+import com.feelory.feelory_backend.global.exception.exceptions.writing.WritingNotFoundException;
 import com.feelory.feelory_backend.global.webclient.GenerateContent;
 import com.feelory.feelory_backend.global.webclient.dto.request.GenerateContentRequest;
 import com.feelory.feelory_backend.global.webclient.dto.reponse.GenerateContentResponse;

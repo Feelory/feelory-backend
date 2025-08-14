@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
-public class JwtTokenProvider {
+public class JwtProvider {
     private final JwtProperties jwtProperties;
     private final UserService userService;
 

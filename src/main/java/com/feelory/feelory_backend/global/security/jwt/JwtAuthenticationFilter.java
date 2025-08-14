@@ -19,7 +19,7 @@ import java.util.Collections;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private final JwtTokenProvider jwtTokenProvider;
+    private final JwtProvider jwtProvider;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -29,9 +29,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if (header != null && header.startsWith("Bearer ")) {
             String token = header.substring(7);
 
-            if (jwtTokenProvider.validateToken(token)) {
-                Long userId = jwtTokenProvider.getUserIdFromToken(token);
-                String role = jwtTokenProvider.getRoleFromToken(token);
+            if (jwtProvider.validateToken(token)) {
+                Long userId = jwtProvider.getUserIdFromToken(token);
+                String role = jwtProvider.getRoleFromToken(token);
 
                 UsernamePasswordAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(

@@ -1,7 +1,7 @@
 package com.feelory.feelory_backend.domain.word.service;
 
-import com.feelory.feelory_backend.global.exception.exceptions.words.CategoryNotFoundException;
-import com.feelory.feelory_backend.global.exception.exceptions.words.DuplicateCategoryNameException;
+import com.feelory.feelory_backend.global.exception.exceptions.word.CategoryNotFoundException;
+import com.feelory.feelory_backend.global.exception.exceptions.word.DuplicateCategoryNameException;
 import com.feelory.feelory_backend.global.util.ValidationUtil;
 import com.feelory.feelory_backend.domain.word.dto.model.CategoryDto;
 import com.feelory.feelory_backend.domain.word.dto.request.CategoryCreateRequest;

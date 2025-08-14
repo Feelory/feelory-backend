@@ -9,7 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "user_profile_images")
-public class UserProfileImages {
+public class UserProfileImage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -35,7 +35,7 @@ public class UserProfileImages {
     @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    private Users user;
+    private User user;
 
     public void deactivate() {
         this.isActive = false;

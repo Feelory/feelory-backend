@@ -5,7 +5,7 @@ import com.feelory.feelory_backend.domain.writing.dto.response.WritingGoalDetail
 import com.feelory.feelory_backend.domain.writing.dto.response.WritingGoalListResponse;
 import com.feelory.feelory_backend.global.api.ApiResponse;
 import com.feelory.feelory_backend.global.api.SuccessCode;
-import com.feelory.feelory_backend.global.security.jwt.JwtTokenProvider;
+import com.feelory.feelory_backend.global.security.jwt.JwtProvider;
 import com.feelory.feelory_backend.domain.writing.dto.request.WritingGoalCreateRequest;
 import com.feelory.feelory_backend.domain.writing.dto.request.WritingGoalDeleteRequest;
 import com.feelory.feelory_backend.domain.writing.dto.request.WritingGoalListRequest;
@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.*;
 public class WritingGoalController {
 
     private final WritingGoalService writingGoalService;
-    private final JwtTokenProvider jwtTokenProvider;
+    private final JwtProvider jwtProvider;
 
     @Operation(
             summary = "글쓰기 목표 목록 조회",
@@ -36,7 +36,7 @@ public class WritingGoalController {
     )
     @GetMapping("")
     public ApiResponse<WritingGoalListResponse> getWritingGoals(@ParameterObject WritingGoalListRequest request) {
-        jwtTokenProvider.checkUserOrAdmin();
+        jwtProvider.checkUserOrAdmin();
 
         WritingGoalListResponse response = writingGoalService.getWritingGoals(request);
 
@@ -50,7 +50,7 @@ public class WritingGoalController {
     )
     @GetMapping("/{id}")
     public ApiResponse<WritingGoalDetailResponse> getWritingGoalDetail(@PathVariable Long id) {
-        jwtTokenProvider.checkUserOrAdmin();
+        jwtProvider.checkUserOrAdmin();
 
         WritingGoalDetailResponse response = writingGoalService.getWritingGoalDetail(id);
 
@@ -64,7 +64,7 @@ public class WritingGoalController {
     )
     @PostMapping("")
     public ApiResponse<WritingGoalCreateResponse> postWritingGoal(@Valid @RequestBody WritingGoalCreateRequest request) {
-        jwtTokenProvider.checkUserOrAdmin();
+        jwtProvider.checkUserOrAdmin();
 
         WritingGoalCreateResponse response = writingGoalService.registerWritingGoal(request);
 
@@ -78,7 +78,7 @@ public class WritingGoalController {
     )
     @PatchMapping("")
     public ApiResponse<Void> patchWritingGoal(@Valid @RequestBody WritingGoalUpdateRequest request) {
-        jwtTokenProvider.checkUserOrAdmin();
+        jwtProvider.checkUserOrAdmin();
 
         writingGoalService.modifyWritingGoal(request);
 
@@ -93,7 +93,7 @@ public class WritingGoalController {
     )
     @DeleteMapping("")
     public ApiResponse<Void> deleteWritingGoal(@Valid WritingGoalDeleteRequest request) {
-        jwtTokenProvider.checkUserOrAdmin();
+        jwtProvider.checkUserOrAdmin();
 
         writingGoalService.removeWritingGoal(request);
 

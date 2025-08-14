@@ -24,6 +24,6 @@ public class Feedback extends BaseEntity {
 
     @Setter
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "daily_word_writings_id", nullable = false)
+    @JoinColumn(name = "daily_word_writing_id", nullable = false)
     private DailyWordWriting dailyWordWriting;
 }

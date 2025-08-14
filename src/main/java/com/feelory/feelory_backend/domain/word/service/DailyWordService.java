@@ -1,8 +1,8 @@
 package com.feelory.feelory_backend.domain.word.service;
 
-import com.feelory.feelory_backend.global.exception.exceptions.words.DailyWordNotFoundException;
-import com.feelory.feelory_backend.global.exception.exceptions.words.InvalidTopicDateException;
-import com.feelory.feelory_backend.global.exception.exceptions.words.WordAlreadyUsedException;
+import com.feelory.feelory_backend.global.exception.exceptions.word.DailyWordNotFoundException;
+import com.feelory.feelory_backend.global.exception.exceptions.word.InvalidTopicDateException;
+import com.feelory.feelory_backend.global.exception.exceptions.word.WordAlreadyUsedException;
 import com.feelory.feelory_backend.domain.word.dto.model.DailyWordDto;
 import com.feelory.feelory_backend.domain.word.dto.request.DailyWordCreateRequest;
 import com.feelory.feelory_backend.domain.word.dto.request.DailyWordDeleteRequest;

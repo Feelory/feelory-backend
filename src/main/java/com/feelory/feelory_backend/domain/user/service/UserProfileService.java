@@ -1,15 +1,15 @@
 package com.feelory.feelory_backend.domain.user.service;
 
-import com.feelory.feelory_backend.global.exception.exceptions.users.UserNotFoundException;
+import com.feelory.feelory_backend.domain.user.entity.User;
+import com.feelory.feelory_backend.domain.user.entity.UserProfileImage;
+import com.feelory.feelory_backend.global.exception.exceptions.user.UserNotFoundException;
 import com.feelory.feelory_backend.global.file.model.ImageFile;
 import com.feelory.feelory_backend.global.file.service.FileUploadService;
-import com.feelory.feelory_backend.global.security.jwt.JwtTokenProvider;
-import com.feelory.feelory_backend.domain.user.entity.UserProfileImages;
-import com.feelory.feelory_backend.domain.user.entity.Users;
+import com.feelory.feelory_backend.global.security.jwt.JwtProvider;
 import com.feelory.feelory_backend.domain.user.dto.response.UserProfileImageResponse;
 import com.feelory.feelory_backend.domain.user.dto.response.UserProfileResponse;
-import com.feelory.feelory_backend.domain.user.repository.UserProfileImagesRepository;
-import com.feelory.feelory_backend.domain.user.repository.UsersRepository;
+import com.feelory.feelory_backend.domain.user.repository.UserProfileImageRepository;
+import com.feelory.feelory_backend.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -20,10 +20,10 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 public class UserProfileService {
 
-    private final JwtTokenProvider jwtTokenProvider;
+    private final JwtProvider jwtProvider;
     private final FileUploadService fileUploadService;
-    private final UsersRepository usersRepository;
-    private final UserProfileImagesRepository userProfileImagesRepository;
+    private final UserRepository userRepository;
+    private final UserProfileImageRepository userProfileImageRepository;
 
     @Value("${file.access.url.prefix}")
     private String prefix;
@@ -31,17 +31,17 @@ public class UserProfileService {
     @Transactional
     public UserProfileImageResponse updateProfileImage(MultipartFile requestImageFile) {
 
-        Long userId = jwtTokenProvider.getUserIdFromAuthentication();
+        Long userId = jwtProvider.getUserIdFromAuthentication();
 
         ImageFile imageFile = fileUploadService.uploadImageFile(requestImageFile);
 
-        Users user = getUsers(userId);
+        User user = getUsers(userId);
 
         deactivateCurrentProfileImages(user);
 
-        UserProfileImages profileImage = buildUserProfileImages(user, imageFile);
+        UserProfileImage profileImage = buildUserProfileImages(user, imageFile);
 
-        userProfileImagesRepository.save(profileImage);
+        userProfileImageRepository.save(profileImage);
 
         String imageFileUrl = getProfileImageUrl(profileImage);
 
@@ -51,18 +51,18 @@ public class UserProfileService {
     @Transactional(readOnly = true)
     public UserProfileResponse readUserProfile() {
 
-        Long userId = jwtTokenProvider.getUserIdFromAuthentication();
+        Long userId = jwtProvider.getUserIdFromAuthentication();
 
-        Users user = getUsers(userId);
+        User user = getUsers(userId);
 
-        UserProfileImages activeProfileImage = getActiveProfileImageFromUser(user);
+        UserProfileImage activeProfileImage = getActiveProfileImageFromUser(user);
 
         String profileImageUrl = getProfileImageUrl(activeProfileImage);
 
         return buildUserProfileResponse(user,profileImageUrl);
     }
 
-    private UserProfileResponse buildUserProfileResponse(Users user,String profileImageUrl) {
+    private UserProfileResponse buildUserProfileResponse(User user, String profileImageUrl) {
         return UserProfileResponse.builder()
                 .profileImageUrl(profileImageUrl)
                 .nickname(user.getNickname())
@@ -70,28 +70,28 @@ public class UserProfileService {
                 .build();
     }
 
-    private UserProfileImages getActiveProfileImageFromUser(Users user) {
+    private UserProfileImage getActiveProfileImageFromUser(User user) {
         return user.getUserProfileImages().stream()
-                .filter(UserProfileImages::isActive)
+                .filter(UserProfileImage::isActive)
                 .findFirst()
                 .orElse(null);
     }
 
-    private String getProfileImageUrl(UserProfileImages profileImage) {
+    private String getProfileImageUrl(UserProfileImage profileImage) {
         if (profileImage == null) {
             return null;
         }
         return prefix + "/" + profileImage.getImageName() + "." + profileImage.getExtension();
     }
 
-    private void deactivateCurrentProfileImages(Users user) {
+    private void deactivateCurrentProfileImages(User user) {
         user.getUserProfileImages().stream()
-                .filter(UserProfileImages::isActive)
-                .forEach(UserProfileImages::deactivate);
+                .filter(UserProfileImage::isActive)
+                .forEach(UserProfileImage::deactivate);
     }
 
-    private UserProfileImages buildUserProfileImages(Users user, ImageFile imageFile) {
-        UserProfileImages image = UserProfileImages.builder()
+    private UserProfileImage buildUserProfileImages(User user, ImageFile imageFile) {
+        UserProfileImage image = UserProfileImage.builder()
                 .imageName(imageFile.getImageName())
                 .extension(imageFile.getExtension())
                 .width(imageFile.getWidth())
@@ -103,8 +103,8 @@ public class UserProfileService {
         return image;
     }
 
-    private Users getUsers(Long userId) {
-        return usersRepository.findById(userId)
+    private User getUsers(Long userId) {
+        return userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
     }
 }

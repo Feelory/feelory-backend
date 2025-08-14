@@ -1,6 +1,6 @@
 package com.feelory.feelory_backend.sample.service;
 
-import com.feelory.feelory_backend.global.exception.exceptions.users.UserNotFoundException;
+import com.feelory.feelory_backend.global.exception.exceptions.user.UserNotFoundException;
 import com.feelory.feelory_backend.sample.entity.SampleTable;
 import com.feelory.feelory_backend.sample.repository.SampleTableRepository;
 import lombok.RequiredArgsConstructor;

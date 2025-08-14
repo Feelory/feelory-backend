@@ -1,7 +1,7 @@
 package com.feelory.feelory_backend.domain.writing.entity;
 
 import com.feelory.feelory_backend.global.BaseEntity;
-import com.feelory.feelory_backend.domain.user.entity.Users;
+import com.feelory.feelory_backend.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -32,7 +32,7 @@ public class WritingGoal extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    private Users user;
+    private User user;
 
     @Column(name="duration", nullable = false)
     private int duration;
