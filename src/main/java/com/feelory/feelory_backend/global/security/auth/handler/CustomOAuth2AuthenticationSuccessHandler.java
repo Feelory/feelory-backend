@@ -3,8 +3,8 @@
     import com.fasterxml.jackson.databind.ObjectMapper;
     import com.feelory.feelory_backend.global.api.ApiResponse;
     import com.feelory.feelory_backend.global.exception.exceptions.BaseException;
-    import com.feelory.feelory_backend.global.exception.exceptions.ErrorCode;
-    import com.feelory.feelory_backend.global.exception.exceptions.ExceptionFileLogger;
+    import com.feelory.feelory_backend.global.exception.dto.model.ErrorCode;
+    import com.feelory.feelory_backend.global.exception.ExceptionFileLogger;
     import com.feelory.feelory_backend.global.security.auth.dto.response.LoginResponse;
     import com.feelory.feelory_backend.global.security.auth.service.AuthService;
     import jakarta.servlet.http.HttpServletRequest;

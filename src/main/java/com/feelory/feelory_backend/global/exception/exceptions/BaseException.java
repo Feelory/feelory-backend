@@ -1,5 +1,6 @@
 package com.feelory.feelory_backend.global.exception.exceptions;
 
+import com.feelory.feelory_backend.global.exception.dto.model.ErrorCode;
 import lombok.Getter;
 
 @Getter

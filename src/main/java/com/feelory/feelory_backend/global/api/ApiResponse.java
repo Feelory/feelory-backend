@@ -1,15 +1,13 @@
 package com.feelory.feelory_backend.global.api;
 
-import com.feelory.feelory_backend.global.exception.exceptions.ErrorCode;
-import com.feelory.feelory_backend.global.exception.exceptions.ErrorResponse;
-import com.feelory.feelory_backend.global.exception.exceptions.ValidationDetail;
+import com.feelory.feelory_backend.global.exception.dto.model.ErrorCode;
+import com.feelory.feelory_backend.global.exception.dto.reponse.ErrorResponse;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
 
 import java.io.Serializable;
-import java.util.List;
 
 @Getter
 @NoArgsConstructor

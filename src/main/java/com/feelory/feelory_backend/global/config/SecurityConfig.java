@@ -3,7 +3,7 @@ package com.feelory.feelory_backend.global.config;
 import com.feelory.feelory_backend.global.security.auth.handler.CustomAccessDeniedHandler;
 import com.feelory.feelory_backend.global.security.auth.handler.CustomAuthenticationEntryPoint;
 import com.feelory.feelory_backend.global.security.auth.handler.CustomOAuth2AuthenticationSuccessHandler;
-import com.feelory.feelory_backend.global.security.auth.jwt.JwtAuthenticationFilter;
+import com.feelory.feelory_backend.global.security.jwt.JwtAuthenticationFilter;
 import com.feelory.feelory_backend.global.security.auth.service.CustomOAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
