@@ -1,16 +1,16 @@
 package com.feelory.feelory_backend.global.security.auth.service;
 
-import com.feelory.feelory_backend.global.exception.exceptions.users.InvalidPhoneNumberException;
+import com.feelory.feelory_backend.domain.user.entity.User;
+import com.feelory.feelory_backend.domain.user.entity.UserToken;
+import com.feelory.feelory_backend.global.exception.exceptions.user.InvalidPhoneNumberException;
 import com.feelory.feelory_backend.global.security.auth.dto.request.LogoutRequest;
 import com.feelory.feelory_backend.global.security.auth.dto.response.LoginResponse;
-import com.feelory.feelory_backend.global.security.auth.jwt.JwtTokenProvider;
-import com.feelory.feelory_backend.users.entity.UserTokens;
-import com.feelory.feelory_backend.users.entity.Users;
-import com.feelory.feelory_backend.users.model.AuthProvider;
-import com.feelory.feelory_backend.users.model.request.RefreshTokenRequest;
-import com.feelory.feelory_backend.users.model.response.RefreshTokenResponse;
-import com.feelory.feelory_backend.users.service.UserService;
-import com.feelory.feelory_backend.users.service.UserTokenService;
+import com.feelory.feelory_backend.global.security.jwt.JwtProvider;
+import com.feelory.feelory_backend.domain.user.dto.model.AuthProvider;
+import com.feelory.feelory_backend.domain.user.dto.request.RefreshTokenRequest;
+import com.feelory.feelory_backend.domain.user.dto.response.RefreshTokenResponse;
+import com.feelory.feelory_backend.domain.user.service.UserService;
+import com.feelory.feelory_backend.domain.user.service.UserTokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +24,7 @@ public class AuthService {
 
     private final UserService userService;
     private final UserTokenService userTokenService;
-    private final JwtTokenProvider jwtTokenProvider;
+    private final JwtProvider jwtProvider;
 
     @Transactional
     public LoginResponse loginOAuth2Kakao(Map<String, Object> attributes) {
@@ -34,13 +34,13 @@ public class AuthService {
         String name = (String) kakaoAccount.get("name");
         String phoneNumber = formatPhoneNumber((String) kakaoAccount.get("phone_number"));
 
-        Users user = userService.findOrCreateUser(name, phoneNumber, AuthProvider.KAKAO, kakaoId);
+        User user = userService.findOrCreateUser(name, phoneNumber, AuthProvider.KAKAO, kakaoId);
 
-        String accessToken = jwtTokenProvider.generateAccessToken(user.getId(), user.getRole());
-        LocalDateTime accessTokenExp = jwtTokenProvider.getExpirationLocalDateTimeFromToken(accessToken);
+        String accessToken = jwtProvider.generateAccessToken(user.getId(), user.getRole());
+        LocalDateTime accessTokenExp = jwtProvider.getExpirationLocalDateTimeFromToken(accessToken);
 
-        String refreshToken = jwtTokenProvider.generateRefreshToken(user.getId());
-        LocalDateTime refreshTokenExp = jwtTokenProvider.getExpirationLocalDateTimeFromToken(refreshToken);
+        String refreshToken = jwtProvider.generateRefreshToken(user.getId());
+        LocalDateTime refreshTokenExp = jwtProvider.getExpirationLocalDateTimeFromToken(refreshToken);
 
         userTokenService.saveUserToken(user, refreshToken, refreshTokenExp);
 
@@ -57,15 +57,15 @@ public class AuthService {
     public RefreshTokenResponse reissueToken(RefreshTokenRequest request) {
         String oldRefreshToken = request.getRefreshToken();
 
-        UserTokens userToken = userTokenService.findRefreshToken(oldRefreshToken);
+        UserToken userToken = userTokenService.findRefreshToken(oldRefreshToken);
 
-        Users user = userToken.getUser();
+        User user = userToken.getUser();
 
-        String newAccessToken = jwtTokenProvider.generateAccessToken(user.getId(), user.getRole());
-        LocalDateTime newAccessTokenExp = jwtTokenProvider.getExpirationLocalDateTimeFromToken(newAccessToken);
+        String newAccessToken = jwtProvider.generateAccessToken(user.getId(), user.getRole());
+        LocalDateTime newAccessTokenExp = jwtProvider.getExpirationLocalDateTimeFromToken(newAccessToken);
 
-        String newRefreshToken = jwtTokenProvider.generateRefreshToken(user.getId());
-        LocalDateTime newRefreshTokenExp = jwtTokenProvider.getExpirationLocalDateTimeFromToken(newRefreshToken);
+        String newRefreshToken = jwtProvider.generateRefreshToken(user.getId());
+        LocalDateTime newRefreshTokenExp = jwtProvider.getExpirationLocalDateTimeFromToken(newRefreshToken);
 
         userTokenService.rotateRefreshToken(userToken, newRefreshToken, newRefreshTokenExp);
 
@@ -79,7 +79,7 @@ public class AuthService {
 
     @Transactional
     public void logout(LogoutRequest request) {
-        UserTokens currentUserToken= userTokenService.findRefreshToken(request.getRefreshToken());
+        UserToken currentUserToken= userTokenService.findRefreshToken(request.getRefreshToken());
 
         userTokenService.deactivateRefreshToken(currentUserToken);
     }

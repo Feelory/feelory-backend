@@ -1,0 +1,23 @@
+package com.feelory.feelory_backend.global.webclient;
+
+import com.feelory.feelory_backend.global.webclient.dto.model.WebclientProperties;
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.reactive.function.client.WebClient;
+
+@Configuration
+@RequiredArgsConstructor
+public class WebClientConfig {
+
+    private final WebclientProperties webclientProperties;
+
+    @Bean
+    public WebClient geminiWebClient() {
+        return WebClient.builder()
+                .baseUrl("https://generativelanguage.googleapis.com")
+                .defaultHeader("Content-Type", "application/json")
+                .defaultHeader("X-goog-api-key",webclientProperties.getApikey())
+                .build();
+    }
+}

@@ -1,0 +1,38 @@
+package com.feelory.feelory_backend.domain.user.entity;
+
+import com.feelory.feelory_backend.global.BaseEntity;
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.time.LocalDateTime;
+
+@Getter
+@Builder(toBuilder = true)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Entity
+@Table(name = "user_tokens")
+public class UserToken extends BaseEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Setter
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    @Column(name = "refresh_token", nullable = false)
+    private String refreshToken;
+
+    @Column(name = "refresh_token_exp", nullable = false, unique = true)
+    private LocalDateTime refreshTokenExp;
+
+    @Column(name = "is_active", nullable = false)
+    private boolean isActive;
+
+    public void deactivate() {
+        this.isActive = false;
+    }
+}
