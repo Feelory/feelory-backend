@@ -1,0 +1,38 @@
+package com.feelory.feelory_backend.word.dto.response;
+
+import com.feelory.feelory_backend.word.dto.model.CategoryDto;
+import com.feelory.feelory_backend.word.entity.WordCategory;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.springframework.data.domain.Page;
+
+import java.util.List;
+
+@Getter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class CategoryListResponse {
+
+    private Long total;
+    private int page;
+    private int size;
+    private boolean hasNext;
+    private List<CategoryDto> categories;
+
+    public static CategoryListResponse fromPage(Page<WordCategory> page) {
+        List<CategoryDto> categoryList = page.getContent().stream()
+                .map(CategoryDto::fromEntity)
+                .toList();
+
+        return CategoryListResponse.builder()
+                .total(page.getTotalElements())
+                .page(page.getNumber())
+                .size(page.getSize())
+                .hasNext(page.hasNext())
+                .categories(categoryList)
+                .build();
+    }
+}

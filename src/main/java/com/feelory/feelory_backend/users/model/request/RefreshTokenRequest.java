@@ -1,6 +1,5 @@
 package com.feelory.feelory_backend.users.model.request;
 
-import com.feelory.feelory_backend.words.entity.WordCategories;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
