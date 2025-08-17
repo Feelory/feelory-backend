@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 @Setter
 @Component
 @ConfigurationProperties(prefix = "llm.gemini")
-public class WebclientProperties {
+public class GeminiProperties {
     private String apikey;
+    private GeminiModel model;
 }
