@@ -40,6 +40,8 @@ public enum ErrorCode {
     // E4XX : LIKE, BOOKMARK (좋아요, 북마크)
 
     // E5XX : FEEDBACK(피드백)
+    GENERATE_CONTENT_FAILED(HttpStatus.BAD_GATEWAY, "E500", "외부 API 피드백 생성 요청이 실패했습니다."),
+    EXTERNAL_API_CONNECTION_FAILED(HttpStatus.SERVICE_UNAVAILABLE, "E501", "외부 API 서버와의 연결에 실패했습니다."),
 
     // E6XX : FILE (파일)
     FILE_NOT_PROVIDED(HttpStatus.BAD_REQUEST, "E900", "파일이 제공되지 않았습니다."),
