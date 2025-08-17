@@ -33,6 +33,6 @@ public class FeedbackController {
 
         FeedbackResponse response = feedbackService.createFeedback(request);
 
-        return ApiResponse.success(response, SuccessCode.DEFAULT_SUCCESS);
+        return ApiResponse.success(response, SuccessCode.CREATE_FEEDBACK_SUCCESS);
     }
 }

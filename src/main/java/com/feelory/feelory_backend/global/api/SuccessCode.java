@@ -49,6 +49,7 @@ public enum SuccessCode {
     // LIKES, BOOKMARKS (좋아요, 북마크)
 
     // FEEDBACKS(피드백)
+    CREATE_FEEDBACK_SUCCESS("피드백 생성 완료"),
 
     // 기타
     DEFAULT_SUCCESS("API 요청 성공");
