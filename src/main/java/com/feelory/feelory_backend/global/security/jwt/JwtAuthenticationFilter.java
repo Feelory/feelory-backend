@@ -1,5 +1,7 @@
 package com.feelory.feelory_backend.global.security.jwt;
 
+import com.feelory.feelory_backend.domain.user.service.UserService;
+import com.feelory.feelory_backend.global.exception.exceptions.auth.UserAccessDeniedException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.nio.file.AccessDeniedException;
 import java.util.Collections;
 
 @Component
@@ -20,6 +23,7 @@ import java.util.Collections;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtProvider jwtProvider;
+    private final UserService userService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -31,6 +35,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             if (jwtProvider.validateToken(token)) {
                 Long userId = jwtProvider.getUserIdFromToken(token);
+
+                if (!userService.isActiveUser(userId)) {
+                    throw new UserAccessDeniedException();
+                }
+
                 String role = jwtProvider.getRoleFromToken(token);
 
                 UsernamePasswordAuthenticationToken authentication =

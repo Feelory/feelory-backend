@@ -30,7 +30,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class JwtProvider {
     private final JwtProperties jwtProperties;
-    private final UserService userService;
 
     private Key getSigningKey() {
         byte[] keyBytes = Decoders.BASE64.decode(jwtProperties.getSecret());
@@ -62,8 +61,7 @@ public class JwtProvider {
                     .setSigningKey(getSigningKey())
                     .build()
                     .parseClaimsJws(token);
-            Long userId = getUserIdFromToken(token);
-            return userService.isActiveUser(userId);
+            return true;
         } catch (JwtException | IllegalArgumentException e) {
             return false;
         }
