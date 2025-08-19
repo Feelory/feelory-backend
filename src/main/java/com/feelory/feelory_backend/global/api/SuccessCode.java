@@ -16,6 +16,7 @@ public enum SuccessCode {
     REGISTER_USER_PROFILE_IMAGE_SUCCESS("유저 프로필 이미지 갱신 완료"),
     READ_USER_PROFILE_SUCCESS("유저 프로필 조회 완료"),
     UPDATE_USER_PROFILE_SUCCESS("유저 프로필 수정 완료"),
+    DELETE_USER_SUCCESS("유저 서비스 탈퇴 완료"),
 
     // WORDS(단어)
     GET_CATEGORY_LIST_SUCCESS("카테고리 목록 조회 완료"),
