@@ -1,5 +1,6 @@
 package com.feelory.feelory_backend.domain.user.service;
 
+import com.feelory.feelory_backend.domain.user.dto.request.UserProfileUpdateRequest;
 import com.feelory.feelory_backend.domain.user.entity.User;
 import com.feelory.feelory_backend.domain.user.entity.UserProfileImage;
 import com.feelory.feelory_backend.global.exception.exceptions.user.UserNotFoundException;
@@ -12,7 +13,6 @@ import com.feelory.feelory_backend.domain.user.dto.response.UserProfileResponse;
 import com.feelory.feelory_backend.domain.user.repository.UserProfileImageRepository;
 import com.feelory.feelory_backend.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -34,7 +34,7 @@ public class UserProfileService {
 
         ImageFileDto imageFileDto = fileUploadService.uploadImageFile(requestImageFile);
 
-        User user = getUsers(userId);
+        User user = getUser(userId);
 
         deactivateCurrentProfileImages(user);
 
@@ -52,13 +52,33 @@ public class UserProfileService {
 
         Long userId = jwtProvider.getUserIdFromAuthentication();
 
-        User user = getUsers(userId);
+        User user = getUser(userId);
 
         UserProfileImage activeProfileImage = getActiveProfileImageFromUser(user);
 
         String profileImageUrl = getProfileImageUrl(activeProfileImage);
 
         return buildUserProfileResponse(user,profileImageUrl);
+    }
+
+    @Transactional
+    public void updateUserProfile(UserProfileUpdateRequest request) {
+
+        Long userId = jwtProvider.getUserIdFromAuthentication();
+
+        User user = getUser(userId);
+
+        User updatedUser = updateUser(user,request);
+
+        userRepository.save(updatedUser);
+    }
+
+    private User updateUser(User user, UserProfileUpdateRequest request) {
+        User.UserBuilder builder = user.toBuilder();
+        builder.nickname(request.getNickname());
+        builder.introduce(request.getIntroduce());
+
+        return builder.build();
     }
 
     private UserProfileResponse buildUserProfileResponse(User user, String profileImageUrl) {
@@ -102,8 +122,9 @@ public class UserProfileService {
         return image;
     }
 
-    private User getUsers(Long userId) {
+    private User getUser(Long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
     }
+
 }
