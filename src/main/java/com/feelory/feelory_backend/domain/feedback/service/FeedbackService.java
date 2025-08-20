@@ -1,11 +1,16 @@
 package com.feelory.feelory_backend.domain.feedback.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.feelory.feelory_backend.domain.feedback.entity.Feedback;
 import com.feelory.feelory_backend.domain.feedback.model.request.FeedbackRequest;
 import com.feelory.feelory_backend.domain.feedback.model.response.FeedbackResponse;
 import com.feelory.feelory_backend.domain.feedback.repository.FeedbackRepository;
+import com.feelory.feelory_backend.global.exception.exceptions.feedback.FeedbackParsingException;
 import com.feelory.feelory_backend.global.exception.exceptions.writing.WritingNotFoundException;
 import com.feelory.feelory_backend.global.webclient.GenerateContent;
+import com.feelory.feelory_backend.global.webclient.dto.model.GeminiFeedbackForm;
 import com.feelory.feelory_backend.global.webclient.dto.request.GenerateContentRequest;
 import com.feelory.feelory_backend.global.webclient.dto.reponse.GenerateContentResponse;
 import com.feelory.feelory_backend.domain.writing.entity.DailyWordWriting;
@@ -30,11 +35,13 @@ public class FeedbackService {
 
         GenerateContentResponse feedbackResponse = generateContentFromModel(feedbackRequest);
 
-        String feedbackText = extractFeedbackText(feedbackResponse);
+        String feedbackJson = extractFeedbackText(feedbackResponse);
 
-        saveFeedback(feedbackText, writing);
+        GeminiFeedbackForm form = parsingFeedbackForm(feedbackJson);
 
-        return new FeedbackResponse(feedbackText);
+        saveFeedback(feedbackJson, writing);
+
+        return FeedbackResponse.fromForm(form);
     }
 
     private DailyWordWriting findDailyWriting(FeedbackRequest request) {
@@ -69,4 +76,17 @@ public class FeedbackService {
         feedbackRepository.save(newFeedback);
     }
 
+    private GeminiFeedbackForm parsingFeedbackForm(String json) {
+
+        ObjectMapper om = new ObjectMapper()
+                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+        try {
+
+            return om.readValue(json, GeminiFeedbackForm.class);
+        } catch (JsonProcessingException e) {
+
+            throw new FeedbackParsingException();
+        }
+    }
 }
