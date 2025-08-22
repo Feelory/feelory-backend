@@ -6,6 +6,8 @@ import com.feelory.feelory_backend.global.webclient.dto.model.GeminiHarmBlockThr
 import com.feelory.feelory_backend.global.webclient.dto.model.GeminiPropertyType;
 import com.feelory.feelory_backend.global.webclient.dto.model.GeminiResponseType;
 import com.feelory.feelory_backend.global.webclient.dto.model.GeminiSafetyCategory;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.*;
 
 import java.util.List;
@@ -128,12 +130,28 @@ public class GenerateContentRequest {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class GenerationConfig {
-        private Double temperature;
-        private Integer topK;
-        private Double topP;
-        private Integer maxOutputTokens;
         private String responseMimeType;
         private Schema responseSchema;
+
+        @Min(value = 0, message = "최소 값 0.0")
+        @Max(value = 2, message = "최대 값 2.0")
+        private Double temperature;             // 응답의 무작위성(또는 독창성)을 제어함
+                                                // temperature 값이 높아질 수록 확률 분포가 뾰족해짐 -> 확률이 높은 토큰쪽으로 결정이 몰림
+        private Integer topK;                   // 높은 확률 기준으로 상위 K개의 응답만을 후보군으로 둠
+                                                // 권장되지 않음 -> 확률이 아닌 개수로 결정되기 때문
+        private Double topP;                    // 높은 확률 기준으로 후보군의 확률의 합이 P가 될때까지의 응답을 후보군에 포함시킴
+
+        private Integer maxOutputTokens;
+        private Integer candidateCount;         // 응답 후보군 수 지정, 기본값 : 1
+
+        private List<String> stopSequences;     // 응답 생성을 중단시키는 특정 문자열을 지정하는 옵션
+
+        private Double presencePenalty;         // 이미 사용된 단어를 반복할 시 주는 패널티 강도
+                                                // presencePenalty가 양수인 경우 -> 이미 사용된 단어(토큰)에 대한 확률을 기본값보다 더 낮춤
+                                                // presencePenalty가 음수인 경우 -> 이미 사용된 단어(토큰)에 대한 확률을 기본값보다 덜 낮춤
+        private Double frequencyPenalty;        // 자주 등장한 단어에 대해 부여하는 패널티 강도
+                                                // presencePenalty -> 등장 / 등장 X 여부에 따라 확률이 조정됨
+                                                // frequencyPenalty -> 등장 빈도에 따라 확률이 조정됨
     }
 
 
@@ -179,12 +197,16 @@ public class GenerateContentRequest {
         Schema schema = GeminiFeedbackSchemaMapper.schema();
 
         GenerationConfig generationConfig = new GenerationConfig(
-                null,
-                null,
-                null,
-                null,
                 "application/json",
-                schema
+                schema,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
         );
 
         return new GenerateContentRequest(
