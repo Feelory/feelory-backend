@@ -5,7 +5,7 @@ import com.feelory.feelory_backend.global.util.GeminiFeedbackSchemaMapper;
 import com.feelory.feelory_backend.global.webclient.dto.model.GeminiHarmBlockThreshold;
 import com.feelory.feelory_backend.global.webclient.dto.model.GeminiPropertyType;
 import com.feelory.feelory_backend.global.webclient.dto.model.GeminiResponseType;
-import com.feelory.feelory_backend.global.webclient.dto.model.GeminiSafetyCategory;
+import com.feelory.feelory_backend.global.webclient.dto.model.GeminiHarmCategory;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import lombok.*;
@@ -121,7 +121,7 @@ public class GenerateContentRequest {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class SafetySetting {
-        private GeminiSafetyCategory category;
+        private GeminiHarmCategory category;
         private GeminiHarmBlockThreshold threshold;
     }
 

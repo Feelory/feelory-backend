@@ -10,7 +10,7 @@ import lombok.ToString;
 @Getter
 @ToString
 @RequiredArgsConstructor
-public enum GeminiSafetyCategory {
+public enum GeminiHarmCategory {
     HARM_CATEGORY_UNSPECIFIED("카테고리가 지정되지 않았습니다."),
     HARM_CATEGORY_DEROGATORY("PaLM - ID 또는 보호 속성을 대상으로 하는 부정적이거나 유해한 댓글"),
     HARM_CATEGORY_TOXICITY("PaLM - 무례하거나 모욕적이거나 욕설이 있는 콘텐츠"),
