@@ -4,6 +4,9 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
+/*
+    참고 : https://ai.google.dev/api/generate-content?hl=ko#FinishReason
+*/
 @Getter
 @ToString
 @RequiredArgsConstructor
