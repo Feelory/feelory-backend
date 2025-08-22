@@ -23,7 +23,9 @@ public class GeminiFeedbackForm {
             type = GeminiPropertyType.INTEGER,
             description = "평가 점수. 10점 만점 중 몇 점인지 (예: 2)",
             order = 1,
-            name = "score"
+            name = "score",
+            minimum = 0,
+            maximum = 10
     )
     private Integer score;
 
@@ -31,7 +33,9 @@ public class GeminiFeedbackForm {
             type = GeminiPropertyType.STRING,
             description = "피드백 내용",
             order = 2,
-            name = "content"
+            name = "content",
+            minLength = 30,
+            maxLength = 5000
     )
     private String content;
 }
