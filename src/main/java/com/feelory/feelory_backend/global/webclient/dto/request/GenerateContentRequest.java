@@ -2,8 +2,10 @@ package com.feelory.feelory_backend.global.webclient.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.feelory.feelory_backend.global.util.GeminiFeedbackSchemaMapper;
+import com.feelory.feelory_backend.global.webclient.dto.model.GeminiHarmBlockThreshold;
 import com.feelory.feelory_backend.global.webclient.dto.model.GeminiPropertyType;
 import com.feelory.feelory_backend.global.webclient.dto.model.GeminiResponseType;
+import com.feelory.feelory_backend.global.webclient.dto.model.GeminiSafetyCategory;
 import lombok.*;
 
 import java.util.List;
@@ -109,13 +111,16 @@ public class GenerateContentRequest {
         private Map<String, Object> parameters;
     }
 
+    /*
+        특정 유해 카테고리의 필터링 수준을 조절 가능한 옵션
+    */
     @Getter
     @Setter
     @NoArgsConstructor
     @AllArgsConstructor
     public static class SafetySetting {
-        private String category;
-        private String threshold;
+        private GeminiSafetyCategory category;
+        private GeminiHarmBlockThreshold threshold;
     }
 
     @Getter
