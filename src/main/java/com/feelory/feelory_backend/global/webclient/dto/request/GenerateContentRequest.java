@@ -68,7 +68,7 @@ import java.util.Map;
 @AllArgsConstructor
 public class GenerateContentRequest {
     private List<Content> contents;
-    private SystemInstruction systemInstruction;
+    private Content systemInstruction;
     private String cachedContent;
     private List<Tool> tools;
     private List<SafetySetting> safetySettings;
@@ -89,15 +89,6 @@ public class GenerateContentRequest {
     @AllArgsConstructor
     public static class Part {
         private String text;
-    }
-
-    @Getter
-    @Setter
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class SystemInstruction {
-        private String role;
-        private List<Part> parts;
     }
 
     @Getter
@@ -171,7 +162,8 @@ public class GenerateContentRequest {
         Part personaPart = new Part("너는 이용자의 글을 읽고 평가해야하는 피드백을 주는 평가자야.");
         Part cmdPart = new Part("이용자의 글을 객관적이고 냉소적으로 평가해줘.");
 
-        SystemInstruction systemInstruction = new SystemInstruction(
+        // SystemInstruction의 role 필드는 무시된다고 하니 참고바랍니다.
+        Content systemInstruction = new Content(
                 "system",
                 List.of(
                         personaPart,
