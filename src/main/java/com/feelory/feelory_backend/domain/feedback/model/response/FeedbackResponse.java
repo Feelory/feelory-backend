@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Getter
 @Builder
 @AllArgsConstructor
@@ -13,9 +15,10 @@ import lombok.NoArgsConstructor;
 public class FeedbackResponse {
     private Integer score;
     private String content;
+    private List<String> questions;
 
     public static FeedbackResponse fromForm(GeminiFeedbackForm form) {
 
-        return new FeedbackResponse(form.getScore(), form.getContent());
+        return new FeedbackResponse(form.getScore(), form.getContent(), form.getQuestions());
     }
 }

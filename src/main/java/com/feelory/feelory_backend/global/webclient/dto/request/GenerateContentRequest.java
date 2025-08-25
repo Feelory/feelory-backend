@@ -1,5 +1,6 @@
 package com.feelory.feelory_backend.global.webclient.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.feelory.feelory_backend.global.util.GeminiFeedbackSchemaMapper;
 import com.feelory.feelory_backend.global.webclient.dto.model.GeminiHarmBlockThreshold;
@@ -171,9 +172,14 @@ public class GenerateContentRequest {
     @Setter
     @NoArgsConstructor
     @AllArgsConstructor
+    @JsonInclude(JsonInclude.Include.NON_NULL) // null 필드 직렬화 생략
     public static class Property {
         private GeminiPropertyType type;
         private String description;
+        private Integer minLength;
+        private Integer maxLength;
+        private Integer minimum;
+        private Integer maximum;
         @JsonProperty("enum")
         private List<String> enumValue;
     }
