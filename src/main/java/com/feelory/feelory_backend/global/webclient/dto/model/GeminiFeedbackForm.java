@@ -48,35 +48,35 @@ public class GeminiFeedbackForm {
     @Getter(AccessLevel.NONE)
     @GeminiFeedbackProperty(
             type = GeminiPropertyType.STRING,
-            description = "글에 대한 미래 지향적인 질문좀 해줘",
+            description = "글 속에서 묘사한 경험을 더 넓게 확장하거나 구체화하도록 유도하는 질문을 해줘(경험 확장형 질문)",
             order = 3,
             name = "q1",
             minLength = 30,
             maxLength = 5000
     )
-    private String q1;
+    private String experienceExpansionQuestion;
 
     @Getter(AccessLevel.NONE)
     @GeminiFeedbackProperty(
             type = GeminiPropertyType.STRING,
-            description = "글과 관련된 경험에 대해 질문해줘",
+            description = "글쓴이가 느낀 감정이나 그 속에 담긴 가치관을 되짚어보게 하는 질문을 해줘(가치 탐색형 질문)",
             order = 4,
             name = "q2",
             minLength = 30,
             maxLength = 5000
     )
-    private String q2;
+    private String valuesExplorationQuestion;
 
     @Getter(AccessLevel.NONE)
     @GeminiFeedbackProperty(
             type = GeminiPropertyType.STRING,
-            description = "추천할만한 방향성에 대해 질문해줘",
+            description = "과거와 현재, 혹은 다른 장소/사람과 비교하게 하는 질문을 해줘(과거 비교형 질문)",
             order = 5,
             name = "q3",
             minLength = 30,
             maxLength = 5000
     )
-    private String q3;
+    private String comparePastPresentQuestion;
 
     // =========== E : 질문 ===========
 
@@ -98,6 +98,10 @@ public class GeminiFeedbackForm {
 
     public List<String> getQuestions() {
 
-        return List.of(q1, q2, q3);
+        return List.of(
+                experienceExpansionQuestion,
+                valuesExplorationQuestion,
+                comparePastPresentQuestion
+        );
     }
 }
