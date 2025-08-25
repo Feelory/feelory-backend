@@ -10,6 +10,7 @@ import com.feelory.feelory_backend.global.exception.exceptions.user.UserNotFound
 import com.feelory.feelory_backend.global.exception.exceptions.writing.DailyWordConflictException;
 import com.feelory.feelory_backend.global.exception.exceptions.writing.WritingGoalConflictException;
 import com.feelory.feelory_backend.global.exception.exceptions.word.DailyWordNotFoundException;
+import com.feelory.feelory_backend.global.exception.exceptions.writing.WritingGoalNotFoundException;
 import com.feelory.feelory_backend.global.exception.exceptions.writing.WritingNotFoundException;
 import com.feelory.feelory_backend.global.security.jwt.JwtProvider;
 import com.feelory.feelory_backend.global.util.ValidationUtil;
@@ -90,7 +91,7 @@ public class WritingService {
         DailyWord dailyWord = dailyWordRepository.findByIdAndIsActive(request.getDailyWordId(), true)
                 .orElseThrow(DailyWordNotFoundException::new);
         WritingGoal writingGoal = writingGoalRepository.findByIdAndUserIdAndIsActive(request.getWritingGoalId(), userId, true)
-                .orElseThrow(WritingNotFoundException::new);
+                .orElseThrow(WritingGoalNotFoundException::new);
 
         checkDuplicateDailyWord(userId, dailyWord);
         checkDuplicateWritingGoal(userId, writingGoal);
