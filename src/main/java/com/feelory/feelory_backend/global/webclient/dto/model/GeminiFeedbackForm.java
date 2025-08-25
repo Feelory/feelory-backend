@@ -50,7 +50,7 @@ public class GeminiFeedbackForm {
             type = GeminiPropertyType.STRING,
             description = "글 속에서 묘사한 경험을 더 넓게 확장하거나 구체화하도록 유도하는 질문을 해줘(경험 확장형 질문)",
             order = 3,
-            name = "q1",
+            name = "experienceExpansionQuestion",
             minLength = 30,
             maxLength = 5000
     )
@@ -61,7 +61,7 @@ public class GeminiFeedbackForm {
             type = GeminiPropertyType.STRING,
             description = "글쓴이가 느낀 감정이나 그 속에 담긴 가치관을 되짚어보게 하는 질문을 해줘(가치 탐색형 질문)",
             order = 4,
-            name = "q2",
+            name = "valuesExplorationQuestion",
             minLength = 30,
             maxLength = 5000
     )
@@ -72,7 +72,7 @@ public class GeminiFeedbackForm {
             type = GeminiPropertyType.STRING,
             description = "과거와 현재, 혹은 다른 장소/사람과 비교하게 하는 질문을 해줘(과거 비교형 질문)",
             order = 5,
-            name = "q3",
+            name = "comparePastPresentQuestion",
             minLength = 30,
             maxLength = 5000
     )
