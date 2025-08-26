@@ -75,10 +75,22 @@ public class GeminiFeedbackSchemaMapper {
 
     // GenerateContentRequest.Property 객체로 변환
     private static GenerateContentRequest.Property toProperty(GeminiFeedbackProperty meta) {
-        List<String> enums = meta.enumValues().length == 0
-                ? null
-                : Arrays.asList(meta.enumValues());
-        return new GenerateContentRequest.Property(meta.type(), meta.description(), enums);
+        List<String> enums = meta.enumValues().length == 0 ? null : Arrays.asList(meta.enumValues());
+
+        GenerateContentRequest.Property p = new GenerateContentRequest.Property();
+        p.setType(meta.type());
+        p.setDescription(meta.description());
+        p.setEnumValue(enums);
+
+        // 문자열 제약
+        if (meta.minLength() > 0) p.setMinLength(meta.minLength());
+        if (meta.maxLength() < Integer.MAX_VALUE) p.setMaxLength(meta.maxLength());
+
+        // 숫자 제약
+        if (meta.minimum() > 0) p.setMinimum(meta.minimum());
+        if (meta.maximum() < Integer.MAX_VALUE) p.setMaximum(meta.maximum());
+
+        return p;
     }
 
     // 최종 산출물로 변환

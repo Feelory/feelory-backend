@@ -1,5 +1,6 @@
 package com.feelory.feelory_backend.global.webclient.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.feelory.feelory_backend.global.util.GeminiFeedbackSchemaMapper;
 import com.feelory.feelory_backend.global.webclient.dto.model.GeminiHarmBlockThreshold;
@@ -171,28 +172,36 @@ public class GenerateContentRequest {
     @Setter
     @NoArgsConstructor
     @AllArgsConstructor
+    @JsonInclude(JsonInclude.Include.NON_NULL) // null 필드 직렬화 생략
     public static class Property {
         private GeminiPropertyType type;
         private String description;
+        private Integer minLength;
+        private Integer maxLength;
+        private Integer minimum;
+        private Integer maximum;
         @JsonProperty("enum")
         private List<String> enumValue;
     }
 
-    public static GenerateContentRequest ofText(String text) {
+    private static List<Part> toParts(List<String> prompts) {
+        if (prompts == null) return List.of();
+        return prompts.stream()
+                .filter(s -> s != null)
+                .map(String::trim)
+                .filter(s -> !s.isEmpty() && !s.startsWith("#"))
+                .map(Part::new)
+                .toList();
+    }
+
+    public static GenerateContentRequest ofText(String text, List<String> prompts) {
         Part part = new Part(text);
         Content content = new Content("user", List.of(part));
 
-        Part personaPart = new Part("너는 이용자의 글을 읽고 평가해야하는 피드백을 주는 평가자야.");
-        Part cmdPart = new Part("이용자의 글을 객관적이고 냉소적으로 평가해줘.");
+        List<Part> parts = toParts(prompts);
 
         // SystemInstruction의 role 필드는 무시된다고 하니 참고바랍니다.
-        Content systemInstruction = new Content(
-                "system",
-                List.of(
-                        personaPart,
-                        cmdPart
-                )
-        );
+        Content systemInstruction = new Content("system", parts);
 
         Schema schema = GeminiFeedbackSchemaMapper.schema();
 

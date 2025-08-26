@@ -11,6 +11,7 @@ import com.feelory.feelory_backend.global.exception.exceptions.feedback.Feedback
 import com.feelory.feelory_backend.global.exception.exceptions.writing.WritingNotFoundException;
 import com.feelory.feelory_backend.global.webclient.GenerateContent;
 import com.feelory.feelory_backend.global.webclient.dto.model.GeminiFeedbackForm;
+import com.feelory.feelory_backend.global.webclient.dto.model.SystemInstructionProperties;
 import com.feelory.feelory_backend.global.webclient.dto.request.GenerateContentRequest;
 import com.feelory.feelory_backend.global.webclient.dto.reponse.GenerateContentResponse;
 import com.feelory.feelory_backend.domain.writing.entity.DailyWordWriting;
@@ -26,6 +27,7 @@ public class FeedbackService {
     private final FeedbackRepository feedbackRepository;
     private final DailyWordWritingRepository dailyWordWritingsRepository;
     private final GenerateContent geminiGenerateContent;
+    private final SystemInstructionProperties systemInstructionProperties;
 
     @Transactional
     public FeedbackResponse createFeedback(FeedbackRequest request) {
@@ -50,7 +52,7 @@ public class FeedbackService {
     }
 
     private GenerateContentRequest buildGenerateContentRequest(DailyWordWriting writings) {
-        return GenerateContentRequest.ofText(writings.getContent());
+        return GenerateContentRequest.ofText(writings.getContent(), systemInstructionProperties.getPrompts());
     }
 
     private GenerateContentResponse generateContentFromModel(GenerateContentRequest feedbackRequest) {
