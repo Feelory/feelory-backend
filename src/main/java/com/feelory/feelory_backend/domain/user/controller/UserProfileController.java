@@ -1,5 +1,6 @@
 package com.feelory.feelory_backend.domain.user.controller;
 
+import com.feelory.feelory_backend.domain.user.dto.request.UserProfileUpdateRequest;
 import com.feelory.feelory_backend.global.api.ApiResponse;
 import com.feelory.feelory_backend.global.api.SuccessCode;
 import com.feelory.feelory_backend.global.security.jwt.JwtProvider;
@@ -11,6 +12,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -52,5 +54,21 @@ public class UserProfileController {
         UserProfileResponse response = userProfileService.readUserProfile();
 
         return ApiResponse.success(response, SuccessCode.READ_USER_PROFILE_SUCCESS);
+    }
+
+    @Operation(
+            summary = "내 프로필 수정",
+            description = "프로필의 닉네임과 자기소개를 수정합니다.",
+            security = {@SecurityRequirement(name = "JWT")}
+    )
+    @PatchMapping(value = "/me")
+    public ApiResponse<Void> updateProfile(
+            @Valid @RequestBody UserProfileUpdateRequest request) {
+
+        jwtProvider.checkUserOrAdmin();
+
+        userProfileService.updateUserProfile(request);
+
+        return ApiResponse.success(SuccessCode.UPDATE_USER_PROFILE_SUCCESS);
     }
 }
