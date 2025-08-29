@@ -1,9 +1,13 @@
 package com.feelory.feelory_backend.domain.feedback.entity;
 
+import com.feelory.feelory_backend.domain.user.entity.UserProfileImage;
 import com.feelory.feelory_backend.global.BaseEntity;
 import com.feelory.feelory_backend.domain.writing.entity.DailyWordWriting;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Builder(toBuilder = true)
@@ -26,4 +30,13 @@ public class Feedback extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "daily_word_writing_id", nullable = false)
     private DailyWordWriting dailyWordWriting;
+
+    @Builder.Default
+    @OneToMany(mappedBy = "feedback", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<FeedbackQuestion> feedbackQuestions = new ArrayList<>();
+
+    public void addFeedbackQuestion(FeedbackQuestion feedbackQuestion){
+        feedbackQuestions.add(feedbackQuestion);
+        feedbackQuestion.setFeedback(this);
+    }
 }
