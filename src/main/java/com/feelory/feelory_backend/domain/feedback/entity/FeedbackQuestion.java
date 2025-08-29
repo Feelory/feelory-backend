@@ -22,9 +22,9 @@ public class FeedbackQuestion extends BaseEntity {
     @Column(name = "is_active", nullable = false)
     private boolean isActive;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "type", nullable = false)
-    private QuestionType questionType;
+//    @Enumerated(EnumType.STRING)
+    @Column(name = "question_type", nullable = false)
+    private String questionType;
 
     @Setter
     @ManyToOne(fetch = FetchType.LAZY)

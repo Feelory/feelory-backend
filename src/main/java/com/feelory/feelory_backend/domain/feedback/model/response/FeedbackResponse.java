@@ -13,12 +13,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class FeedbackResponse {
-    private Integer score;
     private String content;
     private List<String> questions;
-
-    public static FeedbackResponse fromForm(GeminiFeedbackForm form) {
-
-        return new FeedbackResponse(form.getScore(), form.getContent(), form.getQuestions());
-    }
 }

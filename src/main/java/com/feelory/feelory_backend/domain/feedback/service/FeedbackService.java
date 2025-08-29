@@ -2,10 +2,15 @@ package com.feelory.feelory_backend.domain.feedback.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.feelory.feelory_backend.domain.feedback.entity.Feedback;
+import com.feelory.feelory_backend.domain.feedback.entity.FeedbackQuestion;
+import com.feelory.feelory_backend.domain.feedback.model.QuestionType;
 import com.feelory.feelory_backend.domain.feedback.model.request.FeedbackRequest;
 import com.feelory.feelory_backend.domain.feedback.model.response.FeedbackResponse;
+import com.feelory.feelory_backend.domain.feedback.model.response.GeminiResponse;
+import com.feelory.feelory_backend.domain.feedback.repository.FeedbackQuestionRepository;
 import com.feelory.feelory_backend.domain.feedback.repository.FeedbackRepository;
 import com.feelory.feelory_backend.global.exception.exceptions.feedback.FeedbackParsingException;
 import com.feelory.feelory_backend.global.exception.exceptions.writing.WritingNotFoundException;
@@ -20,6 +25,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class FeedbackService {
@@ -28,6 +36,7 @@ public class FeedbackService {
     private final DailyWordWritingRepository dailyWordWritingsRepository;
     private final GenerateContent geminiGenerateContent;
     private final SystemInstructionProperties systemInstructionProperties;
+    private final FeedbackQuestionRepository feedbackQuestionRepository;
 
     @Transactional
     public FeedbackResponse createFeedback(FeedbackRequest request) {
@@ -39,11 +48,12 @@ public class FeedbackService {
 
         String feedbackJson = extractFeedbackText(feedbackResponse);
 
-        GeminiFeedbackForm form = parsingFeedbackForm(feedbackJson);
+        GeminiResponse geminiResponse = parsingGeminiResponse(feedbackJson);
 
-        saveFeedback(feedbackJson, writing);
+        Feedback newFeedback = saveFeedback(geminiResponse.getContent(), writing);
+        List<String> newQuestion = saveFeedbackQuestion(geminiResponse.getQuestions(),newFeedback);
 
-        return FeedbackResponse.fromForm(form);
+        return new FeedbackResponse(newFeedback.getContent(),newQuestion);
     }
 
     private DailyWordWriting findDailyWriting(FeedbackRequest request) {
@@ -67,7 +77,7 @@ public class FeedbackService {
         return part.text;
     }
 
-    private void saveFeedback(String feedbackText, DailyWordWriting writing) {
+    private Feedback saveFeedback(String feedbackText, DailyWordWriting writing) {
         Feedback newFeedback = Feedback.builder()
                 .content(feedbackText)
                 .isActive(true)
@@ -75,7 +85,7 @@ public class FeedbackService {
 
         writing.addFeedbacks(newFeedback);
 
-        feedbackRepository.save(newFeedback);
+        return feedbackRepository.save(newFeedback);
     }
 
     private GeminiFeedbackForm parsingFeedbackForm(String json) {
@@ -91,4 +101,57 @@ public class FeedbackService {
             throw new FeedbackParsingException();
         }
     }
+    private GeminiResponse parsingGeminiResponse(String json) {
+        ObjectMapper mapper = new ObjectMapper();
+        List<GeminiResponse.Question> questions = new ArrayList<>();
+
+        try {
+            JsonNode root = mapper.readTree(json);
+
+            String content = root.path("content").asText();
+
+            if (root.has("experienceExpansionQuestion")) {
+                questions.add(new GeminiResponse.Question(
+                        root.get("experienceExpansionQuestion").asText(),
+                        "experienceExpansionQuestion"
+                ));
+            }
+
+            if (root.has("valuesExplorationQuestion")) {
+                questions.add(new GeminiResponse.Question(
+                        root.get("valuesExplorationQuestion").asText(),
+                        "valuesExplorationQuestion"
+                ));
+            }
+
+            if (root.has("comparePastPresentQuestion")) {
+                questions.add(new GeminiResponse.Question(
+                        root.get("comparePastPresentQuestion").asText(),
+                        "comparePastPresentQuestion"
+                ));
+            }
+
+            return new GeminiResponse(content, questions);
+
+        } catch (Exception e) {
+            throw new FeedbackParsingException();
+        }
+    }
+
+    private List<String> saveFeedbackQuestion(List<GeminiResponse.Question> questions, Feedback feedback) {
+        List<String> feedbackQuestionContents = new ArrayList<>();
+        for(GeminiResponse.Question question : questions){
+            FeedbackQuestion newFeedbackQuestion = FeedbackQuestion.builder()
+                    .questionType(question.getQuestionType())
+                    .content(question.getContent())
+                    .isActive(true)
+                    .build();
+
+            feedback.addFeedbackQuestion(newFeedbackQuestion);
+            feedbackQuestionRepository.save(newFeedbackQuestion);
+            feedbackQuestionContents.add(question.getContent());
+        }
+        return feedbackQuestionContents;
+    }
+
 }
